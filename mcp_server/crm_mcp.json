@@ -1,0 +1,71 @@
+{
+  "tools": [
+    {
+      "name": "get_client_by_id",
+      "description": "Retrieve a client by their unique ID.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "description": "The unique identifier of the client to retrieve"
+          }
+        },
+        "required": ["client_id"]
+      }
+    },
+    {
+      "name": "create_client",
+      "description": "Create a new client with basic information.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the new client"
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name of the client"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the client"
+          },
+          "balance": {
+            "type": "number",
+            "description": "Initial account balance for the client"
+          }
+        },
+        "required": ["id", "name", "email", "balance"]
+      }
+    },
+    {
+      "name": "update_client_balance",
+      "description": "Update the balance of an existing client.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "description": "The unique identifier of the client to update"
+          },
+          "new_balance": {
+            "type": "number",
+            "description": "The new balance amount to set for the client"
+          }
+        },
+        "required": ["client_id", "new_balance"]
+      }
+    },
+    {
+      "name": "list_all_clients",
+      "description": "Return a list of all registered clients.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ]
+} 

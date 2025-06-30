@@ -1,0 +1,168 @@
+{
+  "tools": [
+    {
+      "name": "hr_create_employee",
+      "description": "Create a new employee in the HR system",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {"type": "string", "description": "Employee ID"},
+          "first_name": {"type": "string", "description": "First name"},
+          "last_name": {"type": "string", "description": "Last name"},
+          "email": {"type": "string", "format": "email", "description": "Email address"},
+          "phone": {"type": "string", "description": "Phone number"},
+          "department": {"type": "string", "description": "Department name"},
+          "position": {"type": "string", "description": "Job position"},
+          "salary": {"type": "number", "description": "Annual salary"},
+          "hire_date": {"type": "string", "format": "date", "description": "Date of hire"},
+          "manager_id": {"type": "string", "description": "Manager's employee ID"},
+          "status": {"type": "string", "enum": ["active", "inactive", "terminated"], "description": "Employee status"}
+        },
+        "required": ["employee_id", "first_name", "last_name", "email", "department", "position", "salary", "hire_date"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "employee": {"type": "object"},
+          "message": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hr_get_employee",
+      "description": "Retrieve employee information by ID",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {"type": "string", "description": "Employee ID"}
+        },
+        "required": ["employee_id"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "employee": {"type": "object"},
+          "message": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hr_update_employee",
+      "description": "Update existing employee information",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {"type": "string", "description": "Employee ID"},
+          "first_name": {"type": "string", "description": "First name"},
+          "last_name": {"type": "string", "description": "Last name"},
+          "email": {"type": "string", "format": "email", "description": "Email address"},
+          "phone": {"type": "string", "description": "Phone number"},
+          "department": {"type": "string", "description": "Department name"},
+          "position": {"type": "string", "description": "Job position"},
+          "salary": {"type": "number", "description": "Annual salary"},
+          "manager_id": {"type": "string", "description": "Manager's employee ID"},
+          "status": {"type": "string", "enum": ["active", "inactive", "terminated"], "description": "Employee status"}
+        },
+        "required": ["employee_id"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "employee": {"type": "object"},
+          "message": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hr_list_employees",
+      "description": "List all employees with optional filtering",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "department": {"type": "string", "description": "Filter by department"},
+          "position": {"type": "string", "description": "Filter by position"},
+          "status": {"type": "string", "enum": ["active", "inactive", "terminated"], "description": "Filter by status"}
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "employees": {"type": "array", "items": {"type": "object"}},
+          "count": {"type": "integer"}
+        }
+      }
+    },
+    {
+      "name": "hr_search_employees",
+      "description": "Search employees by name, email, or position",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {"type": "string", "description": "Search query string"}
+        },
+        "required": ["query"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "employees": {"type": "array", "items": {"type": "object"}},
+          "count": {"type": "integer"}
+        }
+      }
+    },
+    {
+      "name": "hr_terminate_employee",
+      "description": "Terminate an employee",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "employee_id": {"type": "string", "description": "Employee ID"},
+          "termination_date": {"type": "string", "format": "date", "description": "Date of termination"}
+        },
+        "required": ["employee_id", "termination_date"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "message": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hr_get_organizational_chart",
+      "description": "Generate organizational chart data",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "org_chart": {"type": "object"}
+        }
+      }
+    },
+    {
+      "name": "hr_get_salary_report",
+      "description": "Generate salary report and statistics",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "report": {"type": "object"}
+        }
+      }
+    }
+  ]
+} 

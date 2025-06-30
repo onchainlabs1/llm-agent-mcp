@@ -1,0 +1,57 @@
+{
+  "version": "1.0",
+  "description": "ERP tools for managing orders in the simulated business system.",
+  "tools": [
+    {
+      "name": "create_order",
+      "description": "Create a new order in the ERP system.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "client_id": {"type": "string", "description": "ID of the client placing the order."},
+          "items": {"type": "array", "description": "List of items in the order."},
+          "total_amount": {"type": "number", "description": "Total cost of the order."},
+          "description": {"type": "string", "description": "Order description.", "optional": true},
+          "priority": {"type": "string", "description": "Order priority (low, medium, high).", "optional": true}
+        },
+        "required": ["client_id", "items", "total_amount"]
+      },
+      "returns": {"type": "object", "description": "The created order object."}
+    },
+    {
+      "name": "get_order_by_id",
+      "description": "Retrieve order information by order ID.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {"type": "string", "description": "Unique identifier of the order."}
+        },
+        "required": ["order_id"]
+      },
+      "returns": {"type": "object", "description": "Order information or null if not found."}
+    },
+    {
+      "name": "update_order_status",
+      "description": "Update the status of an existing order.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {"type": "string", "description": "Unique identifier of the order."},
+          "new_status": {"type": "string", "description": "New status for the order (pending, processing, shipped, delivered, cancelled)."}
+        },
+        "required": ["order_id", "new_status"]
+      },
+      "returns": {"type": "object", "description": "Updated order information or null if not found."}
+    },
+    {
+      "name": "list_all_orders",
+      "description": "List all orders in the ERP system.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      },
+      "returns": {"type": "array", "description": "List of all orders."}
+    }
+  ]
+} 
