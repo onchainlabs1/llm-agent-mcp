@@ -1,9 +1,11 @@
 {
+  "version": "1.0",
+  "description": "CRM tools for managing clients in the simulated business system.",
   "tools": [
     {
       "name": "get_client_by_id",
       "description": "Retrieve a client by their unique ID.",
-      "parameters": {
+      "input_schema": {
         "type": "object",
         "properties": {
           "client_id": {
@@ -12,18 +14,18 @@
           }
         },
         "required": ["client_id"]
+      },
+      "output_schema": {
+        "type": "object",
+        "description": "Client information or null if not found."
       }
     },
     {
       "name": "create_client",
       "description": "Create a new client with basic information.",
-      "parameters": {
+      "input_schema": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier for the new client"
-          },
           "name": {
             "type": "string",
             "description": "Full name of the client"
@@ -34,16 +36,39 @@
           },
           "balance": {
             "type": "number",
-            "description": "Initial account balance for the client"
+            "description": "Initial account balance for the client",
+            "default": 0.0
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number (optional)"
+          },
+          "company": {
+            "type": "string",
+            "description": "Company name (optional)"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Industry sector (optional)"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "inactive", "prospect"],
+            "description": "Client status",
+            "default": "active"
           }
         },
-        "required": ["id", "name", "email", "balance"]
+        "required": ["name", "email"]
+      },
+      "output_schema": {
+        "type": "object",
+        "description": "The created client object."
       }
     },
     {
       "name": "update_client_balance",
       "description": "Update the balance of an existing client.",
-      "parameters": {
+      "input_schema": {
         "type": "object",
         "properties": {
           "client_id": {
@@ -56,15 +81,49 @@
           }
         },
         "required": ["client_id", "new_balance"]
+      },
+      "output_schema": {
+        "type": "object",
+        "description": "Updated client information or null if not found."
       }
     },
     {
       "name": "list_all_clients",
       "description": "Return a list of all registered clients.",
-      "parameters": {
+      "input_schema": {
         "type": "object",
-        "properties": {},
-        "required": []
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "array",
+        "description": "List of all clients.",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "name": "filter_clients_by_balance",
+      "description": "Filter clients by their account balance. Use this when users ask for clients with specific balance criteria (e.g., 'clients with balance over 5000').",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "min_balance": {
+            "type": "number",
+            "description": "Minimum balance threshold (optional)"
+          },
+          "max_balance": {
+            "type": "number",
+            "description": "Maximum balance threshold (optional)"
+          }
+        }
+      },
+      "output_schema": {
+        "type": "array",
+        "description": "List of clients matching balance criteria.",
+        "items": {
+          "type": "object"
+        }
       }
     }
   ]

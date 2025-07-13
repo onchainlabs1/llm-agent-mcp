@@ -57,6 +57,7 @@ agentmcp/
 ### Prerequisites
 - Python 3.11 or higher
 - pip package manager
+- API key for LLM provider (Groq, OpenAI, or Anthropic) - *optional, works in simulated mode without*
 
 ### Installation
 
@@ -66,19 +67,50 @@ agentmcp/
    cd agentmcp
    ```
 
-2. **Install dependencies**
+2. **Initialize the project**
+   ```bash
+   python setup.py
+   ```
+   This will create necessary directories, configuration files, and initial data.
+
+3. **Configure environment variables**
+   ```bash
+   # Edit .env file with your API keys (optional for demo mode)
+   nano .env
+   ```
+   
+   **Important:** The system will work in simulated mode if no API keys are provided. For full functionality, add your LLM provider API key:
+   - For Groq: Set `GROQ_API_KEY`
+   - For OpenAI: Set `OPENAI_API_KEY` 
+   - For Anthropic: Set `ANTHROPIC_API_KEY`
+
+4. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Run the application**
+5. **Run the application**
    ```bash
    streamlit run frontend/app.py
    ```
 
-4. **Access the web interface**
+6. **Access the web interface**
    - Open your browser and navigate to `http://localhost:8501`
    - The AgentMCP interface will be available
+
+### Configuration
+
+The application uses environment variables for configuration. Key settings include:
+
+- **GROQ_API_KEY**: Your Groq API key for LLM integration (recommended)
+- **LLM_PROVIDER**: LLM provider (`groq`, `openai`, `anthropic`, `simulated`)
+- **LOG_LEVEL**: Logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`)
+- **LLM_MODEL**: Model to use (e.g., `llama3-70b-8192` for Groq)
+
+See `.env.example` for all available configuration options.
+
+### Demo Mode
+The system includes a simulated LLM mode for testing without API keys. Simply run the setup and start the application - it will automatically use pattern matching for tool selection.
 
 ## 🚀 Usage
 

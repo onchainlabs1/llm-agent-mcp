@@ -307,6 +307,55 @@ class CRMService:
             self.logger.error(f"Unexpected error listing clients: {str(e)}")
             raise
     
+    def filter_clients_by_balance(self, min_balance: float = None, max_balance: float = None) -> List[Dict[str, Any]]:
+        """
+        Filter clients by their account balance.
+        
+        Args:
+            min_balance: Minimum balance threshold (optional)
+            max_balance: Maximum balance threshold (optional)
+            
+        Returns:
+            List of clients matching the balance criteria
+            
+        Raises:
+            ValueError: If balance parameters are invalid
+            FileNotFoundError: If the data file doesn't exist
+            json.JSONDecodeError: If the JSON is invalid
+        """
+        try:
+            data = self._load_data()
+            clients = data.get("clients", [])
+            filtered_clients = []
+            
+            for client in clients:
+                balance = client.get("balance", 0.0)
+                
+                # Convert balance to float if it's a string
+                if isinstance(balance, str):
+                    try:
+                        balance = float(balance)
+                    except ValueError:
+                        balance = 0.0
+                
+                # Apply filters
+                if min_balance is not None and balance < min_balance:
+                    continue
+                if max_balance is not None and balance > max_balance:
+                    continue
+                    
+                filtered_clients.append(client)
+            
+            self.logger.info(f"Filtered {len(filtered_clients)} clients by balance criteria")
+            return filtered_clients
+            
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            self.logger.error(f"Error filtering clients by balance: {str(e)}")
+            raise
+        except Exception as e:
+            self.logger.error(f"Unexpected error filtering clients by balance: {str(e)}")
+            raise
+    
     def update_client(self, client_id: str, update_data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Update an existing client's information.

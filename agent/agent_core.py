@@ -26,16 +26,41 @@ sys.path.append('..')
 from services.crm_service import CRMService
 from services.erp_service import ERPService
 
-# --- Groq LLM integration ---
+# --- LLM integration ---
 import openai
 import os
+from config import config
 
-def call_llm_groq(prompt, model="llama3-70b-8192"):
+def call_llm(prompt, model=None):
     """
-    Call the Groq LLM API to interpret a prompt.
-    Uses environment variable for API key.
+    Call LLM API based on configured provider.
+    Falls back to simulated mode if API key is missing or API call fails.
     """
-    api_key = os.getenv('GROQ_API_KEY', 'your-api-key-here')
+    if model is None:
+        model = config.llm.model
+    
+    provider = config.llm.provider
+    api_key = config.get_llm_api_key()
+    
+    # If no API key or invalid key, use simulated mode
+    if not api_key or api_key == "your-api-key-here":
+        return _simulate_llm_response(prompt)
+    
+    try:
+        if provider == "groq":
+            return _call_groq_llm(prompt, model, api_key)
+        elif provider == "openai":
+            return _call_openai_llm(prompt, model, api_key)
+        elif provider == "anthropic":
+            return _call_anthropic_llm(prompt, model, api_key)
+        else:
+            return _simulate_llm_response(prompt)
+    except Exception as e:
+        print(f"LLM API call failed: {e}. Falling back to simulated mode.")
+        return _simulate_llm_response(prompt)
+
+def _call_groq_llm(prompt, model, api_key):
+    """Call Groq LLM API."""
     openai.api_key = api_key
     openai.api_base = "https://api.groq.com/openai/v1"
     response = openai.ChatCompletion.create(
@@ -43,6 +68,78 @@ def call_llm_groq(prompt, model="llama3-70b-8192"):
         messages=[{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content
+
+def _call_openai_llm(prompt, model, api_key):
+    """Call OpenAI LLM API."""
+    openai.api_key = api_key
+    openai.api_base = "https://api.openai.com/v1"
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content
+
+def _call_anthropic_llm(prompt, model, api_key):
+    """Call Anthropic LLM API."""
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model=model,
+            max_tokens=1000,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return response.content[0].text
+    except ImportError:
+        raise Exception("Anthropic library not installed. Install with: pip install anthropic")
+
+def _simulate_llm_response(prompt):
+    """
+    Simulate LLM response for testing/demo purposes.
+    Uses regex patterns to extract intent and parameters.
+    """
+    prompt_lower = prompt.lower()
+    
+    # Simple pattern matching for tool selection - more specific balance criteria detection
+    import re
+    
+    # Check for "under/below/less than" patterns FIRST to avoid conflicts
+    if ("balance" in prompt_lower and 
+          (re.search(r'balance\s+under\s+(\d+)', prompt_lower) or 
+           re.search(r'balance\s+below\s+(\d+)', prompt_lower) or 
+           re.search(r'balance\s+less.*?(\d+)', prompt_lower) or
+           re.search(r'under\s+(\d+)', prompt_lower))):
+        balance_match = re.search(r'(\d+)', prompt_lower)
+        max_balance = int(balance_match.group(1)) if balance_match else 1000
+        return f'{{"tool_name": "filter_clients_by_balance", "parameters": {{"max_balance": {max_balance}}}}}'
+    
+    # Check for "over/above/greater than" patterns
+    elif ("balance" in prompt_lower and 
+        (re.search(r'balance\s+over\s+(\d+)', prompt_lower) or 
+         re.search(r'balance\s+above\s+(\d+)', prompt_lower) or 
+         re.search(r'balance\s+greater.*?(\d+)', prompt_lower) or
+         re.search(r'over\s+(\d+)', prompt_lower))):
+        balance_match = re.search(r'(\d+)', prompt_lower)
+        min_balance = int(balance_match.group(1)) if balance_match else 5000
+        return f'{{"tool_name": "filter_clients_by_balance", "parameters": {{"min_balance": {min_balance}}}}}'
+    elif "list" in prompt_lower and "client" in prompt_lower:
+        return '{"tool_name": "list_all_clients", "parameters": {}}'
+    elif "create" in prompt_lower and "client" in prompt_lower:
+        return '{"tool_name": "create_client", "parameters": {"name": "Test Client", "email": "test@example.com", "balance": 1000}}'
+    elif "get" in prompt_lower and "client" in prompt_lower:
+        return '{"tool_name": "get_client_by_id", "parameters": {"client_id": "test-client-id"}}'
+    elif "update" in prompt_lower and "balance" in prompt_lower:
+        return '{"tool_name": "update_client_balance", "parameters": {"client_id": "test-client-id", "new_balance": 2000}}'
+    elif "create" in prompt_lower and "order" in prompt_lower:
+        return '{"tool_name": "create_order", "parameters": {"client_id": "test-client-id", "total_amount": 500, "items": [{"name": "Product", "quantity": 1, "price": 500}]}}'
+    elif "list" in prompt_lower and "order" in prompt_lower:
+        return '{"tool_name": "list_all_orders", "parameters": {}}'
+    elif "get" in prompt_lower and "order" in prompt_lower:
+        return '{"tool_name": "get_order_by_id", "parameters": {"order_id": "test-order-id"}}'
+    elif "update" in prompt_lower and "order" in prompt_lower:
+        return '{"tool_name": "update_order_status", "parameters": {"order_id": "test-order-id", "new_status": "shipped"}}'
+    else:
+        return '{"tool_name": "list_all_clients", "parameters": {}}'
 
 class AgentConfig:
     """Configuration for the agent."""
@@ -108,13 +205,14 @@ class AgentCore:
     def _setup_logging(self) -> logging.Logger:
         """Set up structured logging for the agent."""
         logger = logging.getLogger("agentmcp.core")
-        logger.setLevel(getattr(logging, self.config.log_level))
+        logger.setLevel(config.get_log_level())
         
         # Create logs directory if it doesn't exist
-        Path("logs").mkdir(exist_ok=True)
+        log_file_path = Path(config.logging.file)
+        log_file_path.parent.mkdir(exist_ok=True)
         
         # Add structured logging handler
-        handler = logging.FileHandler("logs/actions.log")
+        handler = logging.FileHandler(config.logging.file)
         formatter = logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )
@@ -225,23 +323,25 @@ class AgentCore:
     
     def _select_tool(self, user_input: str) -> Optional[ToolCall]:
         """
-        Select appropriate tool based on user input using Groq LLM.
+        Select appropriate tool based on user input using configured LLM.
         Args:
             user_input: Natural language request
         Returns:
             ToolCall object if tool found, None otherwise
         """
         try:
-            # Use Groq LLM to interpret the user input
+            # Use configured LLM to interpret the user input
             prompt = (
                 "You are an AI agent that maps user requests to business tools. "
                 "Given the following user request, return a JSON object with two fields: "
-                "'tool_name' (the best matching tool from this list: get_client_by_id, create_client, update_client_balance, list_all_clients, create_order, get_order_by_id, update_order_status, list_all_orders) "
+                "'tool_name' (the best matching tool from this list: get_client_by_id, create_client, update_client_balance, list_all_clients, filter_clients_by_balance, create_order, get_order_by_id, update_order_status, list_all_orders) "
                 "and 'parameters' (a JSON object with the required parameters for the tool, or empty if none). "
+                "IMPORTANT: Use 'filter_clients_by_balance' when users ask for clients with specific balance criteria (e.g., 'clients with balance over 5000', 'clients with balance under 1000', etc.). "
+                "For filter_clients_by_balance, use parameters like {'min_balance': 5000} for 'over 5000' or {'max_balance': 1000} for 'under 1000'. "
                 f"User request: {user_input}\n"
                 "Respond ONLY with the JSON object."
             )
-            llm_response = call_llm_groq(prompt)
+            llm_response = call_llm(prompt)
             import json as _json
             parsed = _json.loads(llm_response)
             tool_name = parsed.get("tool_name")
@@ -250,12 +350,86 @@ class AgentCore:
                 return ToolCall(
                     tool_name=tool_name,
                     parameters=parameters,
-                    reasoning=f"LLM mapped user input to tool '{tool_name}' with parameters {parameters}"
+                    reasoning=f"LLM ({config.llm.provider}) mapped user input to tool '{tool_name}' with parameters {parameters}"
                 )
             return None
         except Exception as e:
             self.logger.error(f"LLM tool selection failed: {str(e)}")
-            return None
+            # Fallback to regex-based tool selection
+            return self._fallback_tool_selection(user_input)
+    
+    def _fallback_tool_selection(self, user_input: str) -> Optional[ToolCall]:
+        """
+        Fallback tool selection using regex patterns when LLM fails.
+        
+        Args:
+            user_input: Natural language input
+            
+        Returns:
+            ToolCall object if pattern matches, None otherwise
+        """
+        user_input_lower = user_input.lower()
+        
+        # Client operations with balance filtering - check "under" patterns first
+        # Check for "under/below/less than" patterns FIRST
+        if ("balance" in user_input_lower and 
+              (re.search(r'balance\s+under\s+(\d+)', user_input_lower) or 
+               re.search(r'balance\s+below\s+(\d+)', user_input_lower) or 
+               re.search(r'balance\s+less.*?(\d+)', user_input_lower) or
+               re.search(r'under\s+(\d+)', user_input_lower))):
+            balance_match = re.search(r'(\d+)', user_input_lower)
+            max_balance = int(balance_match.group(1)) if balance_match else 1000
+            return ToolCall("filter_clients_by_balance", {"max_balance": max_balance}, "Regex pattern: filter clients by balance (maximum)")
+        
+        # Check for "over/above/greater than" patterns
+        elif ("balance" in user_input_lower and 
+            (re.search(r'balance\s+over\s+(\d+)', user_input_lower) or 
+             re.search(r'balance\s+above\s+(\d+)', user_input_lower) or 
+             re.search(r'balance\s+greater.*?(\d+)', user_input_lower) or
+             re.search(r'over\s+(\d+)', user_input_lower))):
+            balance_match = re.search(r'(\d+)', user_input_lower)
+            min_balance = int(balance_match.group(1)) if balance_match else 5000
+            return ToolCall("filter_clients_by_balance", {"min_balance": min_balance}, "Regex pattern: filter clients by balance (minimum)")
+        
+        elif "list" in user_input_lower and ("client" in user_input_lower or "customer" in user_input_lower):
+            return ToolCall("list_all_clients", {}, "Regex pattern: list clients")
+        
+        elif "create" in user_input_lower and ("client" in user_input_lower or "customer" in user_input_lower):
+            client_data = self._extract_client_data(user_input)
+            if client_data:
+                return ToolCall("create_client", client_data, "Regex pattern: create client")
+        
+        elif "get" in user_input_lower and ("client" in user_input_lower or "customer" in user_input_lower):
+            client_id = self._extract_client_id(user_input)
+            if client_id:
+                return ToolCall("get_client_by_id", {"client_id": client_id}, "Regex pattern: get client")
+        
+        elif "update" in user_input_lower and "balance" in user_input_lower:
+            balance_data = self._extract_balance_data(user_input)
+            if balance_data:
+                return ToolCall("update_client_balance", balance_data, "Regex pattern: update balance")
+        
+        # Order operations
+        elif "list" in user_input_lower and "order" in user_input_lower:
+            return ToolCall("list_all_orders", {}, "Regex pattern: list orders")
+        
+        elif "create" in user_input_lower and "order" in user_input_lower:
+            order_data = self._extract_order_data(user_input)
+            if order_data:
+                return ToolCall("create_order", order_data, "Regex pattern: create order")
+        
+        elif "get" in user_input_lower and "order" in user_input_lower:
+            order_id = self._extract_order_id(user_input)
+            if order_id:
+                return ToolCall("get_order_by_id", {"order_id": order_id}, "Regex pattern: get order")
+        
+        elif "update" in user_input_lower and "order" in user_input_lower and "status" in user_input_lower:
+            status_data = self._extract_order_status_data(user_input)
+            if status_data:
+                return ToolCall("update_order_status", status_data, "Regex pattern: update order status")
+        
+        # Default fallback
+        return ToolCall("list_all_clients", {}, "Default fallback: no pattern matched")
     
     def _extract_client_id(self, user_input: str) -> Optional[str]:
         """
@@ -459,6 +633,11 @@ class AgentCore:
                 
             elif tool_call.tool_name == "list_all_clients":
                 result = self.crm_service.list_all_clients()
+                
+            elif tool_call.tool_name == "filter_clients_by_balance":
+                min_balance = tool_call.parameters.get("min_balance")
+                max_balance = tool_call.parameters.get("max_balance")
+                result = self.crm_service.filter_clients_by_balance(min_balance, max_balance)
             
             # Execute ERP service methods
             elif tool_call.tool_name == "create_order":

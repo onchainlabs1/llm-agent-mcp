@@ -8,6 +8,7 @@
       "company": "TechCorp Solutions",
       "industry": "Technology",
       "status": "active",
+      "balance": 7500.0,
       "created_at": "2024-01-15T10:30:00",
       "updated_at": "2024-01-15T10:30:00",
       "notes": "Key decision maker for enterprise software purchases"
@@ -20,6 +21,7 @@
       "company": "Innovate Inc",
       "industry": "Manufacturing",
       "status": "active",
+      "balance": 12000.0,
       "created_at": "2024-01-20T14:15:00",
       "updated_at": "2024-01-20T14:15:00",
       "notes": "Interested in automation solutions"
@@ -32,6 +34,7 @@
       "company": "Global Retail Chain",
       "industry": "Retail",
       "status": "prospect",
+      "balance": 8500.0,
       "created_at": "2024-02-01T09:45:00",
       "updated_at": "2024-02-01T09:45:00",
       "notes": "Exploring e-commerce platform options"

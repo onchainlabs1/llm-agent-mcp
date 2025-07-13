@@ -10,6 +10,7 @@ Key features:
 - Display of agent responses and tool actions
 - Visualization of CRM, ERP, and HR data
 - Action log viewer for audit and debugging
+- Configuration management for API keys
 
 All UI elements and comments must be in English.
 """
@@ -25,6 +26,15 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
 from agent.agent_core import AgentCore, AgentConfig
+from config import config
+
+# Configure Streamlit page
+st.set_page_config(
+    page_title="AgentMCP – AI Business Copilot",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # --- Lovable-style CSS (reutilizado da landing) ---
 st.markdown('''
@@ -119,15 +129,141 @@ st.markdown('''
     </style>
 ''', unsafe_allow_html=True)
 
+# --- Configuration Sidebar ---
+with st.sidebar:
+    st.header("🔧 Configuration")
+    
+    # API Key Configuration
+    st.subheader("🔑 API Keys")
+    
+    # Current LLM provider
+    current_provider = config.llm.provider
+    st.info(f"Current LLM Provider: **{current_provider}**")
+    
+    # Groq API Key input
+    groq_api_key = st.text_input(
+        "Groq API Key",
+        value=config.llm.groq_api_key or "",
+        type="password",
+        help="Enter your Groq API key for better LLM performance"
+    )
+    
+    # OpenAI API Key input
+    openai_api_key = st.text_input(
+        "OpenAI API Key",
+        value=config.llm.openai_api_key or "",
+        type="password",
+        help="Enter your OpenAI API key (optional)"
+    )
+    
+    # Provider selection
+    selected_provider = st.selectbox(
+        "LLM Provider",
+        ["groq", "openai", "anthropic", "simulated"],
+        index=["groq", "openai", "anthropic", "simulated"].index(current_provider),
+        help="Select your preferred LLM provider"
+    )
+    
+    # Update configuration button
+    if st.button("💾 Update Configuration"):
+        # Update environment variables
+        if groq_api_key:
+            os.environ['GROQ_API_KEY'] = groq_api_key
+        if openai_api_key:
+            os.environ['OPENAI_API_KEY'] = openai_api_key
+        if selected_provider:
+            os.environ['LLM_PROVIDER'] = selected_provider
+        
+        # Write to .env file
+        env_content = f"""# AgentMCP Configuration
+GROQ_API_KEY={groq_api_key}
+OPENAI_API_KEY={openai_api_key}
+LLM_PROVIDER={selected_provider}
+LLM_MODEL=llama3-70b-8192
+LOG_LEVEL=INFO
+LOG_FILE=logs/actions.log
+"""
+        
+        with open('.env', 'w') as f:
+            f.write(env_content)
+        
+        # Store in session state
+        st.session_state['llm_provider'] = selected_provider
+        st.session_state['groq_api_key'] = groq_api_key
+        st.session_state['openai_api_key'] = openai_api_key
+        
+        # Clear agent cache to force reinitialization
+        st.cache_resource.clear()
+        
+        st.success("✅ Configuration updated! Agent will use new settings.")
+    
+    # Status indicators
+    st.subheader("📊 System Status")
+    
+    # Check API key status
+    if groq_api_key and groq_api_key != "your-groq-api-key-here":
+        st.success("✅ Groq API Key configured")
+    else:
+        st.warning("⚠️ No Groq API Key (using simulated mode)")
+    
+    # Check data files
+    data_files = [
+        ("data/clients.json", "CRM Data"),
+        ("mcp_server/crm_mcp.json", "MCP Schema"),
+        ("logs/actions.log", "Action Logs")
+    ]
+    
+    for file_path, description in data_files:
+        if os.path.exists(file_path):
+            st.success(f"✅ {description}")
+        else:
+            st.error(f"❌ {description}")
+    
+    # Available tools information
+    st.subheader("🔧 Available Tools")
+    st.markdown("""
+    **CRM Tools:**
+    - **get_client_by_id** - Retrieve client information
+    - **create_client** - Create new client records
+    - **update_client_balance** - Update client account balance
+    - **list_all_clients** - List all registered clients
+    
+    **ERP Tools:**
+    - **get_order_by_id** - Retrieve order information
+    - **create_order** - Create new order records
+    - **update_order_status** - Update order status
+    - **list_all_orders** - List all orders
+    """)
+    
+    st.subheader("💡 Example Commands")
+    st.markdown("""
+    - "List all clients"
+    - "Create a new client named John Doe with email john@example.com"
+    - "Update client balance to 5000"
+    - "Show all orders"
+    - "Create order for client with 2 laptops"
+    """)
+
 # --- Header ---
 st.markdown('''
 <div class="lovable-header">
     <div class="lovable-logo">
-        <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#ff6f91"/><stop offset="1" stop-color="#6fffb0"/></linearGradient></defs><path d="M16 29s-9-6.5-9-14.5A7 7 0 0 1 16 7a7 7 0 0 1 9 7.5C25 22.5 16 29 16 29Z" fill="url(#g1)"/><circle cx="16" cy="13.5" r="3.5" fill="#fff"/><rect x="13.5" y="21" width="5" height="5" rx="2.5" fill="#3b82f6"/><rect x="10" y="25.5" width="12" height="3" rx="1.5" fill="#22c55e"/></svg>
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#ff6f91"/>
+                    <stop offset="1" stop-color="#6fffb0"/>
+                </linearGradient>
+            </defs>
+            <path d="M16 29s-9-6.5-9-14.5A7 7 0 0 1 16 7a7 7 0 0 1 9 7.5C25 22.5 16 29 16 29Z" fill="url(#g1)"/>
+            <circle cx="16" cy="13.5" r="3.5" fill="#fff"/>
+            <rect x="13.5" y="21" width="5" height="5" rx="2.5" fill="#3b82f6"/>
+            <rect x="10" y="25.5" width="12" height="3" rx="1.5" fill="#22c55e"/>
+        </svg>
         AgentMCP
     </div>
     <div class="lovable-nav">
-        <a href="#">Agent</a>
+        <a href="#agent">Agent</a>
         <a href="#crm">CRM</a>
         <a href="#erp">ERP</a>
         <a href="#logs">Logs</a>
@@ -172,11 +308,24 @@ with col2:
 # --- Initialize agent ---
 @st.cache_resource(show_spinner=False)
 def get_agent():
-    config = AgentConfig(llm_provider="simulated", llm_model="gpt-4", log_level="INFO")
-    agent = AgentCore(config)
+    """Initialize the agent with current configuration."""
+    # Get current configuration
+    current_config = config
+    
+    # Override with session state values if available
+    provider = st.session_state.get('llm_provider', current_config.llm.provider)
+    
+    agent_config = AgentConfig(
+        llm_provider=provider,
+        llm_model=current_config.llm.model,
+        log_level=current_config.logging.level
+    )
+    
+    agent = AgentCore(agent_config)
     agent.load_all_mcp_schemas()
     return agent
 
+# Initialize agent
 agent = get_agent()
 
 # --- Session state for history ---
@@ -193,11 +342,11 @@ if send_button and user_input.strip():
             "timestamp": datetime.now().isoformat()
         })
         user_input = ""
-        st.experimental_rerun()
+        st.rerun()
 
 if clear_button:
     st.session_state["history"] = []
-    st.experimental_rerun()
+    st.rerun()
 
 # --- Show last response in a card ---
 if st.session_state["history"]:
@@ -240,284 +389,11 @@ st.markdown('<div class="response-card"><b>💡 Example Prompts:</b><br>' + '<br
 
 st.markdown('<div style="margin-bottom:2.5rem;"></div>', unsafe_allow_html=True)
 
-def setup_page_config():
-    """Configure the Streamlit page settings."""
-    st.set_page_config(
-        page_title="AgentMCP – CRM Assistant",
-        page_icon="🤖",
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
-
-
-def initialize_agent():
-    """
-    Initialize the AgentMCP agent with configuration.
-    
-    Returns:
-        AgentCore instance or None if initialization fails
-    """
-    try:
-        # Create agent configuration
-        config = AgentConfig(
-            llm_provider="simulated",
-            llm_model="gpt-4",
-            log_level="INFO"
-        )
-        
-        # Initialize agent
-        agent = AgentCore(config)
-        
-        # Load MCP schema
-        schema_loaded = agent.load_mcp_schema("mcp_server/crm_mcp.json")
-        
-        if not schema_loaded:
-            st.error("Failed to load MCP schema. Please check the schema file.")
-            return None
-            
-        return agent
-        
-    except Exception as e:
-        st.error(f"Error initializing agent: {str(e)}")
-        return None
-
-
-def read_recent_logs(log_file_path: str, num_entries: int = 5) -> list:
-    """
-    Read the most recent log entries from the actions log file.
-    
-    Args:
-        log_file_path: Path to the log file
-        num_entries: Number of recent entries to return
-        
-    Returns:
-        List of recent log entries
-    """
-    try:
-        if not os.path.exists(log_file_path):
-            return []
-        
-        with open(log_file_path, 'r') as f:
-            lines = f.readlines()
-        
-        # Filter out empty lines and comments
-        log_entries = [line.strip() for line in lines if line.strip() and not line.startswith('#')]
-        
-        # Return the most recent entries
-        return log_entries[-num_entries:] if log_entries else []
-        
-    except Exception as e:
-        st.error(f"Error reading log file: {str(e)}")
-        return []
-
-
-def display_response(response: dict):
-    """
-    Display the agent response in a formatted way.
-    
-    Args:
-        response: Response dictionary from process_user_request
-    """
-    if response.get("success"):
-        st.success("✅ Request processed successfully!")
-        
-        # Display tool information
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.metric("Tool Used", response.get("tool_used", "Unknown"))
-            st.metric("Execution Time", f"{response.get('execution_time', 0):.2f}s")
-        
-        with col2:
-            st.metric("Status", "Success")
-            st.metric("Parameters", len(response.get("parameters", {})))
-        
-        # Display reasoning
-        if response.get("reasoning"):
-            st.info(f"**Agent Reasoning:** {response.get('reasoning')}")
-        
-        # Display parameters used
-        if response.get("parameters"):
-            st.subheader("Parameters Used:")
-            st.json(response.get("parameters"))
-        
-        # Display result
-        st.subheader("Result:")
-        if isinstance(response.get("result"), list):
-            # Handle list results (like list_all_clients)
-            if response.get("result"):
-                st.write(f"Found {len(response.get('result'))} items:")
-                for i, item in enumerate(response.get("result"), 1):
-                    with st.expander(f"Item {i}"):
-                        st.json(item)
-            else:
-                st.info("No items found.")
-        else:
-            # Handle single object results
-            st.json(response.get("result"))
-            
-    else:
-        st.error("❌ Request failed!")
-        st.error(f"Error: {response.get('error', 'Unknown error')}")
-        
-        # Display error details if available
-        if response.get("error_message"):
-            st.error(f"Details: {response.get('error_message')}")
-
-
-def main():
-    """Main application function."""
-    setup_page_config()
-    
-    # Page header
-    st.title("🤖 AgentMCP – CRM Assistant")
-    st.markdown("""
-    Welcome to AgentMCP! This AI assistant can help you manage your CRM system using natural language.
-    
-    **Available Operations:**
-    - **Get Client:** "Get client with ID [client_id]"
-    - **Create Client:** "Create a new client named [name] with email [email] and balance [amount]"
-    - **Update Balance:** "Update client [client_id] balance to [amount]"
-    - **List Clients:** "List all clients" or "Show all clients"
-    """)
-    
-    # Initialize agent
-    agent = initialize_agent()
-    
-    if agent is None:
-        st.stop()
-    
-    # Main interaction area
-    st.header("💬 Chat with AgentMCP")
-    
-    # Text input for user request
-    user_input = st.text_area(
-        "Enter your request:",
-        placeholder="Example: Create a new client named John Doe with email john@example.com and balance 1000",
-        height=100,
-        help="Describe what you want to do in natural language"
-    )
-    
-    # Send button
-    col1, col2, col3 = st.columns([1, 1, 2])
-    
-    with col1:
-        send_button = st.button("🚀 Send Request", type="primary", use_container_width=True)
-    
-    with col2:
-        clear_button = st.button("🗑️ Clear", use_container_width=True)
-    
-    # Process request when send button is clicked
-    if send_button and user_input.strip():
-        with st.spinner("Processing your request..."):
-            try:
-                # Process the user request
-                response = agent.process_user_request(user_input.strip())
-                
-                # Display the response
-                display_response(response)
-                
-                # Add to session state for history
-                if "request_history" not in st.session_state:
-                    st.session_state.request_history = []
-                
-                st.session_state.request_history.append({
-                    "timestamp": datetime.now().isoformat(),
-                    "request": user_input.strip(),
-                    "response": response
-                })
-                
-            except Exception as e:
-                st.error(f"Error processing request: {str(e)}")
-    
-    # Clear button functionality
-    if clear_button:
-        if "request_history" in st.session_state:
-            st.session_state.request_history.clear()
-        st.rerun()
-    
-    # Display request history
-    if "request_history" in st.session_state and st.session_state.request_history:
-        st.header("📋 Request History")
-        
-        for i, history_item in enumerate(reversed(st.session_state.request_history[-5:]), 1):
-            with st.expander(f"Request {i} - {history_item['timestamp'][:19]}"):
-                st.write("**User Request:**")
-                st.write(history_item["request"])
-                
-                if history_item["response"].get("success"):
-                    st.success("✅ Success")
-                else:
-                    st.error("❌ Failed")
-                
-                st.write("**Tool Used:**", history_item["response"].get("tool_used", "Unknown"))
-    
-    # Recent actions log
-    st.header("📊 Recent Actions Log")
-    
-    # Read recent log entries
-    log_entries = read_recent_logs("logs/actions.log", num_entries=5)
-    
-    if log_entries:
-        # Create a text area to display log entries
-        log_text = "\n".join(log_entries)
-        
-        with st.expander("View Recent Actions", expanded=True):
-            st.text_area(
-                "Recent Actions:",
-                value=log_text,
-                height=200,
-                disabled=True,
-                help="Most recent actions from the system log"
-            )
-    else:
-        st.info("No recent actions found. Actions will appear here after you make requests.")
-    
-    # Sidebar with additional information
-    st.sidebar.header("ℹ️ About AgentMCP")
-    st.sidebar.markdown("""
-    **AgentMCP** is an AI-powered business assistant that can interact with your CRM, ERP, and HR systems using natural language.
-    
-    The agent uses the Model Context Protocol (MCP) to understand and execute business operations.
-    """)
-    
-    st.sidebar.header("🔧 Available Tools")
-    st.sidebar.markdown("""
-    - **get_client_by_id** - Retrieve client information
-    - **create_client** - Create new client records
-    - **update_client_balance** - Update client account balance
-    - **list_all_clients** - List all registered clients
-    """)
-    
-    st.sidebar.header("📈 System Status")
-    
-    # Display system status
-    try:
-        # Check if data files exist
-        data_files = [
-            ("data/clients.json", "CRM Data"),
-            ("mcp_server/crm_mcp.json", "MCP Schema"),
-            ("logs/actions.log", "Action Logs")
-        ]
-        
-        for file_path, description in data_files:
-            if os.path.exists(file_path):
-                st.sidebar.success(f"✅ {description}")
-            else:
-                st.sidebar.error(f"❌ {description}")
-                
-    except Exception as e:
-        st.sidebar.error(f"Error checking system status: {str(e)}")
-    
-    # Footer
-    st.markdown("---")
-    st.markdown(
-        "<div style='text-align: center; color: #666;'>"
-        "AgentMCP - AI Business Assistant | Powered by Model Context Protocol"
-        "</div>",
-        unsafe_allow_html=True
-    )
-
-
-if __name__ == "__main__":
-    main() 
+# --- Footer ---
+st.markdown('<div style="margin-top:3rem;"></div>', unsafe_allow_html=True)
+st.markdown(
+    "<div style='text-align: center; color: #666;'>"
+    "AgentMCP - AI Business Assistant | Powered by Model Context Protocol"
+    "</div>",
+    unsafe_allow_html=True
+) 
