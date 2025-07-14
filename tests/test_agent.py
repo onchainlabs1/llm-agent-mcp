@@ -16,8 +16,15 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-# Import the modules to test using relative imports
-from ..agent.agent_core import AgentConfig, AgentCore, ToolCall, ToolResult
+# Import the modules to test - handle both package and standalone execution
+try:
+    from ..agent.agent_core import AgentConfig, AgentCore, ToolCall, ToolResult
+except ImportError:
+    # Fallback for standalone execution
+    import sys
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent))
+    from agent.agent_core import AgentConfig, AgentCore, ToolCall, ToolResult
 
 
 class TestAgentCore:

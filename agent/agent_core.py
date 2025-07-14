@@ -24,11 +24,19 @@ from uuid import uuid4
 # --- LLM integration ---
 import openai
 
-from ..config import config
-
-# Import services using relative imports
-from ..services.crm_service import CRMService
-from ..services.erp_service import ERPService
+# Import config and services - handle both package and standalone execution
+try:
+    from ..config import config
+    from ..services.crm_service import CRMService
+    from ..services.erp_service import ERPService
+except ImportError:
+    # Fallback for standalone execution
+    import sys
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent))
+    from config import config
+    from services.crm_service import CRMService
+    from services.erp_service import ERPService
 
 
 def call_llm(prompt, model=None):
