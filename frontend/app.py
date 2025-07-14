@@ -49,7 +49,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Lovable-style CSS (reutilizado da landing) ---
+# --- Lovable-style CSS (reused from landing section) ---
 st.markdown(
     """
     <style>

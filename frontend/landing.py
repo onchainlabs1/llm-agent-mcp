@@ -259,7 +259,7 @@ st.markdown('<div class="section-title">How It Works</div>', unsafe_allow_html=T
 st.markdown(
     """
 <div class="howitworks-row">
-  <div class="howitworks-card"><div class="howitworks-num">1</div><div><b>User Prompt</b><br><span>Enter a natural language instruction (e.g., "Create client Ana with balance 5000").</span></div></div>
+  <div class="howitworks-card"><div class="howitworks-num">1</div><div><b>User Prompt</b><br><span>Enter a natural language instruction (e.g., "Create client Anna with balance 5000").</span></div></div>
   <div class="howitworks-card"><div class="howitworks-num">2</div><div><b>Tool Selection via MCP</b><br><span>AgentMCP parses your request, matches it to the right tool using the Model Context Protocol.</span></div></div>
   <div class="howitworks-card"><div class="howitworks-num">3</div><div><b>Parameter Extraction</b><br><span>The agent extracts all required parameters from your prompt using LLM and regex logic.</span></div></div>
   <div class="howitworks-card"><div class="howitworks-num">4</div><div><b>Secure Execution</b><br><span>The mapped service function is called—no direct database or shell access.</span></div></div>
@@ -276,11 +276,11 @@ st.markdown(
 st.markdown(
     """
 <div class="examples-row">
-  <div class="example-card">💡 <span>Get client <b>joao123</b></span></div>
+                      <div class="example-card">💡 <span>Get client <b>john123</b></span></div>
   <div class="example-card">💡 <span>List all orders</span></div>
   <div class="example-card">💡 <span>Update order <b>ORD-20250601-001</b> to shipped</span></div>
-  <div class="example-card">💡 <span>Create client <b>Ana</b> with email <b>ana@example.com</b> and balance <b>5000</b></span></div>
-  <div class="example-card">💡 <span>Create order for client <b>joao123</b> with total amount <b>1200</b></span></div>
+                      <div class="example-card">💡 <span>Create client <b>Anna</b> with email <b>anna@example.com</b> and balance <b>5000</b></span></div>
+                      <div class="example-card">💡 <span>Create order for client <b>john123</b> with total amount <b>1200</b></span></div>
 </div>
 """,
     unsafe_allow_html=True,

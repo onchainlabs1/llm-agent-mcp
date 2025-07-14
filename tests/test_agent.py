@@ -44,7 +44,7 @@ class TestAgentCore:
         mock_service.get_client_by_id.return_value = {
             "id": "test-client-123",
             "name": "John Silva",
-            "email": "joao@test.com",
+            "email": "john@example.com",
             "balance": 1000.0,
         }
 
@@ -58,7 +58,7 @@ class TestAgentCore:
         mock_service.update_client_balance.return_value = {
             "id": "test-client-123",
             "name": "John Silva",
-            "email": "joao@test.com",
+            "email": "john@example.com",
             "balance": 2500.0,
         }
 
@@ -413,19 +413,19 @@ class TestAgentCore:
     # CRM Tests
     def test_get_client_by_id_request(self, agent_core, mock_crm_service):
         """Test processing a request to get client by ID."""
-        user_input = "Get client joao123"
+        user_input = "Get client john123"
 
         response = agent_core.process_user_request(user_input)
 
         # Verify response structure
         assert response["success"] is True
         assert response["tool_used"] == "get_client_by_id"
-        assert response["parameters"] == {"client_id": "joao123"}
+        assert response["parameters"] == {"client_id": "john123"}
         assert "reasoning" in response
         assert "execution_time" in response
 
         # Verify CRM service was called correctly
-        mock_crm_service.get_client_by_id.assert_called_once_with("joao123")
+        mock_crm_service.get_client_by_id.assert_called_once_with("john123")
 
         # Verify result contains expected client data
         assert response["result"]["id"] == "test-client-123"
@@ -459,20 +459,20 @@ class TestAgentCore:
 
     def test_update_client_balance_request(self, agent_core, mock_crm_service):
         """Test processing a request to update client balance."""
-        user_input = "Update client balance for joao123 to 2500"
+        user_input = "Update client balance for john123 to 2500"
 
         response = agent_core.process_user_request(user_input)
 
         # Verify response structure
         assert response["success"] is True
         assert response["tool_used"] == "update_client_balance"
-        assert response["parameters"] == {"client_id": "joao123", "new_balance": 2500.0}
+        assert response["parameters"] == {"client_id": "john123", "new_balance": 2500.0}
         assert "reasoning" in response
         assert "execution_time" in response
 
         # Verify CRM service was called correctly
         mock_crm_service.update_client_balance.assert_called_once_with(
-            "joao123", 2500.0
+            "john123", 2500.0
         )
 
         # Verify result contains updated balance
@@ -627,10 +627,10 @@ class TestAgentCore:
 
     def test_extract_client_id_simple_format(self, agent_core):
         """Test extracting client ID in simple format."""
-        user_input = "Get client joao123"
+        user_input = "Get client john123"
         client_id = agent_core._extract_client_id(user_input)
 
-        assert client_id == "joao123"
+        assert client_id == "john123"
 
     def test_extract_client_data_complete(self, agent_core):
         """Test extracting complete client data."""
@@ -652,11 +652,11 @@ class TestAgentCore:
 
     def test_extract_balance_data(self, agent_core):
         """Test extracting balance update data."""
-        user_input = "Update client balance for joao123 to 2500"
+        user_input = "Update client balance for john123 to 2500"
         balance_data = agent_core._extract_balance_data(user_input)
 
         assert balance_data is not None
-        assert balance_data["client_id"] == "joao123"
+        assert balance_data["client_id"] == "john123"
         assert balance_data["new_balance"] == 2500.0
 
     def test_extract_balance_data_missing_client_id(self, agent_core):
@@ -728,7 +728,7 @@ class TestAgentCore:
         """Test handling of CRM service errors."""
         mock_crm_service.get_client_by_id.side_effect = Exception("CRM service error")
 
-        user_input = "Get client joao123"
+        user_input = "Get client john123"
         response = agent_core.process_user_request(user_input)
 
         assert response["success"] is False
