@@ -15,6 +15,22 @@ The agent can:
 - **Provide explainable results** with detailed reasoning
 - **Handle complex workflows** through MCP tool orchestration
 
+## 📸 Screenshots
+
+### Main Application Interface
+Experience the power of natural language CRM operations with our intuitive interface:
+
+![Main AgentMCP Interface](docs/screenshots/main-app-interface.png)
+
+*The main application interface showing natural language query processing, tool execution results, and conversation history. Users can interact with the CRM system using plain English commands.*
+
+### Landing Page
+Professional presentation of AgentMCP capabilities and features:
+
+![AgentMCP Landing Page](docs/screenshots/landing-page.png)
+
+*The landing page showcases the key features, how it works, and example use cases. Perfect for demonstrations and onboarding new users.*
+
 ## 🛠️ Tech Stack
 
 - **Python 3.11** - Core programming language
@@ -114,7 +130,13 @@ agentmcp/
 ├── frontend/             # Streamlit web interface
 │   └── app.py           # Main Streamlit application
 ├── logs/                 # Application logs
-│   └── actions.log      # Agent action history
+│   ├── actions.log      # Agent action history (runtime)
+│   └── example_actions.log  # Sample log entries
+├── docs/                 # Documentation and media
+│   └── screenshots/     # Application screenshots
+│       ├── main-app-interface.png  # Main application UI
+│       ├── landing-page.png        # Landing page UI
+│       └── SCREENSHOTS.md          # Screenshot documentation
 ├── tests/               # Automated test suite
 │   ├── test_agent.py    # Agent core tests
 │   └── test_crm.py      # CRM service tests
@@ -184,12 +206,17 @@ pip install -r requirements-dev.txt
 
 5. **Run the application**
    ```bash
+   # Main application interface
    streamlit run frontend/app.py
+   
+   # Or run the landing page (in a separate terminal)
+   streamlit run frontend/landing.py --server.port 8502
    ```
 
 6. **Access the web interface**
-   - Open your browser and navigate to `http://localhost:8501`
-   - The AgentMCP interface will be available
+   - **Main Application**: Open your browser and navigate to `http://localhost:8501`
+   - **Landing Page**: Navigate to `http://localhost:8502` (if running separately)
+   - The AgentMCP interface will be available for natural language CRM operations
 
 ### Configuration
 
@@ -213,9 +240,9 @@ AgentMCP provides comprehensive logging for all operations and activities:
 All logs follow a structured format with timestamp, module, level, and detailed messages:
 
 ```
-2025-01-14 10:15:45,234 - agentmcp.core - INFO - Processing user request: "List all clients"
-2025-01-14 10:15:45,456 - agentmcp.core - INFO - Selected tool: list_all_clients with parameters: {}
-2025-01-14 10:15:45,789 - agentmcp.core - INFO - Tool execution successful - found 25 clients
+2025-07-14 12:30:45 INFO:agentmcp.core:Processing user request: List all clients with balance over 5000
+2025-07-14 12:30:45 INFO:agentmcp.core:Executing tool: filter_clients_by_balance with parameters: {'max_balance': 5000}
+2025-07-14 12:30:45 INFO:agentmcp.core:Tool filter_clients_by_balance executed successfully in 0.00s
 ```
 
 ### Log Locations
@@ -297,16 +324,6 @@ pytest -v
 pytest --cov=agent --cov=services
 ```
 
-## 📊 Logging
-
-All agent actions are logged to `logs/actions.log` with detailed information:
-
-- **Timestamp** of each action
-- **Tool name** and parameters used
-- **Success/failure** status
-- **Execution time** and results
-- **Error details** when applicable
-
 ## 🔧 Development
 
 ### Project Rules
@@ -340,7 +357,10 @@ This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LI
 - [Model Context Protocol Documentation](https://modelcontextprotocol.io/)
 - [Streamlit Documentation](https://docs.streamlit.io/)
 - [Python Testing with pytest](https://docs.pytest.org/)
+- [Screenshots Documentation](docs/screenshots/SCREENSHOTS.md)
 
 ---
 
-**AgentMCP** - Making CRM operations intelligent and accessible through natural language processing. 
+**AgentMCP** - Making CRM operations intelligent and accessible through natural language processing.
+
+*📸 See screenshots and visual documentation in [`docs/screenshots/`](docs/screenshots/)* 
