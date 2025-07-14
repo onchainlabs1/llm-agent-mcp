@@ -23,17 +23,23 @@ from pathlib import Path
 
 import streamlit as st
 
-# Import agent modules - handle both package and standalone execution
+# Import agent modules using package imports
 try:
+    # Try relative imports (when used as a package)
     from ..agent.agent_core import AgentConfig, AgentCore
     from ..config import config
 except ImportError:
-    # Fallback for standalone execution
-    import sys
-    from pathlib import Path
-    sys.path.append(str(Path(__file__).parent.parent))
-    from agent.agent_core import AgentConfig, AgentCore
-    from config import config
+    try:
+        # Try absolute package imports (recommended: pip install -e .)
+        from agentmcp.agent.agent_core import AgentConfig, AgentCore
+        from agentmcp.config import config
+    except ImportError:
+        # Final fallback for development (avoid sys.path when possible)
+        import sys
+        from pathlib import Path
+        sys.path.append(str(Path(__file__).parent.parent))
+        from agent.agent_core import AgentConfig, AgentCore
+        from config import config
 
 # Configure Streamlit page
 st.set_page_config(

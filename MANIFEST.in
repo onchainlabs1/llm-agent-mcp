@@ -1,0 +1,27 @@
+# Include package metadata and documentation
+include README.md
+include LICENSE
+include requirements.txt
+include requirements-dev.txt
+include init_setup.py
+
+# Include configuration files
+include .env.example
+recursive-include mcp_server *.json
+
+# Include data files
+recursive-include data *.json
+recursive-include logs .gitkeep
+
+# Include test files
+recursive-include tests *.py
+
+# Exclude development and cache files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.so
+global-exclude .pytest_cache 

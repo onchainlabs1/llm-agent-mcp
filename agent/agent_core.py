@@ -24,19 +24,26 @@ from uuid import uuid4
 # --- LLM integration ---
 import openai
 
-# Import config and services - handle both package and standalone execution
+# Import config and services using package imports
 try:
+    # Try relative imports (when used as a package)
     from ..config import config
     from ..services.crm_service import CRMService
     from ..services.erp_service import ERPService
 except ImportError:
-    # Fallback for standalone execution
-    import sys
-    from pathlib import Path
-    sys.path.append(str(Path(__file__).parent.parent))
-    from config import config
-    from services.crm_service import CRMService
-    from services.erp_service import ERPService
+    try:
+        # Try absolute package imports (recommended: pip install -e .)
+        from agentmcp.config import config
+        from agentmcp.services.crm_service import CRMService
+        from agentmcp.services.erp_service import ERPService
+    except ImportError:
+        # Final fallback for development (avoid sys.path when possible)
+        import sys
+        from pathlib import Path
+        sys.path.append(str(Path(__file__).parent.parent))
+        from config import config
+        from services.crm_service import CRMService
+        from services.erp_service import ERPService
 
 
 def call_llm(prompt, model=None):

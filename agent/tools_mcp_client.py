@@ -11,6 +11,77 @@ to register and manage tools. It provides functionality to:
 
 The MCP client acts as a bridge between the agent core and the business services,
 ensuring proper tool registration and execution according to the MCP specification.
+
+IMPORTANT: Current Implementation Details
+==========================================
+
+SYNCHRONOUS DESIGN:
+This implementation uses synchronous operations for simplicity and reliability:
+- All tool executions are blocking operations
+- File I/O operations are synchronous
+- Network requests (when connecting to MCP server) use requests library
+- Tool registration and validation happen sequentially
+
+This approach was chosen for:
+✅ Simplicity in development and debugging
+✅ Predictable execution flow
+✅ Easier error handling and logging
+✅ Better compatibility with Streamlit frontend
+✅ Reduced complexity for business logic services
+
+FUTURE ASYNC CONSIDERATIONS:
+============================
+
+For high-performance or scalable deployments, consider migrating to async:
+
+1. ASYNC BENEFITS:
+   - Non-blocking tool execution for better concurrency
+   - Parallel processing of multiple user requests
+   - Better resource utilization for I/O-bound operations
+   - Improved scalability for enterprise deployments
+
+2. ASYNC MIGRATION PATH:
+   ```python
+   # Current synchronous pattern:
+   def execute_tool(self, tool_call: MCPToolCall) -> MCPToolResult:
+       result = service_method(**parameters)
+       return MCPToolResult(success=True, result=result)
+   
+   # Future async pattern:
+   async def execute_tool_async(self, tool_call: MCPToolCall) -> MCPToolResult:
+       result = await service_method_async(**parameters)
+       return MCPToolResult(success=True, result=result)
+   ```
+
+3. COMPONENTS THAT WOULD BENEFIT FROM ASYNC:
+   - File I/O operations (reading/writing data files)
+   - External API calls (if integrating with real CRM/ERP systems)
+   - Database operations (when moving beyond JSON files)
+   - Concurrent tool execution (parallel processing)
+
+4. ASYNC IMPLEMENTATION CONSIDERATIONS:
+   - Replace requests with httpx or aiohttp
+   - Use aiofiles for asynchronous file operations
+   - Implement proper async context managers
+   - Handle async error propagation correctly
+   - Update Streamlit integration for async support
+
+RECOMMENDATION:
+Keep the current synchronous implementation for:
+- Development and testing environments
+- Single-user deployments
+- Simple business logic operations
+- Educational or demo purposes
+
+Consider async migration when:
+- Handling multiple concurrent users (>10)
+- Integrating with external APIs/databases
+- Processing large datasets
+- Deploying in production environments
+- Performance becomes a bottleneck
+
+The architecture is designed to support both patterns with minimal changes
+to the core business logic and MCP schema definitions.
 """
 
 import json
@@ -159,6 +230,22 @@ class MCPClient:
     def execute_tool(self, tool_call: MCPToolCall) -> MCPToolResult:
         """
         Execute a tool call synchronously.
+        
+        NOTE: SYNCHRONOUS EXECUTION
+        ==========================
+        This method executes tools synchronously, which means:
+        - The calling thread blocks until tool execution completes
+        - No parallel processing of multiple tool calls
+        - Simpler error handling and debugging
+        - Direct return of results without async complexity
+        
+        For async execution in the future, this would become:
+        ```python
+        async def execute_tool_async(self, tool_call: MCPToolCall) -> MCPToolResult:
+            # Non-blocking execution with await
+            result = await service_method_async(**parameters)
+            return MCPToolResult(success=True, result=result)
+        ```
 
         Args:
             tool_call: Tool call to execute
@@ -219,6 +306,22 @@ class MCPClient:
     def load_tool_schemas_from_file(self, schema_file: str) -> bool:
         """
         Load tool schemas from a JSON file.
+        
+        NOTE: SYNCHRONOUS FILE I/O
+        ==========================
+        This method uses synchronous file operations:
+        - Blocks until file reading completes
+        - Simple error handling with try/catch
+        - Direct JSON parsing without async overhead
+        
+        For async file operations, consider:
+        ```python
+        import aiofiles
+        async def load_tool_schemas_async(self, schema_file: str) -> bool:
+            async with aiofiles.open(schema_file, 'r') as f:
+                content = await f.read()
+                # Process schemas asynchronously
+        ```
 
         Args:
             schema_file: Path to the schema file

@@ -1,0 +1,54 @@
+# Screenshots Directory
+
+This directory contains visual documentation for AgentMCP:
+
+## Required Screenshots
+
+1. **agentmcp-interface.png** - Main Streamlit interface showing:
+   - Natural language input field
+   - Tool execution results
+   - Configuration sidebar
+   - Recent actions history
+
+2. **tool-execution-demo.gif** - Animated demonstration showing:
+   - User typing: "Create a new client named Alice Smith with email alice@acme.com"
+   - Agent processing and tool selection
+   - Successful client creation response
+   - Updated client list
+
+3. **mcp-tool-discovery.png** - Screenshot of:
+   - Available tools sidebar
+   - Tool descriptions and parameters
+   - Schema loading confirmation
+
+## How to Generate Screenshots
+
+1. **Start the application**:
+   ```bash
+   streamlit run frontend/app.py
+   ```
+
+2. **Capture main interface** (for agentmcp-interface.png):
+   - Navigate to http://localhost:8501
+   - Use full browser window
+   - Ensure sidebar is expanded showing available tools
+   - Include example prompt in input field
+
+3. **Record tool execution** (for tool-execution-demo.gif):
+   - Use screen recording tool (OBS, QuickTime, etc.)
+   - Type example command and show response
+   - Keep recording under 30 seconds
+   - Convert to optimized GIF
+
+4. **Screenshot tool sidebar** (for mcp-tool-discovery.png):
+   - Focus on the "Available Tools" section
+   - Show tool categories and descriptions
+   - Include system status indicators
+
+## Placement in README
+
+Screenshots should be added to the README.md in these sections:
+
+- Main interface screenshot in "Features" section
+- Tool execution GIF in "Usage" section  
+- Tool discovery screenshot in "MCP Integration" section 

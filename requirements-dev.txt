@@ -1,0 +1,32 @@
+# Development dependencies for AgentMCP
+# Install with: pip install -r requirements-dev.txt
+
+# Include all core requirements
+-r requirements.txt
+
+# Testing frameworks
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.11.0
+pytest-cov>=4.1.0
+pytest-xdist>=3.3.0  # For parallel test execution
+
+# Code quality and formatting
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.5.0
+isort>=5.12.0
+bandit>=1.7.5  # Security linting
+
+# Development tools
+pre-commit>=3.3.0
+twine>=4.0.0  # For package publishing
+build>=0.10.0  # For building packages
+
+# Documentation
+sphinx>=7.0.0
+sphinx-rtd-theme>=1.3.0
+markdownlint-cli2>=0.8.0  # For markdown linting in CI
+
+# Additional type stubs
+types-requests>=2.31.0 

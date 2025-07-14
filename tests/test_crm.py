@@ -16,15 +16,20 @@ from unittest.mock import MagicMock, Mock, mock_open, patch
 
 import pytest
 
-# Import CRM service - handle both package and standalone execution
+# Import CRM service using package imports
 try:
+    # Try relative imports (when used as a package)
     from ..services.crm_service import CRMService
 except ImportError:
-    # Fallback for standalone execution
-    import sys
-    from pathlib import Path
-    sys.path.append(str(Path(__file__).parent.parent))
-    from services.crm_service import CRMService
+    try:
+        # Try absolute package imports (recommended: pip install -e .)
+        from agentmcp.services.crm_service import CRMService
+    except ImportError:
+        # Final fallback for development (avoid sys.path when possible)
+        import sys
+        from pathlib import Path
+        sys.path.append(str(Path(__file__).parent.parent))
+        from services.crm_service import CRMService
 
 
 class TestCRMService:
