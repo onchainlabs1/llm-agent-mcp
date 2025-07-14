@@ -1,17 +1,19 @@
-import streamlit as st
 import json
 import os
 from pathlib import Path
+
+import streamlit as st
 
 st.set_page_config(
     page_title="AgentMCP Data Admin",
     page_icon="🗂️",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
 
 # --- Lovable-style CSS ---
-st.markdown('''
+st.markdown(
+    """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
     html, body, .stApp { background: #181c24; color: #f3f6fa; font-family: 'Inter', sans-serif; }
@@ -47,17 +49,22 @@ st.markdown('''
         display: inline-block;
     }
     </style>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- Header ---
-st.markdown('''
+st.markdown(
+    """
 <div class="lovable-header">
     <div class="lovable-logo">
         <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#ff6f91"/><stop offset="1" stop-color="#6fffb0"/></linearGradient></defs><path d="M16 29s-9-6.5-9-14.5A7 7 0 0 1 16 7a7 7 0 0 1 9 7.5C25 22.5 16 29 16 29Z" fill="url(#g1)"/><circle cx="16" cy="13.5" r="3.5" fill="#fff"/><rect x="13.5" y="21" width="5" height="5" rx="2.5" fill="#3b82f6"/><rect x="10" y="25.5" width="12" height="3" rx="1.5" fill="#22c55e"/></svg>
         AgentMCP Data Admin
     </div>
 </div>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
 
@@ -66,7 +73,10 @@ tabs = st.tabs(["CRM Data", "ERP Data", "Products", "Settings"])
 
 # --- CRM Data Tab ---
 with tabs[0]:
-    st.markdown('<h2 style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:1.2rem;">CRM Data – Clients</h2>', unsafe_allow_html=True)
+    st.markdown(
+        '<h2 style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:1.2rem;">CRM Data – Clients</h2>',
+        unsafe_allow_html=True,
+    )
     clients_path = Path("data/clients.json")
     if clients_path.exists():
         with open(clients_path) as f:
@@ -80,7 +90,10 @@ with tabs[0]:
 
 # --- ERP Data Tab ---
 with tabs[1]:
-    st.markdown('<h2 style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:1.2rem;">ERP Data – Orders</h2>', unsafe_allow_html=True)
+    st.markdown(
+        '<h2 style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:1.2rem;">ERP Data – Orders</h2>',
+        unsafe_allow_html=True,
+    )
     orders_path = Path("data/orders.json")
     if orders_path.exists():
         with open(orders_path) as f:
@@ -94,7 +107,10 @@ with tabs[1]:
 
 # --- Products Tab ---
 with tabs[2]:
-    st.markdown('<h2 style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:1.2rem;">Products</h2>', unsafe_allow_html=True)
+    st.markdown(
+        '<h2 style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:1.2rem;">Products</h2>',
+        unsafe_allow_html=True,
+    )
     products_path = Path("data/products.json")
     if products_path.exists():
         with open(products_path) as f:
@@ -108,5 +124,8 @@ with tabs[2]:
 
 # --- Settings Tab (placeholder) ---
 with tabs[3]:
-    st.markdown('<h2 style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:1.2rem;">Settings</h2>', unsafe_allow_html=True)
-    st.info("Data reset and configuration options coming soon.") 
+    st.markdown(
+        '<h2 style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:1.2rem;">Settings</h2>',
+        unsafe_allow_html=True,
+    )
+    st.info("Data reset and configuration options coming soon.")

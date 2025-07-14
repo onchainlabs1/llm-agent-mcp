@@ -4,11 +4,12 @@ st.set_page_config(
     page_title="AgentMCP – AI Tool Hub",
     page_icon="🤖",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
 
 # --- Lovable-style CSS ---
-st.markdown('''
+st.markdown(
+    """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
     html, body, .stApp { background: #181c24; color: #f3f6fa; font-family: 'Inter', sans-serif; }
@@ -183,10 +184,13 @@ st.markdown('''
     .github-btn:hover { filter: brightness(1.08); }
     a { color: #3b82f6; text-decoration: none; }
     </style>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- Header ---
-st.markdown('''
+st.markdown(
+    """
 <div class="lovable-header">
     <div class="lovable-logo">
         <svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#ff6f91"/><stop offset="1" stop-color="#6fffb0"/></linearGradient></defs><path d="M16 29s-9-6.5-9-14.5A7 7 0 0 1 16 7a7 7 0 0 1 9 7.5C25 22.5 16 29 16 29Z" fill="url(#g1)"/><circle cx="16" cy="13.5" r="3.5" fill="#fff"/><rect x="13.5" y="21" width="5" height="5" rx="2.5" fill="#3b82f6"/><rect x="10" y="25.5" width="12" height="3" rx="1.5" fill="#22c55e"/></svg>
@@ -201,20 +205,29 @@ st.markdown('''
         <input class="lovable-search" type="text" placeholder="Search..." disabled />
     </div>
 </div>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- Hero Section ---
-st.markdown('''
+st.markdown(
+    """
 <div class="hero-bg">
     <div class="hero-title">AgentMCP – Autonomous AI Tool Hub for Business Operations</div>
     <div class="hero-sub">The LLM-powered agent that executes real CRM & ERP actions from natural language.<br>Secure, auditable, and fully extensible via the Model Context Protocol (MCP).</div>
     <a href="#try-it-locally"><button class="cta-btn">🚀 Try AgentMCP on Your Data</button></a>
 </div>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- Features ---
-st.markdown('<div class="section-title" id="features">What It Can Do</div>', unsafe_allow_html=True)
-st.markdown('''
+st.markdown(
+    '<div class="section-title" id="features">What It Can Do</div>',
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
 <div class="features-row">
     <div class="feature-card">
         <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#6fffb0" stroke-width="2.5"/><path d="M8 12l2 2 4-4" stroke="#6fffb0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -237,11 +250,14 @@ st.markdown('''
         <div class="feature-desc">Add new business domains or tools by simply updating MCP schemas and service modules. Built for rapid prototyping and enterprise integration.</div>
     </div>
 </div>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- How It Works (Lovable Card Style) ---
 st.markdown('<div class="section-title">How It Works</div>', unsafe_allow_html=True)
-st.markdown('''
+st.markdown(
+    """
 <div class="howitworks-row">
   <div class="howitworks-card"><div class="howitworks-num">1</div><div><b>User Prompt</b><br><span>Enter a natural language instruction (e.g., "Create client Ana with balance 5000").</span></div></div>
   <div class="howitworks-card"><div class="howitworks-num">2</div><div><b>Tool Selection via MCP</b><br><span>AgentMCP parses your request, matches it to the right tool using the Model Context Protocol.</span></div></div>
@@ -249,11 +265,16 @@ st.markdown('''
   <div class="howitworks-card"><div class="howitworks-num">4</div><div><b>Secure Execution</b><br><span>The mapped service function is called—no direct database or shell access.</span></div></div>
   <div class="howitworks-card"><div class="howitworks-num">5</div><div><b>Result & Logging</b><br><span>The result is shown instantly, and the full action (tool, params, result) is logged for audit.</span></div></div>
 </div>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- Examples (Lovable Card Style) ---
-st.markdown('<div class="section-title" id="examples">Examples</div>', unsafe_allow_html=True)
-st.markdown('''
+st.markdown(
+    '<div class="section-title" id="examples">Examples</div>', unsafe_allow_html=True
+)
+st.markdown(
+    """
 <div class="examples-row">
   <div class="example-card">💡 <span>Get client <b>joao123</b></span></div>
   <div class="example-card">💡 <span>List all orders</span></div>
@@ -261,11 +282,17 @@ st.markdown('''
   <div class="example-card">💡 <span>Create client <b>Ana</b> with email <b>ana@example.com</b> and balance <b>5000</b></span></div>
   <div class="example-card">💡 <span>Create order for client <b>joao123</b> with total amount <b>1200</b></span></div>
 </div>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- Try It Locally (Lovable Card Style) ---
-st.markdown('<div class="section-title" id="try-it-locally">Try It Locally</div>', unsafe_allow_html=True)
-st.markdown('''
+st.markdown(
+    '<div class="section-title" id="try-it-locally">Try It Locally</div>',
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
 <div class="try-card">
   <div class="try-icon">🖥️</div>
   <div class="try-steps">
@@ -280,35 +307,50 @@ cd agentmcp</pre>
     <pre class="try-code">http://localhost:8501</pre>
   </div>
 </div>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- Tech Stack ---
 st.markdown('<div class="section-title">Tech Stack</div>', unsafe_allow_html=True)
-st.markdown('''
+st.markdown(
+    """
 - <b>Python 3.11</b> – Core logic and services
 - <b>Streamlit</b> – Modern, interactive frontend
 - <b>Model Context Protocol (MCP)</b> – Secure tool discovery & execution
 - <b>JSON</b> – Lightweight, file-based persistence
 - <b>pytest</b> – Automated testing
 - <b>Structured Logging</b> – Full audit trail of all actions
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- Roadmap ---
-st.markdown('<div class="section-title">Roadmap / Future Additions</div>', unsafe_allow_html=True)
-st.markdown('''
+st.markdown(
+    '<div class="section-title">Roadmap / Future Additions</div>',
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
 <ul class="roadmap-list">
 <li>🔒 <b>User Authentication & Role-Based Access</b></li>
 <li>🌐 <b>Multi-domain Support (HR, Finance, Custom Tools)</b></li>
 <li>📊 <b>Advanced Analytics & Dashboarding</b></li>
 <li>☁️ <b>Cloud Deployment & API Integrations</b></li>
 </ul>
-''', unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- GitHub CTA ---
-st.markdown('<a href="https://github.com/your-org/agentmcp" target="_blank"><button class="github-btn">View the AgentMCP Repository on GitHub →</button></a>', unsafe_allow_html=True)
+st.markdown(
+    '<a href="https://github.com/your-org/agentmcp" target="_blank"><button class="github-btn">View the AgentMCP Repository on GitHub →</button></a>',
+    unsafe_allow_html=True,
+)
 
 # --- Lovable Card CSS ---
-st.markdown('''
+st.markdown(
+    """
 <style>
 .howitworks-row {
   display: flex;
@@ -396,4 +438,6 @@ st.markdown('''
   overflow-x: auto;
 }
 </style>
-''', unsafe_allow_html=True) 
+""",
+    unsafe_allow_html=True,
+)
