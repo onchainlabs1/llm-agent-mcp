@@ -201,7 +201,7 @@ st.markdown(
         <a href="#features">Features</a>
         <a href="#examples">Examples</a>
         <a href="#try-it-locally">Try It</a>
-        <a href="https://github.com/your-org/agentmcp" target="_blank">GitHub</a>
+        <a href="https://github.com/onchainlabs1/llm-agent-mcp" target="_blank">GitHub</a>
         <input class="lovable-search" type="text" placeholder="Search..." disabled />
     </div>
 </div>
@@ -297,8 +297,8 @@ st.markdown(
   <div class="try-icon">🖥️</div>
   <div class="try-steps">
     <div class="try-step"><b>1. Clone the repo</b></div>
-    <pre class="try-code">git clone https://github.com/your-org/agentmcp.git
-cd agentmcp</pre>
+    <pre class="try-code">git clone https://github.com/onchainlabs1/llm-agent-mcp.git
+cd llm-agent-mcp</pre>
     <div class="try-step"><b>2. Install dependencies</b></div>
     <pre class="try-code">pip install -r requirements.txt</pre>
     <div class="try-step"><b>3. Run the Streamlit app</b></div>
@@ -344,7 +344,7 @@ st.markdown(
 
 # --- GitHub CTA ---
 st.markdown(
-    '<a href="https://github.com/your-org/agentmcp" target="_blank"><button class="github-btn">View the AgentMCP Repository on GitHub →</button></a>',
+    '<a href="https://github.com/onchainlabs1/llm-agent-mcp" target="_blank"><button class="github-btn">View the AgentMCP Repository on GitHub →</button></a>',
     unsafe_allow_html=True,
 )
 
@@ -441,3 +441,12 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
+
+# Adicionando seção de links públicos das apps
+st.markdown(
+    '''\
+---
+### <span style="color:#6fffb0;font-weight:900;font-size:1.3rem;">🔗 Acesse as versões online:</span>
+- <b>Landing Page:</b> <a href="https://llm-agent-mcp-landing.streamlit.app/" target="_blank">https://llm-agent-mcp-landing.streamlit.app/</a>
+- <b>App Principal:</b> <a href="https://llm-agent-mcp-portfolio.streamlit.app/" target="_blank">https://llm-agent-mcp-portfolio.streamlit.app/</a>
+''', unsafe_allow_html=True)
