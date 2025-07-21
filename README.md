@@ -6,14 +6,15 @@
 
 ## 🧠 Overview
 
-AgentMCP is an AI agent that uses large language models (LLMs) to interpret natural language instructions and execute real actions on a simulated CRM system, using the Model Context Protocol (MCP). All actions are logged and traceable.
+AgentMCP is an AI-powered business automation platform that uses large language models (LLMs) to interpret natural language instructions and execute real actions on simulated business systems (CRM, ERP, HR) using the Model Context Protocol (MCP). It provides both interactive web interfaces and enterprise REST API endpoints.
 
-The agent can:
-- **Understand natural language** requests for CRM operations
-- **Execute real actions** on simulated business data
-- **Log all activities** for audit and debugging
-- **Provide explainable results** with detailed reasoning
-- **Handle complex workflows** through MCP tool orchestration
+The platform offers:
+- **🎯 Natural language processing** for business operations across multiple domains
+- **⚡ Professional REST API** with authentication, rate limiting, and OpenAPI documentation
+- **📱 Interactive web interfaces** for both end-users and demonstrations
+- **🔍 Complete audit trail** with structured logging for compliance and debugging
+- **🛠️ Extensible architecture** using MCP for dynamic tool discovery and execution
+- **🌐 Multi-provider LLM support** with graceful fallbacks for reliability
 
 ## 🎯 Key Portfolio Highlights
 
@@ -77,16 +78,61 @@ streamlit run frontend/app.py
 - *"Update order ORD-20250114-001 to shipped status"*
 - *"Show me the client with ID cli001"*
 
-**🌐 Access Points:**
-- **Main Application**: `http://localhost:8501`
-- **Landing Page**: `http://localhost:8502`
+**🌐 Multiple Access Points:**
+- **Main Application**: `http://localhost:8501` (Streamlit UI)
+- **REST API**: `http://localhost:8000/docs` (FastAPI + Swagger)
+- **Landing Page**: `http://localhost:8502` (Project presentation)
 - **Live Repository**: [GitHub](https://github.com/onchainlabs1/llm-agent-mcp)
+
+## 🚀 Multiple Interfaces
+
+AgentMCP provides three distinct interfaces for different use cases:
+
+### 1. 📱 **Streamlit Web Interface** (Primary)
+**Natural language business operations with real-time feedback**
+
+```bash
+streamlit run frontend/app.py
+```
+- **Access**: `http://localhost:8501`
+- **Best for**: Interactive demos, business users, natural language testing
+- **Features**: Chat interface, conversation history, real-time logs
+
+### 2. ⚡ **FastAPI REST API** (Enterprise)
+**Professional REST endpoints with authentication and documentation**
+
+```bash
+python run_api.py
+```
+- **Interactive Docs**: `http://localhost:8000/docs`
+- **Health Check**: `http://localhost:8000/api/v1/health`
+- **Best for**: Integration, automation, mobile apps, external systems
+- **Features**: OpenAPI docs, authentication, rate limiting, monitoring
+
+#### API Usage Example:
+```bash
+curl -X POST "http://localhost:8000/api/v1/agent/process" \
+  -H "Authorization: Bearer demo-key-123" \
+  -H "Content-Type: application/json" \
+  -d '{"command": "List all clients with balance over 5000"}'
+```
+
+### 3. 🌟 **Landing Page** (Presentation)
+**Professional project showcase and documentation**
+
+```bash
+streamlit run frontend/landing.py --server.port 8502
+```
+- **Access**: `http://localhost:8502`
+- **Best for**: Portfolio presentations, client demos, project overview
+- **Features**: Screenshots, architecture diagrams, feature highlights
 
 ## 🛠️ Tech Stack & Architecture
 
 ### **Core Technologies**
 - **Python 3.11** - Modern async-ready language with type hints
 - **Streamlit** - Production-ready web framework with real-time updates
+- **FastAPI** - High-performance REST API with automatic OpenAPI documentation
 - **Model Context Protocol (MCP)** - Anthropic's latest AI tool integration standard
 - **JSON-based persistence** - Atomic operations with data integrity checks
 - **Multi-provider LLM support** - OpenAI, Anthropic, Groq with intelligent fallbacks
@@ -293,19 +339,41 @@ pip install -r requirements-dev.txt
    pip install -r requirements.txt
    ```
 
-5. **Run the application**
+5. **Run the application(s)**
+   
+   **Choose your interface:**
+   
    ```bash
-   # Main application interface
+   # Option 1: Main Streamlit Interface (Primary)
+   streamlit run frontend/app.py
+   # Access: http://localhost:8501
+   
+   # Option 2: FastAPI REST API (Enterprise)
+   python run_api.py
+   # Access: http://localhost:8000/docs
+   
+   # Option 3: Landing Page (Presentation)
+   streamlit run frontend/landing.py --server.port 8502
+   # Access: http://localhost:8502
+   ```
+   
+   **Or run all simultaneously:**
+   ```bash
+   # Terminal 1: Main application
    streamlit run frontend/app.py
    
-   # Or run the landing page (in a separate terminal)
+   # Terminal 2: REST API
+   python run_api.py
+   
+   # Terminal 3: Landing page
    streamlit run frontend/landing.py --server.port 8502
    ```
 
-6. **Access the web interface**
-   - **Main Application**: Open your browser and navigate to `http://localhost:8501`
-   - **Landing Page**: Navigate to `http://localhost:8502` (if running separately)
-   - The AgentMCP interface will be available for natural language CRM operations
+6. **Access the interfaces**
+   - **🎯 Primary UI**: `http://localhost:8501` (Natural language interface)
+   - **⚡ REST API**: `http://localhost:8000/docs` (Swagger documentation)
+   - **🌟 Landing Page**: `http://localhost:8502` (Project showcase)
+   - All interfaces work independently and can run simultaneously
 
 ### Configuration
 

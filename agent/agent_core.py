@@ -169,12 +169,14 @@ class AgentConfig:
         self,
         llm_provider: str = "simulated",
         llm_model: str = "gpt-4",
+        api_key: Optional[str] = None,
         max_retries: int = 3,
         timeout: int = 30,
         log_level: str = "INFO",
     ):
         self.llm_provider = llm_provider
         self.llm_model = llm_model
+        self.api_key = api_key
         self.max_retries = max_retries
         self.timeout = timeout
         self.log_level = log_level
