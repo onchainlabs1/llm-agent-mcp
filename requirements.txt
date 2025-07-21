@@ -1,18 +1,29 @@
-# Minimal dependencies for Streamlit Community Cloud
+# Dependencies for Streamlit Community Cloud
 # Core Streamlit
 streamlit>=1.28.0
 
 # Data validation
 pydantic>=2.0.0
+pydantic-settings>=2.0.0
 
 # Configuration
 python-dotenv>=1.0.0
 
-# HTTP requests (for potential API calls)
+# HTTP requests
 requests>=2.31.0
 
 # JSON handling
 jsonschema>=4.0.0
 
-# Email validation (used in the project)
-email-validator>=2.0.0 
+# Email validation
+email-validator>=2.0.0
+
+# LLM providers (needed for imports even in simulated mode)
+openai>=1.0.0
+anthropic>=0.7.0
+
+# Logging
+structlog>=23.0.0
+
+# JSON logging
+python-json-logger>=2.0.0
