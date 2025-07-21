@@ -84,6 +84,11 @@ streamlit run frontend/app.py
 - **Landing Page**: `http://localhost:8502` (Project presentation)
 - **Live Repository**: [GitHub](https://github.com/onchainlabs1/llm-agent-mcp)
 
+## 🌐 Online Demo
+
+- **Landing Page:** [https://llm-agent-mcp-landing.streamlit.app/](https://llm-agent-mcp-landing.streamlit.app/)
+- **App Principal:** [https://llm-agent-mcp-portfolio.streamlit.app/](https://llm-agent-mcp-portfolio.streamlit.app/)
+
 ## 🚀 Multiple Interfaces
 
 AgentMCP provides three distinct interfaces for different use cases:
