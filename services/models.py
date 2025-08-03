@@ -378,3 +378,4 @@ class ValidationError(BaseModel):
         """Pydantic configuration."""
 
         arbitrary_types_allowed = True
+ 

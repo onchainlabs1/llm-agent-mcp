@@ -97,7 +97,7 @@ from pydantic import BaseModel, Field, ValidationError
 
 class MCPToolSchema(BaseModel):
     """Schema definition for an MCP tool."""
-
+    
     name: str = Field(description="Tool name")
     description: str = Field(description="Tool description")
     input_schema: Dict[str, Any] = Field(description="JSON schema for input parameters")
@@ -109,7 +109,7 @@ class MCPToolSchema(BaseModel):
 
 class MCPToolCall(BaseModel):
     """Model for MCP tool call requests."""
-
+    
     tool_name: str = Field(description="Name of the tool to call")
     arguments: Dict[str, Any] = Field(description="Arguments for the tool call")
     call_id: str = Field(description="Unique identifier for this call")
@@ -117,7 +117,7 @@ class MCPToolCall(BaseModel):
 
 class MCPToolResult(BaseModel):
     """Model for MCP tool call results."""
-
+    
     call_id: str = Field(description="ID of the tool call")
     success: bool = Field(description="Whether the call was successful")
     result: Optional[Any] = Field(default=None, description="Result data")
@@ -128,15 +128,15 @@ class MCPToolResult(BaseModel):
 class MCPClient:
     """
     Synchronous MCP client for tool registration and execution.
-
+    
     This client manages tool schemas and handles execution of tools
     in a synchronous manner suitable for the current architecture.
     """
-
+    
     def __init__(self, server_url: str = "http://localhost:8000", timeout: int = 30):
         """
         Initialize the MCP client.
-
+        
         Args:
             server_url: URL of the MCP server (currently not used in standalone mode)
             timeout: Request timeout in seconds
@@ -147,11 +147,11 @@ class MCPClient:
         self.registered_tools: Dict[str, MCPToolSchema] = {}
         self.tool_handlers: Dict[str, Callable] = {}
         self.connected = False
-
+        
     def connect(self) -> bool:
         """
         Connect to the MCP server (in standalone mode, this just validates configuration).
-
+        
         Returns:
             True if connection successful, False otherwise
         """
@@ -160,21 +160,21 @@ class MCPClient:
             # Just validate that we can operate
             self.logger.info("MCP Client initialized in standalone mode")
             self.connected = True
-            return True
+                    return True
 
         except Exception as e:
             self.logger.error(f"Error initializing MCP client: {str(e)}")
             self.connected = False
             return False
-
+    
     def register_tool(self, tool_schema: MCPToolSchema, handler: Callable) -> bool:
         """
         Register a tool with the MCP client.
-
+        
         Args:
             tool_schema: Schema definition for the tool
             handler: Function to handle tool execution
-
+            
         Returns:
             True if registration successful, False otherwise
         """
@@ -185,14 +185,14 @@ class MCPClient:
             # Store locally
             self.registered_tools[tool_schema.name] = tool_schema
             self.tool_handlers[tool_schema.name] = handler
-
+            
             self.logger.info(f"Registered tool: {tool_schema.name}")
             return True
-
+            
         except Exception as e:
             self.logger.error(f"Error registering tool {tool_schema.name}: {str(e)}")
             return False
-
+    
     def _validate_tool_schema(self, schema: MCPToolSchema) -> None:
         """
         Validate tool schema format.
@@ -221,12 +221,12 @@ class MCPClient:
     def get_available_tools(self) -> List[MCPToolSchema]:
         """
         Get list of all available tools.
-
+        
         Returns:
             List of registered tool schemas
         """
         return list(self.registered_tools.values())
-
+    
     def execute_tool(self, tool_call: MCPToolCall) -> MCPToolResult:
         """
         Execute a tool call synchronously.
@@ -246,15 +246,15 @@ class MCPClient:
             result = await service_method_async(**parameters)
             return MCPToolResult(success=True, result=result)
         ```
-
+        
         Args:
             tool_call: Tool call to execute
-
+            
         Returns:
             Result of the tool execution
         """
         start_time = datetime.now()
-
+        
         try:
             # Check if tool is registered
             if tool_call.tool_name not in self.tool_handlers:
@@ -275,34 +275,34 @@ class MCPClient:
                     error=f"Invalid parameters for tool '{tool_call.tool_name}'",
                     execution_time=0.0,
                 )
-
+            
             # Execute the tool
             handler = self.tool_handlers[tool_call.tool_name]
             result = handler(**tool_call.arguments)
-
+            
             execution_time = (datetime.now() - start_time).total_seconds()
             self.logger.info(
                 f"Tool {tool_call.tool_name} executed in {execution_time:.2f}s"
             )
-
+            
             return MCPToolResult(
                 call_id=tool_call.call_id,
                 success=True,
                 result=result,
                 execution_time=execution_time,
             )
-
+            
         except Exception as e:
             execution_time = (datetime.now() - start_time).total_seconds()
             self.logger.error(f"Error executing tool {tool_call.tool_name}: {str(e)}")
-
+            
             return MCPToolResult(
                 call_id=tool_call.call_id,
                 success=False,
                 error=str(e),
                 execution_time=execution_time,
             )
-
+    
     def load_tool_schemas_from_file(self, schema_file: str) -> bool:
         """
         Load tool schemas from a JSON file.
@@ -322,10 +322,10 @@ class MCPClient:
                 content = await f.read()
                 # Process schemas asynchronously
         ```
-
+        
         Args:
             schema_file: Path to the schema file
-
+            
         Returns:
             True if loading successful, False otherwise
         """
@@ -337,7 +337,7 @@ class MCPClient:
 
             with open(schema_path, "r", encoding="utf-8") as f:
                 schemas_data = json.load(f)
-
+            
             if not isinstance(schemas_data, dict) or "tools" not in schemas_data:
                 self.logger.error(f"Invalid schema file format: {schema_file}")
                 return False
@@ -346,15 +346,15 @@ class MCPClient:
             for tool_data in schemas_data.get("tools", []):
                 try:
                     schema = MCPToolSchema(**tool_data)
-                    self.registered_tools[schema.name] = schema
+                self.registered_tools[schema.name] = schema
                     loaded_count += 1
                 except ValidationError as e:
                     self.logger.error(f"Invalid tool schema in {schema_file}: {str(e)}")
                     continue
-
+                
             self.logger.info(f"Loaded {loaded_count} tool schemas from {schema_file}")
             return loaded_count > 0
-
+            
         except json.JSONDecodeError as e:
             self.logger.error(f"Invalid JSON in schema file {schema_file}: {str(e)}")
             return False
@@ -363,29 +363,29 @@ class MCPClient:
                 f"Error loading tool schemas from {schema_file}: {str(e)}"
             )
             return False
-
+    
     def get_tool_schema(self, tool_name: str) -> Optional[MCPToolSchema]:
         """
         Get schema for a specific tool.
-
+        
         Args:
             tool_name: Name of the tool
-
+            
         Returns:
             Tool schema if found, None otherwise
         """
         return self.registered_tools.get(tool_name)
-
+    
     def validate_tool_parameters(
         self, tool_name: str, parameters: Dict[str, Any]
     ) -> bool:
         """
         Validate parameters for a tool call against its schema.
-
+        
         Args:
             tool_name: Name of the tool
             parameters: Parameters to validate
-
+            
         Returns:
             True if parameters are valid, False otherwise
         """
@@ -397,7 +397,7 @@ class MCPClient:
 
             # Validate against JSON schema
             jsonschema.validate(parameters, tool_schema.input_schema)
-            return True
+        return True 
 
         except jsonschema.ValidationError as e:
             self.logger.error(f"Parameter validation failed for {tool_name}: {str(e)}")

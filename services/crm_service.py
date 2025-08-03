@@ -28,7 +28,7 @@ from .validation import InputValidator, safe_id, safe_email, safe_amount
 
 class Client(BaseModel):
     """Model representing a CRM client."""
-
+    
     id: str = Field(
         default_factory=lambda: str(uuid4()), description="Unique client identifier"
     )
@@ -52,28 +52,28 @@ class Client(BaseModel):
 class CRMService:
     """
     CRM service for managing customer relationships.
-
+    
     This service provides comprehensive client management capabilities
     with JSON-based data persistence and full CRUD operations.
     """
-
+    
     def __init__(self, data_file: str = "data/clients.json"):
         """
         Initialize the CRM service.
-
+        
         Args:
             data_file: Path to the JSON data file
         """
         self.data_file = data_file
         self.logger = logging.getLogger("agentmcp.crm_service")
         self._ensure_data_file()
-
+    
     def _ensure_data_file(self) -> None:
         """Ensure the data file exists with proper structure."""
         try:
             # Create directory if it doesn't exist
             os.makedirs(os.path.dirname(self.data_file), exist_ok=True)
-
+            
             # Check if file exists and has valid structure
             if os.path.exists(self.data_file):
                 with open(self.data_file, "r") as f:
@@ -88,18 +88,18 @@ class CRMService:
                 with open(self.data_file, "w") as f:
                     json.dump(data, f, indent=2, default=str)
                 self.logger.info(f"Created new CRM data file: {self.data_file}")
-
+                
         except Exception as e:
             self.logger.error(f"Error ensuring data file exists: {str(e)}")
             raise
-
+    
     def _load_data(self) -> Dict[str, Any]:
         """
         Load data from the JSON file.
-
+        
         Returns:
             Dictionary containing the loaded data
-
+            
         Raises:
             FileNotFoundError: If the data file doesn't exist
             json.JSONDecodeError: If the JSON is invalid
@@ -113,14 +113,14 @@ class CRMService:
             raise json.JSONDecodeError(
                 f"Invalid JSON in data file: {str(e)}", e.doc, e.pos
             )
-
+    
     def _save_data(self, data: Dict[str, Any]) -> None:
         """
         Save data to the JSON file.
-
+        
         Args:
             data: Dictionary containing the data to save
-
+            
         Raises:
             IOError: If there's an error writing to the file
         """
@@ -129,17 +129,17 @@ class CRMService:
                 json.dump(data, f, indent=2, default=str)
         except IOError as e:
             raise IOError(f"Error saving data to file: {str(e)}")
-
+    
     def get_client_by_id(self, client_id: str) -> Dict[str, Any]:
         """
         Retrieve a client by their unique ID.
-
+        
         Args:
             client_id: The unique identifier of the client
-
+            
         Returns:
             Dictionary containing the client data
-
+            
         Raises:
             ValueError: If client_id is empty or None
             FileNotFoundError: If the data file doesn't exist
@@ -148,17 +148,17 @@ class CRMService:
         """
         # Validate and sanitize client ID
         client_id = safe_id(client_id)
-
+        
         try:
             data = self._load_data()
-
+            
             for client in data["clients"]:
                 if client["id"] == client_id:
                     self.logger.info(f"Retrieved client: {client_id}")
                     return client
-
+            
             raise KeyError(f"Client with ID '{client_id}' not found")
-
+            
         except (FileNotFoundError, json.JSONDecodeError) as e:
             self.logger.error(f"Error loading data: {str(e)}")
             raise
@@ -170,11 +170,11 @@ class CRMService:
                 f"Unexpected error retrieving client {client_id}: {str(e)}"
             )
             raise
-
+    
     def create_client(self, client_data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Create a new client in the CRM system.
-
+        
         Args:
             client_data: Dictionary containing client information with the following keys:
                 - name: Client's full name (required)
@@ -185,10 +185,10 @@ class CRMService:
                 - status: Client status - 'active', 'inactive', or 'prospect' (optional, default: 'active')
                 - notes: Additional notes about the client (optional)
                 - balance: Client's account balance (optional, default: 0.0)
-
+            
         Returns:
             Dictionary containing the created client data with generated ID and timestamps
-
+            
         Raises:
             ValueError: If required fields are missing or invalid
             FileNotFoundError: If the data file doesn't exist
@@ -216,28 +216,28 @@ class CRMService:
                 "created_at": datetime.now().isoformat(),
                 "updated_at": datetime.now().isoformat(),
             }
-
+            
             # Load existing data
             data = self._load_data()
-
+            
             # Check if email already exists
             for client in data["clients"]:
                 if client["email"] == new_client["email"]:
                     raise ValueError(
                         f"Client with email '{new_client['email']}' already exists"
                     )
-
+            
             # Add new client
             data["clients"].append(new_client)
-
+            
             # Save updated data
             self._save_data(data)
-
+            
             self.logger.info(
                 f"Created client: {new_client['name']} (ID: {new_client['id']})"
             )
             return new_client
-
+            
         except (FileNotFoundError, json.JSONDecodeError, IOError) as e:
             self.logger.error(f"Error creating client: {str(e)}")
             raise
@@ -247,20 +247,20 @@ class CRMService:
         except Exception as e:
             self.logger.error(f"Unexpected error creating client: {str(e)}")
             raise
-
+    
     def update_client_balance(
         self, client_id: str, new_balance: float
     ) -> Dict[str, Any]:
         """
         Update the balance for a specific client.
-
+        
         Args:
             client_id: The unique identifier of the client
             new_balance: The new balance amount
-
+            
         Returns:
             Dictionary containing the updated client data
-
+            
         Raises:
             ValueError: If client_id is empty or new_balance is invalid
             FileNotFoundError: If the data file doesn't exist
@@ -270,31 +270,31 @@ class CRMService:
         """
         if not client_id:
             raise ValueError("Client ID cannot be empty or None")
-
+        
         if not isinstance(new_balance, (int, float)):
             raise ValueError("New balance must be a number")
-
+        
         try:
             # Load existing data
             data = self._load_data()
-
+            
             # Find and update client
             for client in data["clients"]:
                 if client["id"] == client_id:
                     old_balance = client.get("balance", 0.0)
                     client["balance"] = float(new_balance)
                     client["updated_at"] = datetime.now().isoformat()
-
+                    
                     # Save updated data
                     self._save_data(data)
-
+                    
                     self.logger.info(
                         f"Updated client {client_id} balance: {old_balance} -> {new_balance}"
                     )
                     return client
-
+            
             raise KeyError(f"Client with ID '{client_id}' not found")
-
+            
         except (FileNotFoundError, json.JSONDecodeError, IOError) as e:
             self.logger.error(f"Error updating client balance: {str(e)}")
             raise
@@ -304,14 +304,14 @@ class CRMService:
         except Exception as e:
             self.logger.error(f"Unexpected error updating client balance: {str(e)}")
             raise
-
+    
     def list_all_clients(self) -> List[Dict[str, Any]]:
         """
         Retrieve all clients from the CRM system.
-
+        
         Returns:
             List of dictionaries containing client data
-
+            
         Raises:
             FileNotFoundError: If the data file doesn't exist
             json.JSONDecodeError: If the JSON is invalid
@@ -319,17 +319,17 @@ class CRMService:
         try:
             data = self._load_data()
             clients = data.get("clients", [])
-
+            
             self.logger.info(f"Retrieved {len(clients)} clients")
             return clients
-
+            
         except (FileNotFoundError, json.JSONDecodeError) as e:
             self.logger.error(f"Error loading clients: {str(e)}")
             raise
         except Exception as e:
             self.logger.error(f"Unexpected error listing clients: {str(e)}")
             raise
-
+    
     def filter_clients_by_balance(
         self, min_balance: float = None, max_balance: float = None
     ) -> List[Dict[str, Any]]:
@@ -390,14 +390,14 @@ class CRMService:
     ) -> Dict[str, Any]:
         """
         Update an existing client's information.
-
+        
         Args:
             client_id: The unique identifier of the client
             update_data: Dictionary containing fields to update
-
+            
         Returns:
             Dictionary containing the updated client data
-
+            
         Raises:
             ValueError: If client_id is empty or update_data is invalid
             FileNotFoundError: If the data file doesn't exist
@@ -407,14 +407,14 @@ class CRMService:
         """
         if not client_id:
             raise ValueError("Client ID cannot be empty or None")
-
+        
         if not update_data:
             raise ValueError("Update data cannot be empty")
-
+        
         try:
             # Load existing data
             data = self._load_data()
-
+            
             # Find and update client
             for client in data["clients"]:
                 if client["id"] == client_id:
@@ -431,18 +431,18 @@ class CRMService:
                     for field, value in update_data.items():
                         if field in allowed_fields:
                             client[field] = value
-
+                    
                     # Update timestamp
                     client["updated_at"] = datetime.now().isoformat()
-
+                    
                     # Save updated data
                     self._save_data(data)
-
+                    
                     self.logger.info(f"Updated client: {client_id}")
                     return client
-
+            
             raise KeyError(f"Client with ID '{client_id}' not found")
-
+            
         except (FileNotFoundError, json.JSONDecodeError, IOError) as e:
             self.logger.error(f"Error updating client: {str(e)}")
             raise
@@ -452,17 +452,17 @@ class CRMService:
         except Exception as e:
             self.logger.error(f"Unexpected error updating client: {str(e)}")
             raise
-
+    
     def delete_client(self, client_id: str) -> bool:
         """
         Delete a client from the CRM system.
-
+        
         Args:
             client_id: The unique identifier of the client
-
+            
         Returns:
             True if client was deleted, False if client not found
-
+            
         Raises:
             ValueError: If client_id is empty
             FileNotFoundError: If the data file doesn't exist
@@ -471,42 +471,42 @@ class CRMService:
         """
         if not client_id:
             raise ValueError("Client ID cannot be empty or None")
-
+        
         try:
             # Load existing data
             data = self._load_data()
-
+            
             # Find and remove client
             for i, client in enumerate(data["clients"]):
                 if client["id"] == client_id:
                     del data["clients"][i]
-
+                    
                     # Save updated data
                     self._save_data(data)
-
+                    
                     self.logger.info(f"Deleted client: {client_id}")
                     return True
-
+            
             self.logger.warning(f"Client not found for deletion: {client_id}")
             return False
-
+            
         except (FileNotFoundError, json.JSONDecodeError, IOError) as e:
             self.logger.error(f"Error deleting client: {str(e)}")
             raise
         except Exception as e:
             self.logger.error(f"Unexpected error deleting client: {str(e)}")
             raise
-
+    
     def search_clients(self, query: str) -> List[Dict[str, Any]]:
         """
         Search clients by name, email, or company.
-
+        
         Args:
             query: Search query string
-
+            
         Returns:
             List of matching clients
-
+            
         Raises:
             ValueError: If query is empty
             FileNotFoundError: If the data file doesn't exist
@@ -514,12 +514,12 @@ class CRMService:
         """
         if not query:
             raise ValueError("Search query cannot be empty")
-
+        
         try:
             data = self._load_data()
             query_lower = query.lower()
             matching_clients = []
-
+            
             for client in data["clients"]:
                 if (
                     query_lower in client.get("name", "").lower()
@@ -527,26 +527,26 @@ class CRMService:
                     or query_lower in client.get("company", "").lower()
                 ):
                     matching_clients.append(client)
-
+            
             self.logger.info(
                 f"Found {len(matching_clients)} clients matching query: '{query}'"
             )
             return matching_clients
-
+            
         except (FileNotFoundError, json.JSONDecodeError) as e:
             self.logger.error(f"Error searching clients: {str(e)}")
             raise
         except Exception as e:
             self.logger.error(f"Unexpected error searching clients: {str(e)}")
             raise
-
+    
     def get_client_statistics(self) -> Dict[str, Any]:
         """
         Get CRM statistics and metrics.
-
+        
         Returns:
             Dictionary containing CRM statistics
-
+            
         Raises:
             FileNotFoundError: If the data file doesn't exist
             json.JSONDecodeError: If the JSON is invalid
@@ -555,22 +555,22 @@ class CRMService:
             data = self._load_data()
             clients = data["clients"]
             total_clients = len(clients)
-
+            
             # Count by status
             status_counts = {}
             for client in clients:
                 status = client.get("status", "unknown")
                 status_counts[status] = status_counts.get(status, 0) + 1
-
+            
             # Count by industry
             industry_counts = {}
             for client in clients:
                 industry = client.get("industry", "unknown")
                 industry_counts[industry] = industry_counts.get(industry, 0) + 1
-
+            
             # Calculate total balance
             total_balance = sum(client.get("balance", 0.0) for client in clients)
-
+            
             statistics = {
                 "total_clients": total_clients,
                 "status_distribution": status_counts,
@@ -581,13 +581,13 @@ class CRMService:
                 else 0.0,
                 "last_updated": datetime.now().isoformat(),
             }
-
+            
             self.logger.info(f"Generated statistics for {total_clients} clients")
             return statistics
-
+            
         except (FileNotFoundError, json.JSONDecodeError) as e:
             self.logger.error(f"Error getting CRM statistics: {str(e)}")
             raise
         except Exception as e:
             self.logger.error(f"Unexpected error getting CRM statistics: {str(e)}")
-            raise
+            raise 
