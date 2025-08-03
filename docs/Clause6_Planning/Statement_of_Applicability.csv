@@ -1,0 +1,26 @@
+Control ID,Control Title,Implemented (Yes/No),Justification,Linked Document,Implementation Date,Review Date,Notes
+A.2.1,AI system governance,Yes,Core governance structure established with AI Management Team and defined roles,AIMS_Organizational_Roles.md,2024-12-19,2025-03-19,Leadership structure and RACI matrix implemented
+A.2.2,AI system policies,Yes,Comprehensive AI management policy established with clear principles and objectives,AIMS_Policy_Statement.md,2024-12-19,2025-03-19,Policy covers ethical development, risk management, and transparency
+A.2.3,AI system objectives,Yes,Measurable objectives defined for compliance, bias reduction, transparency, and performance,AIMS_Objectives_and_Planning.md,2024-12-19,2025-03-19,Strategic and operational objectives with KPIs
+A.2.4,Organizational roles, responsibilities and authorities,Yes,Clear organizational structure with defined roles, responsibilities, and authorities,AIMS_Organizational_Roles.md,2024-12-19,2025-03-19,RACI matrix and authority delegation framework
+A.3.1,Resources,Partial,Basic resource allocation in place, but comprehensive resource planning needed,AIMS_Objectives_and_Planning.md,2024-12-19,2025-03-19,Resource planning to be enhanced in Clause 7
+A.3.2,Competence,Partial,Team competence requirements defined, but training program needs development,AIMS_Organizational_Roles.md,2024-12-19,2025-03-19,Training program to be developed in Clause 7
+A.3.3,Awareness,Partial,Awareness requirements identified, but implementation program needed,AIMS_Leadership_and_Commitment.md,2024-12-19,2025-03-19,Awareness program to be developed in Clause 7
+A.3.4,Communication,Yes,Communication strategy established with internal and external communication channels,AIMS_Leadership_and_Commitment.md,2024-12-19,2025-03-19,Regular meetings, documentation, and stakeholder communication
+A.3.5,Documented information,Yes,Comprehensive documentation framework established with version control,AIMS_Organizational_Roles.md,2024-12-19,2025-03-19,Documentation management procedures in place
+A.4.1,Operational planning and control,Partial,Basic operational planning in place, but detailed procedures needed,AIMS_Objectives_and_Planning.md,2024-12-19,2025-03-19,Operational procedures to be developed in Clause 8
+A.4.2,AI system impact assessment,Yes,Systematic risk assessment process established with specific AI risk scenarios,AIMS_Risk_Management_Procedure.md,2024-12-19,2025-03-19,Comprehensive risk assessment covering ethical, technical, legal, and societal risks
+A.4.3,AI system requirements,Yes,Clear requirements established for AI system development and operation,AIMS_Scope_and_Boundaries.md,2024-12-19,2025-03-19,Functional and non-functional requirements defined
+A.4.4,AI system design and development,Partial,Basic development process in place, but detailed procedures needed,README.md,2024-12-19,2025-03-19,Development procedures to be enhanced in Clause 8
+A.4.5,AI system validation and testing,Partial,Basic testing framework in place, but comprehensive validation needed,tests/,2024-12-19,2025-03-19,Validation and testing procedures to be enhanced
+A.4.6,AI system deployment,Partial,Basic deployment process in place, but detailed procedures needed,README.md,2024-12-19,2025-03-19,Deployment procedures to be developed in Clause 8
+A.4.7,AI system operation and monitoring,Partial,Basic monitoring in place, but comprehensive monitoring needed,logs/,2024-12-19,2025-03-19,Monitoring procedures to be enhanced in Clause 8
+A.4.8,AI system maintenance,Partial,Basic maintenance procedures in place, but systematic approach needed,README.md,2024-12-19,2025-03-19,Maintenance procedures to be developed in Clause 8
+A.4.9,AI system change management,Partial,Basic change management in place, but formal procedures needed,AIMS_Change_Management_Procedure.md,2024-12-19,2025-03-19,Change management procedures to be developed
+A.4.10,AI system incident management,Partial,Basic incident response in place, but formal procedures needed,AIMS_Risk_Management_Procedure.md,2024-12-19,2025-03-19,Incident management procedures to be enhanced
+A.4.11,AI system decommissioning,No,Decommissioning procedures not yet established,,,2025-03-19,To be developed in Clause 8
+A.5.1,Monitoring, measurement, analysis and evaluation,Partial,Basic monitoring in place, but comprehensive framework needed,logs/,2024-12-19,2025-03-19,Monitoring framework to be developed in Clause 9
+A.5.2,Internal audit,Partial,Audit requirements identified, but formal procedures needed,AIMS_Objectives_and_Planning.md,2024-12-19,2025-03-19,Internal audit procedures to be developed in Clause 9
+A.5.3,Management review,Partial,Review requirements identified, but formal procedures needed,AIMS_Leadership_and_Commitment.md,2024-12-19,2025-03-19,Management review procedures to be developed in Clause 9
+A.6.1,Nonconformity and corrective action,Partial,Basic nonconformity handling in place, but formal procedures needed,AIMS_Risk_Management_Procedure.md,2024-12-19,2025-03-19,Nonconformity procedures to be developed in Clause 10
+A.6.2,Continual improvement,Partial,Improvement requirements identified, but systematic approach needed,AIMS_Objectives_and_Planning.md,2024-12-19,2025-03-19,Continual improvement procedures to be developed in Clause 10 

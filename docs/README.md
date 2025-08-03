@@ -33,14 +33,16 @@ The `llm-agent-mcp` project serves as a **reference implementation** of an AI Ma
 | [`AIMS_Policy_Statement.md`](./Clause5_Leadership/AIMS_Policy_Statement.md) | Formal AI management policy and objectives | ✅ Complete |
 | [`AIMS_Organizational_Roles.md`](./Clause5_Leadership/AIMS_Organizational_Roles.md) | Organizational structure and role definitions | ✅ Complete |
 
-### 📊 Clause 6: Planning (In Development)
+### 📊 Clause 6: Planning
 **Directory:** [`Clause6_Planning/`](./Clause6_Planning/)
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| `AIMS_Risk_Management.md` | AI risk identification and assessment | 🔄 Planned |
-| `AIMS_Objectives_Planning.md` | AI management objectives and planning | 🔄 Planned |
-| `AIMS_Change_Management.md` | AI system change management | 🔄 Planned |
+| [`AI_Risk_Management_Procedure.md`](./Clause6_Planning/AI_Risk_Management_Procedure.md) | AI risk identification and assessment | ✅ Complete |
+| [`AI_Objectives_and_Planning.md`](./Clause6_Planning/AI_Objectives_and_Planning.md) | AI management objectives and planning | ✅ Complete |
+| [`AI_Change_Management_Procedure.md`](./Clause6_Planning/AI_Change_Management_Procedure.md) | AI system change management | ✅ Complete |
+| [`AI_Risk_Register.csv`](./Clause6_Planning/AI_Risk_Register.csv) | Risk register with 10 example risks | ✅ Complete |
+| [`Statement_of_Applicability.csv`](./Clause6_Planning/Statement_of_Applicability.csv) | Annex A controls mapping | ✅ Complete |
 
 ### 🔧 Clause 7: Support (Planned)
 **Directory:** [`Clause7_Support/`](./Clause7_Support/)
@@ -84,9 +86,10 @@ The `llm-agent-mcp` project serves as a **reference implementation** of an AI Ma
 ### ✅ Completed Clauses
 - **Clause 4:** Context of the Organization (100% complete)
 - **Clause 5:** Leadership (100% complete)
+- **Clause 6:** Planning (100% complete)
 
 ### 🔄 In Progress
-- **Clause 6:** Planning (0% complete - ready to start)
+- **Clause 7:** Support (0% complete - ready to start)
 
 ### 🔄 Planned
 - **Clause 7:** Support
@@ -114,7 +117,7 @@ The documentation framework supports ongoing improvement and adaptation to chang
 |---------------------------|----------------------|----------------------|
 | **Clause 4:** Context of the Organization | ✅ Complete | 100% |
 | **Clause 5:** Leadership | ✅ Complete | 100% |
-| **Clause 6:** Planning | 🔄 Planned | 0% |
+| **Clause 6:** Planning | ✅ Complete | 100% |
 | **Clause 7:** Support | 🔄 Planned | 0% |
 | **Clause 8:** Operation | 🔄 Planned | 0% |
 | **Clause 9:** Performance Evaluation | 🔄 Planned | 0% |
