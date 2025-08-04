@@ -42,44 +42,51 @@ This procedure establishes a systematic approach to identifying, assessing, and 
 #### 6.1.2.1 Risk Categories
 
 **Ethical Risks:**
-- **Bias and Discrimination:** AI systems exhibiting bias against certain groups
-- **Fairness Issues:** Unfair treatment of individuals or groups
-- **Transparency Problems:** Lack of transparency in AI decision-making
-- **Accountability Gaps:** Lack of clear accountability for AI outcomes
-- **Privacy Violations:** Violations of privacy rights and data protection
+- **Bias and Discrimination:** LLM agent exhibiting bias in client filtering and order processing based on training data patterns
+- **Fairness Issues:** Unfair treatment of clients or employees in automated business decisions
+- **Transparency Problems:** Lack of transparency in LLM agent decisions for tool execution
+- **Accountability Gaps:** Lack of clear accountability for LLM agent outcomes in business automation
+- **Privacy Violations:** Violations of privacy rights in client and employee data processing
 
 **Technical Risks:**
-- **System Failures:** AI system malfunctions or crashes
-- **Performance Issues:** Degradation in AI system performance
-- **Security Vulnerabilities:** Security weaknesses in AI systems
-- **Integration Problems:** Issues with system integration and compatibility
-- **Data Quality Issues:** Problems with data quality and integrity
+- **LLM API Failures:** OpenAI GPT or Anthropic Claude API outages affecting agent functionality
+- **MCP Protocol Issues:** Model Context Protocol implementation failures in tool discovery and execution
+- **System Performance:** Degradation in LLM agent response times or accuracy
+- **Data Quality Issues:** Problems with JSON data quality in `data/clients.json`, `data/employees.json`, `data/orders.json`
+- **Integration Failures:** Failures in integration between LLM agent and business services
+
+**Security Risks:**
+- **Prompt Injection Attacks:** Malicious users manipulating prompts to access unauthorized data or perform unauthorized actions
+- **API Key Exposure:** Exposure of OpenAI or Anthropic API keys in configuration or logs
+- **Data Breaches:** Unauthorized access to sensitive business data stored in JSON files
+- **Tool Execution Vulnerabilities:** Vulnerabilities in MCP tool execution allowing unauthorized operations
+- **Authentication Bypass:** Bypassing authentication mechanisms in Streamlit or FastAPI interfaces
 
 **Legal and Compliance Risks:**
-- **Regulatory Violations:** Violations of applicable regulations
-- **Contractual Breaches:** Breaches of contractual obligations
-- **Intellectual Property Issues:** Issues with intellectual property rights
-- **Liability Concerns:** Potential liability for AI system outcomes
-- **Compliance Failures:** Failures to meet compliance requirements
+- **GDPR Violations:** Improper handling of EU personal data in client and employee records
+- **AI Regulation Violations:** Violations of EU AI Act requirements for LLM-based systems
+- **Contractual Breaches:** Breaches of OpenAI or Anthropic API service agreements
+- **Intellectual Property Issues:** Issues with MCP protocol implementation or tool schemas
+- **Compliance Failures:** Failures to meet ISO/IEC 42001:2023 compliance requirements
 
 **Operational Risks:**
-- **Process Failures:** Failures in AI management processes
-- **Resource Constraints:** Insufficient resources for AI management
-- **Skill Gaps:** Lack of necessary skills and expertise
-- **Communication Problems:** Problems with communication and coordination
-- **Change Management Issues:** Issues with managing changes to AI systems
+- **Fallback Mechanism Failures:** Failures in simulated mode when external LLM APIs are unavailable
+- **Deployment Issues:** Issues with Streamlit Cloud deployment or FastAPI server operation
+- **Monitoring Gaps:** Gaps in monitoring and logging of LLM agent activities
+- **Resource Constraints:** Insufficient resources for maintaining the multi-component system
+- **Skill Gaps:** Lack of necessary skills for LLM integration and MCP protocol management
 
 **Societal Risks:**
-- **Social Impact:** Negative social impact of AI systems
-- **Economic Disruption:** Economic disruption caused by AI systems
-- **Environmental Impact:** Environmental impact of AI systems
-- **Public Trust:** Loss of public trust in AI systems
-- **Stakeholder Concerns:** Concerns raised by stakeholders
+- **Business Process Disruption:** Disruption of business processes due to LLM agent failures
+- **User Trust Loss:** Loss of user trust in automated business decisions
+- **Economic Impact:** Economic impact of incorrect business automation decisions
+- **Stakeholder Concerns:** Concerns raised by stakeholders about AI automation
+- **Public Perception:** Negative public perception of AI-powered business automation
 
 #### 6.1.2.2 Risk Identification Methods
 
 **Systematic Identification:**
-- **Process Analysis:** Analysis of AI system development and operation processes
+- **Process Analysis:** Analysis of LLM agent development and operation processes
 - **Stakeholder Consultation:** Consultation with relevant stakeholders
 - **Expert Review:** Review by AI and risk management experts
 - **Historical Analysis:** Analysis of historical incidents and near-misses
@@ -175,125 +182,125 @@ This procedure establishes a systematic approach to identifying, assessing, and 
 
 ### 6.1.4 Specific Risk Scenarios
 
-#### 6.1.4.1 Bias and Discrimination
+#### 6.1.4.1 LLM Hallucination in Business Decisions
 
 **Risk Description:**
-AI systems may exhibit bias against certain groups or individuals, leading to discriminatory outcomes and potential legal and reputational consequences.
+The LLM agent may generate false or misleading information about clients, orders, or business data, leading to incorrect business decisions and potential financial or operational losses.
 
 **Causes:**
-- **Biased Training Data:** Training data containing historical biases
-- **Algorithmic Bias:** Biases inherent in algorithms and models
-- **Feature Selection Bias:** Biases in feature selection and engineering
-- **Evaluation Bias:** Biases in evaluation and testing processes
+- **Training Data Issues:** Issues with training data quality and accuracy for business domain
+- **Model Limitations:** Limitations in model capabilities and understanding of business context
+- **Context Misunderstanding:** Misunderstanding of business context and requirements
+- **Overconfidence:** Overconfidence in model capabilities for business automation
 
 **Potential Impact:**
-- **Legal Consequences:** Potential legal action and regulatory penalties
-- **Reputational Damage:** Damage to organizational reputation
-- **Stakeholder Loss:** Loss of stakeholder trust and confidence
-- **Operational Disruption:** Disruption of AI system operations
+- **Incorrect Business Decisions:** Incorrect decisions based on false information about clients or orders
+- **Financial Losses:** Financial losses due to incorrect business automation
+- **Operational Failures:** Failures in operational processes due to incorrect data
+- **User Trust Loss:** Loss of user trust in automated business decisions
 
 **Mitigation Strategies:**
-- **Bias Detection:** Implementation of bias detection algorithms
-- **Diverse Training Data:** Use of diverse and representative training data
-- **Regular Bias Audits:** Regular audits for bias and discrimination
-- **Transparency Measures:** Implementation of transparency measures
-- **Stakeholder Consultation:** Consultation with diverse stakeholders
+- **Fact-Checking:** Implementation of fact-checking mechanisms against JSON data sources
+- **Confidence Scoring:** Use of confidence scoring for LLM outputs in business decisions
+- **Human Review:** Human review of critical business decisions made by the agent
+- **Validation Processes:** Implementation of validation processes against business data
+- **Continuous Monitoring:** Continuous monitoring of LLM agent outputs for accuracy
 
-#### 6.1.4.2 AI Hallucination
-
-**Risk Description:**
-AI systems may generate false or misleading information, leading to incorrect decisions and potential harm to users or stakeholders.
-
-**Causes:**
-- **Training Data Issues:** Issues with training data quality and accuracy
-- **Model Limitations:** Limitations in model capabilities and understanding
-- **Context Misunderstanding:** Misunderstanding of context and requirements
-- **Overconfidence:** Overconfidence in model capabilities
-
-**Potential Impact:**
-- **Incorrect Decisions:** Incorrect decisions based on false information
-- **User Harm:** Potential harm to users or stakeholders
-- **Operational Failures:** Failures in operational processes
-- **Trust Loss:** Loss of trust in AI system capabilities
-
-**Mitigation Strategies:**
-- **Fact-Checking:** Implementation of fact-checking mechanisms
-- **Confidence Scoring:** Use of confidence scoring for outputs
-- **Human Review:** Human review of critical decisions
-- **Validation Processes:** Implementation of validation processes
-- **Continuous Monitoring:** Continuous monitoring of system outputs
-
-#### 6.1.4.3 Prompt Injection Attacks
+#### 6.1.4.2 Prompt Injection Attacks
 
 **Risk Description:**
-Malicious users may manipulate AI prompts to access unauthorized data or perform unauthorized actions, leading to security breaches and data compromise.
+Malicious users may manipulate LLM prompts to access unauthorized client or employee data, perform unauthorized business operations, or bypass security controls.
 
 **Causes:**
-- **Input Validation Gaps:** Gaps in input validation and sanitization
-- **Access Control Weaknesses:** Weaknesses in access control mechanisms
-- **Prompt Engineering Vulnerabilities:** Vulnerabilities in prompt engineering
+- **Input Validation Gaps:** Gaps in input validation and sanitization in Streamlit interface
+- **Access Control Weaknesses:** Weaknesses in access control mechanisms for business data
+- **Prompt Engineering Vulnerabilities:** Vulnerabilities in prompt engineering for business automation
 - **Security Awareness Gaps:** Gaps in security awareness and training
 
 **Potential Impact:**
-- **Data Breaches:** Unauthorized access to sensitive data
-- **System Compromise:** Compromise of AI system security
-- **Privacy Violations:** Violations of privacy and confidentiality
-- **Regulatory Penalties:** Potential regulatory penalties and fines
+- **Data Breaches:** Unauthorized access to sensitive client and employee data
+- **System Compromise:** Compromise of LLM agent security and business operations
+- **Privacy Violations:** Violations of privacy and confidentiality of business data
+- **Regulatory Penalties:** Potential regulatory penalties and fines for data breaches
 
 **Mitigation Strategies:**
-- **Input Validation:** Comprehensive input validation and sanitization
-- **Access Controls:** Implementation of robust access controls
-- **Security Monitoring:** Continuous security monitoring and alerting
+- **Input Validation:** Comprehensive input validation and sanitization in user interfaces
+- **Access Controls:** Implementation of robust access controls for business data
+- **Security Monitoring:** Continuous security monitoring and alerting for suspicious activities
 - **User Training:** Training of users on security best practices
-- **Incident Response:** Implementation of incident response procedures
+- **Incident Response:** Implementation of incident response procedures for security incidents
 
-#### 6.1.4.4 Model Drift
-
-**Risk Description:**
-AI system performance may degrade over time due to changes in data patterns, leading to reduced accuracy and reliability.
-
-**Causes:**
-- **Data Distribution Changes:** Changes in data distribution over time
-- **Concept Drift:** Changes in underlying concepts and relationships
-- **Feature Drift:** Changes in feature relevance and importance
-- **Environmental Changes:** Changes in operating environment
-
-**Potential Impact:**
-- **Performance Degradation:** Degradation in system performance
-- **Incorrect Outputs:** Incorrect or unreliable outputs
-- **User Dissatisfaction:** Dissatisfaction with system performance
-- **Operational Failures:** Failures in operational processes
-
-**Mitigation Strategies:**
-- **Performance Monitoring:** Continuous monitoring of system performance
-- **Drift Detection:** Implementation of drift detection algorithms
-- **Regular Retraining:** Regular retraining of models with new data
-- **Model Versioning:** Implementation of model versioning and management
-- **Rollback Procedures:** Procedures for rolling back to previous models
-
-#### 6.1.4.5 Non-Compliance
+#### 6.1.4.3 MCP Protocol Failures
 
 **Risk Description:**
-AI systems may fail to comply with applicable regulations and standards, leading to legal consequences and regulatory penalties.
+Failures in the Model Context Protocol implementation may prevent tool discovery and execution, leading to system unavailability and business process disruption.
 
 **Causes:**
-- **Regulatory Changes:** Changes in applicable regulations
-- **Compliance Gaps:** Gaps in compliance monitoring and management
-- **Process Failures:** Failures in compliance processes and procedures
-- **Awareness Gaps:** Gaps in regulatory awareness and understanding
+- **Protocol Implementation Issues:** Issues in MCP protocol implementation in `agent/tools_mcp_client.py`
+- **Tool Schema Errors:** Errors in tool schemas defined in `mcp_server/*.json` files
+- **Integration Problems:** Problems in integration between MCP client and business services
+- **Version Compatibility:** Version compatibility issues with MCP protocol standards
 
 **Potential Impact:**
-- **Legal Consequences:** Legal action and regulatory penalties
-- **Operational Disruption:** Disruption of operations due to compliance issues
-- **Reputational Damage:** Damage to organizational reputation
-- **Financial Losses:** Financial losses due to penalties and fines
+- **System Unavailability:** Complete system unavailability due to tool execution failures
+- **Business Process Disruption:** Disruption of business processes dependent on tool execution
+- **User Dissatisfaction:** Dissatisfaction with system performance and reliability
+- **Operational Failures:** Failures in operational processes requiring tool execution
 
 **Mitigation Strategies:**
-- **Compliance Monitoring:** Continuous monitoring of compliance status
-- **Regular Audits:** Regular internal and external compliance audits
-- **Training Programs:** Training programs on compliance requirements
-- **Process Improvements:** Improvement of compliance processes
-- **Expert Consultation:** Consultation with compliance experts
+- **Protocol Testing:** Comprehensive testing of MCP protocol implementation
+- **Schema Validation:** Validation of tool schemas and protocol compliance
+- **Integration Testing:** Testing of integration between MCP client and business services
+- **Fallback Mechanisms:** Implementation of fallback mechanisms for tool execution
+- **Monitoring and Alerting:** Monitoring and alerting for MCP protocol failures
+
+#### 6.1.4.4 LLM API Dependency Failures
+
+**Risk Description:**
+Failures in external LLM APIs (OpenAI GPT, Anthropic Claude) may cause system unavailability, requiring fallback to simulated mode with reduced functionality.
+
+**Causes:**
+- **API Outages:** Outages in OpenAI or Anthropic API services
+- **Rate Limiting:** Rate limiting and quota exhaustion for API usage
+- **Authentication Failures:** Failures in API authentication and authorization
+- **Network Issues:** Network connectivity issues affecting API communication
+
+**Potential Impact:**
+- **System Unavailability:** System unavailability when fallback mechanisms fail
+- **Reduced Functionality:** Reduced functionality in simulated mode
+- **User Dissatisfaction:** Dissatisfaction with system performance and reliability
+- **Business Process Disruption:** Disruption of business processes requiring LLM capabilities
+
+**Mitigation Strategies:**
+- **Fallback Implementation:** Robust implementation of simulated mode fallback
+- **API Monitoring:** Continuous monitoring of API availability and performance
+- **Rate Limit Management:** Management of API rate limits and quotas
+- **Multiple Providers:** Support for multiple LLM providers for redundancy
+- **Graceful Degradation:** Graceful degradation of functionality when APIs are unavailable
+
+#### 6.1.4.5 Data Quality and Integrity Issues
+
+**Risk Description:**
+Poor quality or corrupted data in JSON files (`data/clients.json`, `data/employees.json`, `data/orders.json`) may lead to incorrect business decisions and operational failures.
+
+**Causes:**
+- **Data Corruption:** Corruption of JSON data files due to system failures
+- **Data Validation Gaps:** Gaps in data validation and quality checks
+- **Inconsistent Data:** Inconsistent data formats and structures
+- **Data Loss:** Loss of data due to backup or storage failures
+
+**Potential Impact:**
+- **Incorrect Decisions:** Incorrect business decisions based on poor quality data
+- **Operational Failures:** Failures in operational processes due to data issues
+- **User Dissatisfaction:** Dissatisfaction with system accuracy and reliability
+- **Compliance Issues:** Compliance issues due to data quality problems
+
+**Mitigation Strategies:**
+- **Data Validation:** Implementation of comprehensive data validation and quality checks
+- **Backup Procedures:** Robust backup procedures for JSON data files
+- **Data Monitoring:** Continuous monitoring of data quality and integrity
+- **Recovery Procedures:** Procedures for data recovery and restoration
+- **Quality Assurance:** Quality assurance processes for data management
 
 ### 6.1.5 Risk Monitoring and Review
 
