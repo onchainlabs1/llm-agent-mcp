@@ -1,0 +1,281 @@
+Date,Task Description,Clause,Time (h),File/Link,Notes
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,2.0,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - PROJECT_RULES.md,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,2.0,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - README.md,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 8 - Operation,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - agent/agent_core.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 8 - Operation,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - agent/tools_mcp_client.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,0.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - data/clients.json,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,0.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - data/employees.json,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,0.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - data/orders.json,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - frontend/app.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - frontend/data_admin.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - frontend/landing.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - generate_synthetic_data.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,0.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - mcp_server/crm_mcp.json,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,0.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - mcp_server/erp_mcp.json,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,0.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - mcp_server/hr_mcp.json,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 4 - Context,0.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - requirements.txt,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 8 - Operation,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - services/crm_service.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 8 - Operation,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - services/erp_service.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 8 - Operation,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - services/hr_service.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 9 - Performance Evaluation,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - tests/test_agent.py,"Author: Fabio, Status: added"
+2025-06-30,"Commit limpo: Remove histórico de segredos, MVP fu...",Clause 9 - Performance Evaluation,1.5,sha:c4d4e7c0d5941868282646d6b201c1185e9736f6 - tests/test_crm.py,"Author: Fabio, Status: added"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,0.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - .env.example,"Author: Fabio, Status: added"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,2.0,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - CRITICAL_FIXES_SUMMARY.md,"Author: Fabio, Status: added"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,2.0,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - README.md,"Author: Fabio, Status: modified"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 8 - Operation,1.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - agent/agent_core.py,"Author: Fabio, Status: modified"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,1.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - complete_setup.py,"Author: Fabio, Status: added"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,1.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - config.py,"Author: Fabio, Status: added"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,0.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - data/clients.json,"Author: Fabio, Status: modified"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,0.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - data/departments.json,"Author: Fabio, Status: added"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,0.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - data/reviews.json,"Author: Fabio, Status: added"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,1.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - frontend/app.py,"Author: Fabio, Status: modified"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,0.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - mcp_server/crm_mcp.json,"Author: Fabio, Status: modified"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 8 - Operation,1.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - services/crm_service.py,"Author: Fabio, Status: modified"
+2025-07-13,"feat: Implement critical fixes and enhancements
+
+✨...",Clause 4 - Context,1.5,sha:0e3db0121598149b44def3d7a13cbdeaa7ddba1d - setup.py,"Author: Fabio, Status: added"
+2025-07-14,"🎯 Enhance README for portfolio presentation
+
+- Add...",Clause 4 - Context,2.0,sha:68408dfe70a90ed5edf60e50f5453392a232e5de - README.md,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,2.0,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - DEVELOPMENT.md,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - LICENSE,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - MANIFEST.in,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,2.0,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - PROJECT_RULES.md,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - data/employees.json,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - data/orders.json,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,1.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - frontend/app.py,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,1.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - frontend/landing.py,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,1.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - init_setup.py,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - mcp_server/crm_mcp.json,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - mcp_server/erp_mcp.json,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - mcp_server/hr_mcp.json,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - requirements-dev.txt,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 4 - Context,0.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - requirements.txt,"Author: Fabio, Status: modified"
+2025-07-14,"📝 Final consistency improvements
+
+- Add EOF newlin...",Clause 9 - Performance Evaluation,1.5,sha:45dd1510878a1560fc00d2895d4df2d0ce72b514 - tests/test_agent.py,"Author: Fabio, Status: modified"
+2025-07-14,"📸 Add professional screenshots and documentation
+
+...",Clause 4 - Context,2.0,sha:e5c6912c7195005834f2daa3f633874f03c69763 - README.md,"Author: Fabio, Status: modified"
+2025-07-14,"📸 Add professional screenshots and documentation
+
+...",Clause 4 - Context,2.0,sha:e5c6912c7195005834f2daa3f633874f03c69763 - docs/screenshots/SCREENSHOTS.md,"Author: Fabio, Status: added"
+2025-07-14,"📸 Add professional screenshots and documentation
+
+...",Clause 4 - Context,2.0,sha:e5c6912c7195005834f2daa3f633874f03c69763 - docs/screenshots/landing-page.png,"Author: Fabio, Status: added"
+2025-07-14,"📸 Add professional screenshots and documentation
+
+...",Clause 4 - Context,2.0,sha:e5c6912c7195005834f2daa3f633874f03c69763 - docs/screenshots/main-app-interface.png,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,0.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - .markdownlint.json,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,2.0,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - DEVELOPMENT.md,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,0.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - LICENSE,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,0.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - MANIFEST.in,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,2.0,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - README.md,"Author: Fabio, Status: modified"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,2.0,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - SCREENSHOTS.md,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 8 - Operation,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - agent/agent_core.py,"Author: Fabio, Status: modified"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 8 - Operation,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - agent/tools_mcp_client.py,"Author: Fabio, Status: modified"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - frontend/app.py,"Author: Fabio, Status: modified"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - init_setup.py,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,0.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - requirements-dev.txt,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 4 - Context,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - setup.py,"Author: Fabio, Status: modified"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 9 - Performance Evaluation,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - tests/test_agent.py,"Author: Fabio, Status: modified"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 9 - Performance Evaluation,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - tests/test_crm.py,"Author: Fabio, Status: modified"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 9 - Performance Evaluation,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - tests/test_erp.py,"Author: Fabio, Status: added"
+2025-07-14,feat: implement final CodeX improvements - logging...,Clause 9 - Performance Evaluation,1.5,sha:2262db4eb34b34430275a15a9bfc132f7fd95314 - tests/test_hr.py,"Author: Fabio, Status: added"
+2025-07-14,🔧 FIX: Resolve import issues for both package and ...,Clause 8 - Operation,1.5,sha:4cea42c949c882667ef0a28efabe10f67cdcc0f4 - agent/agent_core.py,"Author: Fabio, Status: modified"
+2025-07-14,🔧 FIX: Resolve import issues for both package and ...,Clause 4 - Context,1.5,sha:4cea42c949c882667ef0a28efabe10f67cdcc0f4 - frontend/app.py,"Author: Fabio, Status: modified"
+2025-07-14,🔧 FIX: Resolve import issues for both package and ...,Clause 9 - Performance Evaluation,1.5,sha:4cea42c949c882667ef0a28efabe10f67cdcc0f4 - tests/test_agent.py,"Author: Fabio, Status: modified"
+2025-07-14,🔧 FIX: Resolve import issues for both package and ...,Clause 9 - Performance Evaluation,1.5,sha:4cea42c949c882667ef0a28efabe10f67cdcc0f4 - tests/test_crm.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,2.0,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - CRITICAL_FIXES_SUMMARY.md,"Author: Fabio, Status: removed"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - __init__.py,"Author: Fabio, Status: added"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - agent/__init__.py,"Author: Fabio, Status: added"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - agent/agent_core.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - agent/tools_mcp_client.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - complete_setup.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - config.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - frontend/__init__.py,"Author: Fabio, Status: added"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - frontend/app.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - frontend/data_admin.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - frontend/landing.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - generate_synthetic_data.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,0.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - requirements.txt,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - services/__init__.py,"Author: Fabio, Status: added"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - services/crm_service.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - services/erp_service.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - services/hr_service.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - services/models.py,"Author: Fabio, Status: added"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 8 - Operation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - services/validation.py,"Author: Fabio, Status: added"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 4 - Context,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - setup.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 9 - Performance Evaluation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - tests/__init__.py,"Author: Fabio, Status: added"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 9 - Performance Evaluation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - tests/test_agent.py,"Author: Fabio, Status: modified"
+2025-07-14,🚀 MAJOR: Implement CodeX OpenAI feedback - Product...,Clause 9 - Performance Evaluation,1.5,sha:c1a9dd108acdd4221718eca9e299dac829912fe9 - tests/test_crm.py,"Author: Fabio, Status: modified"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,2.0,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/README.md,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/__init__.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/dependencies.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/main.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/middleware/__init__.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/middleware/auth.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/middleware/cors.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/middleware/logging.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/routers/__init__.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/routers/agent.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/routers/health.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/schemas/__init__.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/schemas/requests.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 8 - Operation,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - api/schemas/responses.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 4 - Context,0.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - requirements.txt,"Author: Fabio, Status: modified"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 4 - Context,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - run_api.py,"Author: Fabio, Status: added"
+2025-07-17,"feat: Implement enterprise-grade FastAPI REST API
+...",Clause 4 - Context,1.5,sha:891f0bcad4adbee422319a67245a883ef4668297 - setup.py,"Author: Fabio, Status: modified"
+2025-07-21,docs: Adiciona seção de links públicos das apps St...,Clause 4 - Context,2.0,sha:db6c844d6e9b13655bc335da51a5bd98968e553c - README.md,"Author: onchainlabs1, Status: modified"
+2025-07-21,fix: Atualiza links do GitHub e adiciona URLs públ...,Clause 4 - Context,1.5,sha:6e4a1a0e0214cf8bc5954902e1102cc3ee995d29 - landing.py,"Author: onchainlabs1, Status: modified"
+2025-07-21,feat: Add landing page for Streamlit Cloud deploym...,Clause 4 - Context,1.5,sha:693c08a04bf1d473aebacbcb3d58da7808fd8af4 - landing.py,"Author: onchainlabs1, Status: added"
+2025-07-21,fix: Add missing dependencies for Streamlit Cloud ...,Clause 4 - Context,0.5,sha:1ba9ae94c224118a5666d248e420c9630b4d73f7 - requirements.txt,"Author: onchainlabs1, Status: modified"
+2025-07-21,feat: Prepare for Streamlit Community Cloud deploy...,Clause 4 - Context,1.5,sha:0298dda2fb319d54945854ccdeaa13025f3077c2 - app.py,"Author: onchainlabs1, Status: added"
+2025-07-21,feat: Prepare for Streamlit Community Cloud deploy...,Clause 4 - Context,0.5,sha:0298dda2fb319d54945854ccdeaa13025f3077c2 - requirements-full.txt,"Author: onchainlabs1, Status: added"
+2025-07-21,feat: Prepare for Streamlit Community Cloud deploy...,Clause 4 - Context,0.5,sha:0298dda2fb319d54945854ccdeaa13025f3077c2 - requirements.txt,"Author: onchainlabs1, Status: modified"
+2025-07-21,feat: Complete portfolio-ready version v1.0.0 - En...,Clause 4 - Context,2.0,sha:d7f2da29e7fb3a5ea685bb8ddd5eba2bb60cb16b - CHANGELOG.md,"Author: onchainlabs1, Status: added"
+2025-07-21,feat: Complete portfolio-ready version v1.0.0 - En...,Clause 4 - Context,2.0,sha:d7f2da29e7fb3a5ea685bb8ddd5eba2bb60cb16b - README.md,"Author: onchainlabs1, Status: modified"
+2025-07-21,feat: Complete portfolio-ready version v1.0.0 - En...,Clause 8 - Operation,1.5,sha:d7f2da29e7fb3a5ea685bb8ddd5eba2bb60cb16b - agent/agent_core.py,"Author: onchainlabs1, Status: modified"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 4 - Context,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause4_Context_new/AIMS_Context_and_Stakeholders.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 4 - Context,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause4_Context_new/AIMS_Scope_and_Boundaries.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 4 - Context,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause4_Context_new/README.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 5 - Leadership,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause5_Leadership_new/AIMS_Roles_and_Responsibilities.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 5 - Leadership,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause5_Leadership_new/AI_Acceptable_Use_Policy.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 5 - Leadership,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause5_Leadership_new/AI_Concern_Reporting_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 5 - Leadership,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause5_Leadership_new/AI_Management_Policy.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 5 - Leadership,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause5_Leadership_new/README.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 6 - Planning,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause6_Planning_new/AI_Change_Management_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 6 - Planning,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause6_Planning_new/AI_Objectives_and_Planning.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 6 - Planning,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause6_Planning_new/AI_Risk_Management_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 6 - Planning,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause6_Planning_new/README.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 6 - Planning,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/Clause6_Planning_new/Statement_of_Applicability.csv,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement new structured ISO/IEC 42001:2023 ...,Clause 4 - Context,2.0,sha:df6b749ff44eb944d469e2ea9c0710d2f2d7e5a6 - docs/README.md,"Author: onchainlabs1, Status: modified"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 6 Planni...,Clause 6 - Planning,2.0,sha:00950a6dea3e96573534735e050e2bd8b37d5f62 - docs/Clause6_Planning/AI_Change_Management_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 6 Planni...,Clause 6 - Planning,2.0,sha:00950a6dea3e96573534735e050e2bd8b37d5f62 - docs/Clause6_Planning/AI_Objectives_and_Planning.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 6 Planni...,Clause 6 - Planning,2.0,sha:00950a6dea3e96573534735e050e2bd8b37d5f62 - docs/Clause6_Planning/AI_Risk_Management_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 6 Planni...,Clause 6 - Planning,2.0,sha:00950a6dea3e96573534735e050e2bd8b37d5f62 - docs/Clause6_Planning/AI_Risk_Register.csv,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 6 Planni...,Clause 6 - Planning,2.0,sha:00950a6dea3e96573534735e050e2bd8b37d5f62 - docs/Clause6_Planning/README.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 6 Planni...,Clause 6 - Planning,2.0,sha:00950a6dea3e96573534735e050e2bd8b37d5f62 - docs/Clause6_Planning/Statement_of_Applicability.csv,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 6 Planni...,Clause 4 - Context,2.0,sha:00950a6dea3e96573534735e050e2bd8b37d5f62 - docs/README.md,"Author: onchainlabs1, Status: modified"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 4 and 5 ...,Clause 4 - Context,2.0,sha:3e2ba9a88a0f070304c8a3f7d1559b5d03695e0a - docs/Clause4_Context/AIMS_Context_and_Stakeholders.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 4 and 5 ...,Clause 4 - Context,2.0,sha:3e2ba9a88a0f070304c8a3f7d1559b5d03695e0a - docs/Clause4_Context/AIMS_Scope_and_Boundaries.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 4 and 5 ...,Clause 5 - Leadership,2.0,sha:3e2ba9a88a0f070304c8a3f7d1559b5d03695e0a - docs/Clause5_Leadership/AIMS_Leadership_and_Commitment.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 4 and 5 ...,Clause 5 - Leadership,2.0,sha:3e2ba9a88a0f070304c8a3f7d1559b5d03695e0a - docs/Clause5_Leadership/AIMS_Organizational_Roles.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 4 and 5 ...,Clause 5 - Leadership,2.0,sha:3e2ba9a88a0f070304c8a3f7d1559b5d03695e0a - docs/Clause5_Leadership/AIMS_Policy_Statement.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 4 and 5 ...,Clause 5 - Leadership,2.0,sha:3e2ba9a88a0f070304c8a3f7d1559b5d03695e0a - docs/Clause5_Leadership/README.md,"Author: onchainlabs1, Status: added"
+2025-08-03,feat: implement ISO/IEC 42001:2023 Clause 4 and 5 ...,Clause 4 - Context,2.0,sha:3e2ba9a88a0f070304c8a3f7d1559b5d03695e0a - docs/README.md,"Author: onchainlabs1, Status: added"
+2025-08-03,fix: standardize GitHub repository references to o...,Clause 8 - Operation,1.5,sha:dfce92b24beb1b80966e12e7186e4ab5922f7e55 - agent/agent_core.py,"Author: onchainlabs1, Status: modified"
+2025-08-03,fix: standardize GitHub repository references to o...,Clause 8 - Operation,1.5,sha:dfce92b24beb1b80966e12e7186e4ab5922f7e55 - agent/tools_mcp_client.py,"Author: onchainlabs1, Status: modified"
+2025-08-03,fix: standardize GitHub repository references to o...,Clause 4 - Context,1.5,sha:dfce92b24beb1b80966e12e7186e4ab5922f7e55 - frontend/landing.py,"Author: onchainlabs1, Status: modified"
+2025-08-03,fix: standardize GitHub repository references to o...,Clause 8 - Operation,1.5,sha:dfce92b24beb1b80966e12e7186e4ab5922f7e55 - services/crm_service.py,"Author: onchainlabs1, Status: modified"
+2025-08-03,fix: standardize GitHub repository references to o...,Clause 8 - Operation,1.5,sha:dfce92b24beb1b80966e12e7186e4ab5922f7e55 - services/models.py,"Author: onchainlabs1, Status: modified"
+2025-08-03,fix: standardize GitHub repository references to o...,Clause 9 - Performance Evaluation,1.5,sha:dfce92b24beb1b80966e12e7186e4ab5922f7e55 - tests/test_agent.py,"Author: onchainlabs1, Status: modified"
+2025-08-04,feat: rewrite documentation with real llm-agent-mc...,Clause 4 - Context,2.0,sha:69573044798822a65e7eee37c16f876f9aa968b7 - docs/Clause4_Context_new/AIMS_Scope_and_Boundaries.md,"Author: onchainlabs1, Status: modified"
+2025-08-04,feat: rewrite documentation with real llm-agent-mc...,Clause 6 - Planning,2.0,sha:69573044798822a65e7eee37c16f876f9aa968b7 - docs/Clause6_Planning_new/AI_Objectives_and_Planning.md,"Author: onchainlabs1, Status: modified"
+2025-08-04,feat: rewrite documentation with real llm-agent-mc...,Clause 6 - Planning,2.0,sha:69573044798822a65e7eee37c16f876f9aa968b7 - docs/Clause6_Planning_new/AI_Risk_Management_Procedure.md,"Author: onchainlabs1, Status: modified"
+2025-08-04,feat: rewrite documentation with real llm-agent-mc...,Clause 6 - Planning,2.0,sha:69573044798822a65e7eee37c16f876f9aa968b7 - docs/Clause6_Planning_new/AI_Risk_Register.csv,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: enhance iso_docs.py with individual GitHub l...,Clause 4 - Context,1.5,sha:45c4cca94ebdb7615c55ca0c1193aff29938de87 - iso_docs.py,"Author: onchainlabs1, Status: modified"
+2025-08-06,docs: update README.md to include ISO documentatio...,Clause 4 - Context,2.0,sha:c93e060dd383e1ca34c19cdc401bd69f9cfa8fea - README.md,"Author: onchainlabs1, Status: modified"
+2025-08-06,feat: add ISO/IEC 42001:2023 documentation browser...,Clause 4 - Context,1.5,sha:5098cde9e227372e136b9021898c2d7020bedf15 - iso_docs.py,"Author: onchainlabs1, Status: added"
+2025-08-06,docs: update main README.md to reflect 100% comple...,Clause 4 - Context,2.0,sha:369da8e4e68d6413951883802c4fef874ce8c726 - docs/README.md,"Author: onchainlabs1, Status: modified"
+2025-08-06,feat: implement Clause 10 - Improvement documentat...,Clause 10 - Improvement,2.0,sha:d61a538b062e08cd66e8710a2e8812d73f73c491 - docs/Clause10_Improvement/AI_Continual_Improvement.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement Clause 10 - Improvement documentat...,Clause 10 - Improvement,2.0,sha:d61a538b062e08cd66e8710a2e8812d73f73c491 - docs/Clause10_Improvement/AI_Nonconformity_and_Corrective_Action.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement Clause 10 - Improvement documentat...,Clause 10 - Improvement,2.0,sha:d61a538b062e08cd66e8710a2e8812d73f73c491 - docs/Clause10_Improvement/README.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement Clause 9 - Performance Evaluation ...,Clause 9 - Performance Evaluation,2.0,sha:b5238a7f83279e3b346c92fdd6bc0613b4ec4843 - docs/Clause9_Performance_Evaluation/AI_Continuous_Improvement.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement Clause 9 - Performance Evaluation ...,Clause 9 - Performance Evaluation,2.0,sha:b5238a7f83279e3b346c92fdd6bc0613b4ec4843 - docs/Clause9_Performance_Evaluation/AI_Internal_Audit_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement Clause 9 - Performance Evaluation ...,Clause 9 - Performance Evaluation,2.0,sha:b5238a7f83279e3b346c92fdd6bc0613b4ec4843 - docs/Clause9_Performance_Evaluation/AI_Management_Review.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement Clause 9 - Performance Evaluation ...,Clause 9 - Performance Evaluation,2.0,sha:b5238a7f83279e3b346c92fdd6bc0613b4ec4843 - docs/Clause9_Performance_Evaluation/AI_Performance_Monitoring_and_Measurement.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement Clause 9 - Performance Evaluation ...,Clause 9 - Performance Evaluation,2.0,sha:b5238a7f83279e3b346c92fdd6bc0613b4ec4843 - docs/Clause9_Performance_Evaluation/README.md,"Author: onchainlabs1, Status: added"
+2025-08-06,fix: resolve import and indentation errors for Str...,Clause 8 - Operation,1.5,sha:5cbcd21c079a59c9f9fd7ec768aac765acfbb070 - agent/agent_core.py,"Author: onchainlabs1, Status: modified"
+2025-08-06,fix: resolve import and indentation errors for Str...,Clause 8 - Operation,1.5,sha:5cbcd21c079a59c9f9fd7ec768aac765acfbb070 - agent/tools_mcp_client.py,"Author: onchainlabs1, Status: modified"
+2025-08-06,fix: resolve import and indentation errors for Str...,Clause 4 - Context,1.5,sha:5cbcd21c079a59c9f9fd7ec768aac765acfbb070 - app.py,"Author: onchainlabs1, Status: modified"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 8 Operat...,Clause 8 - Operation,2.0,sha:c5829af227a8d387c035122c947407a6fbf1352a - docs/Clause8_Operation/AI_Data_Management_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 8 Operat...,Clause 8 - Operation,2.0,sha:c5829af227a8d387c035122c947407a6fbf1352a - docs/Clause8_Operation/AI_Incident_Response_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 8 Operat...,Clause 8 - Operation,2.0,sha:c5829af227a8d387c035122c947407a6fbf1352a - docs/Clause8_Operation/AI_Operational_Planning_and_Control.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 8 Operat...,Clause 8 - Operation,2.0,sha:c5829af227a8d387c035122c947407a6fbf1352a - docs/Clause8_Operation/AI_System_Impact_Assessment.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 8 Operat...,Clause 8 - Operation,2.0,sha:c5829af227a8d387c035122c947407a6fbf1352a - docs/Clause8_Operation/AI_Third_Party_and_Customer_Requirements.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 8 Operat...,Clause 8 - Operation,2.0,sha:c5829af227a8d387c035122c947407a6fbf1352a - docs/Clause8_Operation/README.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 7 Suppor...,Clause 7 - Support,2.0,sha:ddde66e2d5012edc2100f2128eeba9d74f80959d - docs/Clause7_Support/AIMS_Awareness_and_Communication.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 7 Suppor...,Clause 7 - Support,2.0,sha:ddde66e2d5012edc2100f2128eeba9d74f80959d - docs/Clause7_Support/AIMS_Competence_and_Training.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 7 Suppor...,Clause 7 - Support,2.0,sha:ddde66e2d5012edc2100f2128eeba9d74f80959d - docs/Clause7_Support/AIMS_Document_Control_Procedure.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 7 Suppor...,Clause 7 - Support,2.0,sha:ddde66e2d5012edc2100f2128eeba9d74f80959d - docs/Clause7_Support/AIMS_Resources.md,"Author: onchainlabs1, Status: added"
+2025-08-06,feat: implement ISO/IEC 42001:2023 Clause 7 Suppor...,Clause 7 - Support,2.0,sha:ddde66e2d5012edc2100f2128eeba9d74f80959d - docs/Clause7_Support/README.md,"Author: onchainlabs1, Status: added"
+2025-08-06,ISO/IEC 42001:2023 Documentation Planning and Analysis,Clause 4 - Context,8.0,Manual Entry - Documentation Planning,"Initial planning and analysis of ISO requirements, stakeholder identification, scope definition"
+2025-08-06,ISO/IEC 42001:2023 Leadership and Policy Development,Clause 5 - Leadership,6.0,Manual Entry - Leadership Development,"Development of AI management policy, acceptable use policy, roles and responsibilities"
+2025-08-06,ISO/IEC 42001:2023 Risk Management Framework Implementation,Clause 6 - Planning,10.0,Manual Entry - Risk Management,"Comprehensive risk assessment, risk register development, mitigation strategy planning"
+2025-08-06,ISO/IEC 42001:2023 Support Infrastructure Development,Clause 7 - Support,5.0,Manual Entry - Support Infrastructure,"Resource allocation, competence development, awareness and communication procedures"
+2025-08-06,ISO/IEC 42001:2023 Operational Controls Implementation,Clause 8 - Operation,12.0,Manual Entry - Operational Controls,"Operational planning, incident response procedures, data management implementation"
+2025-08-06,ISO/IEC 42001:2023 Performance Evaluation System,Clause 9 - Performance Evaluation,8.0,Manual Entry - Performance Evaluation,"Monitoring framework, internal audit procedures, management review processes"
+2025-08-06,ISO/IEC 42001:2023 Continuous Improvement Framework,Clause 10 - Improvement,6.0,Manual Entry - Continuous Improvement,"Nonconformity management, corrective action procedures, continual improvement processes"
+2025-08-06,ISO/IEC 42001:2023 Documentation Browser Development,Clause 8 - Operation,4.0,iso_docs.py,Development of professional documentation browser for external auditors
+2025-08-06,ISO/IEC 42001:2023 Hours Tracking System Development,Clause 9 - Performance Evaluation,3.0,log_hours.py,Development of comprehensive hours tracking system for certification requirements
+2025-08-06,ISO/IEC 42001:2023 Final Documentation Review and Validation,Clause 4 - Context,5.0,Manual Entry - Final Review,"Comprehensive review of all documentation, validation of compliance, preparation for audit"

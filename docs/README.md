@@ -197,6 +197,7 @@ All 7 clauses of ISO/IEC 42001:2023 have been fully implemented and documented.
 - **Compliance Support:** Questions about compliance requirements
 - **Training Support:** Training and awareness program support
 - **Documentation Support:** Questions about documentation
+- **[📊 Project Hours Log](../project_hours_log.md)** - ISO/IEC 42001:2023 certification hours tracking
 
 ---
 
