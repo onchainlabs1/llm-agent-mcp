@@ -80,6 +80,7 @@ streamlit run frontend/app.py
 
 **🌐 Multiple Access Points:**
 - **Main Application**: `http://localhost:8501` (Streamlit UI)
+- **ISO Documentation**: `http://localhost:8503` (ISO/IEC 42001:2023 Browser)
 - **REST API**: `http://localhost:8000/docs` (FastAPI + Swagger)
 - **Landing Page**: `http://localhost:8502` (Project presentation)
 - **Live Repository**: [GitHub](https://github.com/onchainlabs1/llm-agent-mcp)
@@ -91,19 +92,33 @@ streamlit run frontend/app.py
 
 ## 🚀 Multiple Interfaces
 
-AgentMCP provides three distinct interfaces for different use cases:
+AgentMCP provides four distinct interfaces for different use cases:
 
 ### 1. 📱 **Streamlit Web Interface** (Primary)
 **Natural language business operations with real-time feedback**
 
 ```bash
-streamlit run frontend/app.py
+streamlit run app.py
 ```
+
+### 2. 📘 **ISO Documentation Browser** (New!)
+**Professional interface for exploring ISO/IEC 42001:2023 compliance documentation**
+
+```bash
+streamlit run iso_docs.py
+```
+
+**Features:**
+- 📁 Dynamic navigation through all 7 ISO clauses (4-10)
+- 📄 Real-time rendering of 35+ documentation files
+- 📊 Live statistics and compliance status
+- 🔍 Searchable content with expandable sections
+- 🎯 Professional UI with compliance metrics
 - **Access**: `http://localhost:8501`
 - **Best for**: Interactive demos, business users, natural language testing
 - **Features**: Chat interface, conversation history, real-time logs
 
-### 2. ⚡ **FastAPI REST API** (Enterprise)
+### 3. 🔌 **REST API Interface** (Enterprise)
 **Professional REST endpoints with authentication and documentation**
 
 ```bash
