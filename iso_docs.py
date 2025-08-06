@@ -121,12 +121,8 @@ def read_markdown_file(file_path):
 
 def main():
     # Header
-    st.markdown("""
-    <div class="main-header">
-        <h1>📘 ISO/IEC 42001:2023 Compliance Center</h1>
-        <p>AI Management System Documentation Browser</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.title("📘 ISO/IEC 42001 Documentation Center")
+    st.subheader("AI Management System Documentation Browser")
     
     # Get statistics
     total_files, total_lines = get_document_stats()
@@ -203,9 +199,17 @@ def main():
         with st.expander(expander_title, expanded=is_readme):
             content = read_markdown_file(file)
             
-            # Display file info
-            st.markdown(f"**File:** `{file.relative_to(Path(__file__).parent)}`")
-            st.markdown(f"**Size:** {file.stat().st_size:,} bytes")
+            # Generate GitHub link for this document
+            github_link = f"https://github.com/onchainlabs1/llm-agent-mcp/blob/main/docs/{selected_folder.name}/{file_name}"
+            
+            # Display file info and GitHub link
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                st.markdown(f"**File:** `{file.relative_to(Path(__file__).parent)}`")
+                st.markdown(f"**Size:** {file.stat().st_size:,} bytes")
+            with col2:
+                st.markdown(f"[🔗 View on GitHub]({github_link})")
+            
             st.markdown("---")
             
             # Render markdown content
