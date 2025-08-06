@@ -160,7 +160,7 @@ class MCPClient:
             # Just validate that we can operate
             self.logger.info("MCP Client initialized in standalone mode")
             self.connected = True
-                    return True
+            return True
 
         except Exception as e:
             self.logger.error(f"Error initializing MCP client: {str(e)}")
@@ -346,7 +346,7 @@ class MCPClient:
             for tool_data in schemas_data.get("tools", []):
                 try:
                     schema = MCPToolSchema(**tool_data)
-                self.registered_tools[schema.name] = schema
+                    self.registered_tools[schema.name] = schema
                     loaded_count += 1
                 except ValidationError as e:
                     self.logger.error(f"Invalid tool schema in {schema_file}: {str(e)}")
@@ -397,7 +397,7 @@ class MCPClient:
 
             # Validate against JSON schema
             jsonschema.validate(parameters, tool_schema.input_schema)
-        return True 
+            return True
 
         except jsonschema.ValidationError as e:
             self.logger.error(f"Parameter validation failed for {tool_name}: {str(e)}")

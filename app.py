@@ -32,21 +32,15 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import agent modules using package imports
 try:
-    # Try relative imports (when used as a package)
-    from ..agent.agent_core import AgentConfig, AgentCore
-    from ..config import config
+    from agent.agent_core import AgentConfig, AgentCore
+    from config import config
 except ImportError:
-    try:
-        # Try absolute package imports (recommended: pip install -e .)
-        from agentmcp.agent.agent_core import AgentConfig, AgentCore
-        from agentmcp.config import config
-    except ImportError:
-        # Final fallback for development (avoid sys.path when possible)
-        import sys
-        from pathlib import Path
-        sys.path.append(str(Path(__file__).parent.parent))
-        from agent.agent_core import AgentConfig, AgentCore
-        from config import config
+    import sys
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent / "agent"))
+    sys.path.append(str(Path(__file__).parent))
+    from agent_core import AgentConfig, AgentCore
+    from config import config
 
 # Configure Streamlit page
 st.set_page_config(
