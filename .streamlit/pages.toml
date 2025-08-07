@@ -1,0 +1,19 @@
+[[pages]]
+path = "app.py"
+name = "🏠 Main App"
+icon = "🏠"
+
+[[pages]]
+path = "iso_dashboard.py"
+name = "📋 ISO Dashboard"
+icon = "📋"
+
+[[pages]]
+path = "iso_docs.py"
+name = "📘 ISO Docs Browser"
+icon = "📘"
+
+[[pages]]
+path = "landing.py"
+name = "🌐 Landing Page"
+icon = "🌐" 
