@@ -81,6 +81,7 @@ streamlit run frontend/app.py
 **🌐 Multiple Access Points:**
 - **Main Application**: `http://localhost:8501` (Streamlit UI)
 - **ISO Documentation**: `http://localhost:8503` (ISO/IEC 42001:2023 Browser)
+- **ISO Dashboard**: `http://localhost:8504` (Professional audit dashboard)
 - **REST API**: `http://localhost:8000/docs` (FastAPI + Swagger)
 - **Landing Page**: `http://localhost:8502` (Project presentation)
 - **Live Repository**: [GitHub](https://github.com/onchainlabs1/llm-agent-mcp)
@@ -114,11 +115,25 @@ streamlit run iso_docs.py
 - 📊 Live statistics and compliance status
 - 🔍 Searchable content with expandable sections
 - 🎯 Professional UI with compliance metrics
+
+### 3. 📋 **ISO Documentation Dashboard** (New!)
+**Professional dashboard for external auditors and project reviewers**
+
+```bash
+streamlit run iso_dashboard.py
+```
+
+**Features:**
+- 📊 Compliance overview with metrics and status
+- 📁 Organized clause navigation with tabs
+- 📈 Hours log preview with statistics
+- 🔗 Direct links to all GitHub documentation
+- 🎯 Audit-ready presentation format
 - **Access**: `http://localhost:8501`
 - **Best for**: Interactive demos, business users, natural language testing
 - **Features**: Chat interface, conversation history, real-time logs
 
-### 3. 🔌 **REST API Interface** (Enterprise)
+### 4. 🔌 **REST API Interface** (Enterprise)
 **Professional REST endpoints with authentication and documentation**
 
 ```bash
