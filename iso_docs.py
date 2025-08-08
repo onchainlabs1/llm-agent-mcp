@@ -222,16 +222,13 @@ def main():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        if st.button("🏠 Back to Main App", use_container_width=True):
-            st.switch_page("app.py")
+        st.link_button("🏠 Back to Main App", "https://llm-agent-mcp-portfolio.streamlit.app/", use_container_width=True)
     
     with col2:
-        if st.button("📚 View on GitHub", use_container_width=True):
-            st.markdown("[View Repository](https://github.com/onchainlabs1/llm-agent-mcp)")
+        st.link_button("📚 View on GitHub", "https://github.com/onchainlabs1/llm-agent-mcp", use_container_width=True)
     
     with col3:
-        if st.button("📋 Documentation Index", use_container_width=True):
-            st.markdown("[View README](https://github.com/onchainlabs1/llm-agent-mcp/blob/main/docs/README.md)")
+        st.link_button("📋 Documentation Index", "https://github.com/onchainlabs1/llm-agent-mcp/blob/main/docs/README.md", use_container_width=True)
     
     # Sidebar footer
     st.sidebar.markdown("---")
