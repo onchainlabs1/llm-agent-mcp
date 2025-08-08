@@ -123,11 +123,9 @@ def main():
     # Navigation
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        if st.button("🏠 Main App", use_container_width=True):
-            st.switch_page("app.py")
+        st.link_button("🏠 Main App", "https://llm-agent-mcp-portfolio.streamlit.app/", use_container_width=True)
     with col2:
-        if st.button("📘 ISO Docs Browser", use_container_width=True):
-            st.switch_page("iso_docs.py")
+        st.link_button("📘 ISO Docs Browser", "https://llm-agent-mcp-portfolio.streamlit.app/iso_docs", use_container_width=True)
     with col3:
         st.link_button("📚 GitHub Repository", REPO_BASE, use_container_width=True)
     with col4:
