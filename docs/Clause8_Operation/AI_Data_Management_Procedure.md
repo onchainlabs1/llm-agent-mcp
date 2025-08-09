@@ -671,12 +671,33 @@ class DataQualityAssessment:
         return len(present_fields) / len(required_fields)
     
     def calculate_consistency(self, data: dict, data_type: str) -> float:
-        # Implement consistency calculation
-        return 0.9  # Placeholder
+        # Consistency: percentage of cross-field checks that pass
+        checks_passed = 0
+        checks_total = 0
+        if data_type == "client_data":
+            # Example: email format and unique id present
+            checks_total += 2
+            checks_passed += 1 if "id" in data and data.get("id") else 0
+            checks_passed += 1 if "email" in data and "@" in str(data.get("email", "")) else 0
+        elif data_type == "order_data":
+            # Example: client_id present and quantity positive
+            checks_total += 2
+            checks_passed += 1 if data.get("client_id") else 0
+            checks_passed += 1 if isinstance(data.get("quantity"), (int, float)) and data.get("quantity", 0) > 0 else 0
+        return (checks_passed / checks_total) if checks_total else 0.0
     
     def calculate_timeliness(self, data: dict, data_type: str) -> float:
-        # Implement timeliness calculation
-        return 0.9  # Placeholder
+        # Timeliness: whether the record has a recent updated_at within SLA (days)
+        from datetime import datetime, timedelta
+        updated_at = data.get("updated_at")
+        if not updated_at:
+            return 0.0
+        try:
+            updated = datetime.fromisoformat(str(updated_at))
+        except Exception:
+            return 0.0
+        sla = 30 if data_type == "client_data" else 7  # example SLA windows
+        return 1.0 if updated >= datetime.utcnow() - timedelta(days=sla) else 0.0
 ```
 
 #### 8.3.7.2 Quality Improvement
