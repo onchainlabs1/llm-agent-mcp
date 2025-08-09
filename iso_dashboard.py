@@ -24,6 +24,10 @@ st.set_page_config(
 GITHUB_BASE = "https://github.com/onchainlabs1/llm-agent-mcp/blob/main"
 REPO_BASE = "https://github.com/onchainlabs1/llm-agent-mcp"
 
+# Configurable external links (override via env vars in Streamlit Cloud settings)
+MAIN_APP_URL = os.getenv("MAIN_APP_URL", "/")  # default to root (same app)
+ISO_DOCS_URL = os.getenv("ISO_DOCS_URL", "/iso_docs")  # default to subpage
+
 # ISO Clause definitions
 ISO_CLAUSES = {
     "Clause 4": {
@@ -123,9 +127,9 @@ def main():
     # Navigation
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.link_button("🏠 Main App", "https://llm-agent-mcp-portfolio.streamlit.app/", use_container_width=True)
+        st.link_button("🏠 Main App", MAIN_APP_URL, use_container_width=True)
     with col2:
-        st.link_button("📘 ISO Docs Browser", "https://llm-agent-mcp-portfolio.streamlit.app/iso_docs", use_container_width=True)
+        st.link_button("📘 ISO Docs Browser", ISO_DOCS_URL, use_container_width=True)
     with col3:
         st.link_button("📚 GitHub Repository", REPO_BASE, use_container_width=True)
     with col4:
