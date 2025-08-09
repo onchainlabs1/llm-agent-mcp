@@ -192,6 +192,35 @@ def main():
     
     st.markdown("---")
     
+    # Compliance Checklist from SoA
+    st.markdown("## ✅ Compliance Checklist (from SoA)")
+    try:
+        import pandas as pd  # ensure available
+        soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
+        if os.path.exists(soa_path):
+            soa_df = pd.read_csv(soa_path)
+            total_controls = len(soa_df)
+            yes_count = (soa_df["Implemented (Yes/No)"].str.lower() == "yes").sum()
+            partial_count = (soa_df["Implemented (Yes/No)"].str.lower() == "partial").sum()
+            no_count = (soa_df["Implemented (Yes/No)"].str.lower() == "no").sum()
+
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Total Controls", total_controls)
+            c2.metric("Implemented", yes_count)
+            c3.metric("Partial", partial_count)
+            c4.metric("Not Implemented", no_count)
+
+            if partial_count + no_count > 0:
+                st.markdown("### 🔧 Open Items")
+                open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][
+                    ["Control ID", "Control Title", "Implemented (Yes/No)", "Justification", "Linked Document"]
+                ]
+                st.dataframe(open_df, use_container_width=True)
+        else:
+            st.info("SoA not found. Add it at docs/Clause6_Planning_new/Statement_of_Applicability.csv")
+    except Exception as e:
+        st.warning(f"Unable to load SoA: {e}")
+
     # Overview Metrics
     st.markdown("## 📊 Compliance Overview")
     
@@ -329,6 +358,11 @@ def main():
         st.markdown("### 📚 Evidence Index")
         st.markdown("Traceability from requirements to evidence.")
         st.link_button("Open Evidence Index", f"{GITHUB_BASE}/docs/Evidence_Index.md")
+
+        st.markdown("### 🧾 Recent Evidence")
+        st.markdown(f"- [NCR-2025-001]( {GITHUB_BASE}/docs/evidence/NCR_CAPA_Example_NCR-2025-001.md )")
+        st.markdown(f"- [Internal Audit AUD-2025-001]( {GITHUB_BASE}/docs/evidence/Internal_Audit_Report_AUD-2025-001.md )")
+        st.markdown(f"- [Management Review MR-2025-001]( {GITHUB_BASE}/docs/evidence/Management_Review_Minutes_MR-2025-001.md )")
     
     st.markdown("---")
     
