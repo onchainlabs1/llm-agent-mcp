@@ -54,6 +54,10 @@ st.markdown(
 
     /* Footer text contrast */
     .iso-footer p { color: #374151 !important; }
+
+    /* Preserve original hero header styling (white text on gradient) */
+    .iso-hero, .iso-hero h1, .iso-hero p { color: #ffffff !important; }
+    .iso-hero h1 { text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
     </style>
     """,
     unsafe_allow_html=True,
@@ -156,7 +160,7 @@ ISO_CLAUSES = {
 def main():
     # Header
     st.markdown("""
-    <div style="text-align: center; padding: 2rem; background: linear-gradient(90deg, #1f77b4, #ff7f0e); border-radius: 10px; color: white; margin-bottom: 2rem;">
+    <div class="iso-hero" style="text-align: center; padding: 2rem; background: linear-gradient(90deg, #1f77b4, #ff7f0e); border-radius: 10px; color: white; margin-bottom: 2rem;">
         <h1>📋 ISO/IEC 42001:2023 Documentation Dashboard</h1>
         <p style="font-size: 1.2rem; margin: 0;">AI Management System Compliance Center</p>
         <p style="font-size: 1rem; margin: 0.5rem 0 0 0;">llm-agent-mcp Project</p>
