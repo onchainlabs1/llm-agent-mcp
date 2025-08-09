@@ -75,8 +75,9 @@ GITHUB_BASE = "https://github.com/onchainlabs1/llm-agent-mcp/blob/main"
 REPO_BASE = "https://github.com/onchainlabs1/llm-agent-mcp"
 
 # Configurable external links (override via env vars in Streamlit Cloud settings)
-MAIN_APP_URL = os.getenv("MAIN_APP_URL", "/")  # default to root (same app)
-ISO_DOCS_URL = os.getenv("ISO_DOCS_URL", "/iso_docs")  # default to subpage
+# Provide sensible cross-app defaults to avoid self-linking
+MAIN_APP_URL = os.getenv("MAIN_APP_URL", "https://llm-agent-mcp-portfolio.streamlit.app")
+ISO_DOCS_URL = os.getenv("ISO_DOCS_URL", "https://llm-agent-mcp-iso.streamlit.app/iso_docs")
 
 # ISO Clause definitions
 ISO_CLAUSES = {
@@ -179,7 +180,11 @@ def main():
     with col1:
         st.link_button("🏠 Main App", MAIN_APP_URL, use_container_width=True)
     with col2:
-        st.link_button("📘 ISO Docs Browser", ISO_DOCS_URL, use_container_width=True)
+        # Avoid self-linking; if this dashboard runs inside the ISO app, hide the ISO Docs button
+        if ISO_DOCS_URL and ISO_DOCS_URL not in ("/iso_docs", "/"):
+            st.link_button("📘 ISO Docs Browser", ISO_DOCS_URL, use_container_width=True)
+        else:
+            st.caption("📘 ISO Docs Browser is this app; button hidden")
     with col3:
         st.link_button("📚 GitHub Repository", REPO_BASE, use_container_width=True)
     with col4:
