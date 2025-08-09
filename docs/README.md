@@ -113,6 +113,9 @@ The `llm-agent-mcp` project serves as a comprehensive reference implementation o
 ### 🎉 **100% COMPLETE**
 All 7 clauses of ISO/IEC 42001:2023 have been fully implemented and documented.
 
+### Evidence Index
+- See `docs/Evidence_Index.md` for a consolidated mapping from each requirement/control to concrete evidence (documents, code, logs, tests) with owners and review dates.
+
 ## Compliance Mapping
 
 | ISO/IEC 42001:2023 Clause | Implementation Status | Documentation Status | Next Steps |

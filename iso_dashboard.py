@@ -321,6 +321,10 @@ def main():
             st.markdown("### 🎯 ISO Compliance Summary")
             st.markdown("Complete compliance summary and certification readiness assessment.")
             st.link_button("View Summary", f"{GITHUB_BASE}/docs/ISO_Compliance_Summary.md")
+
+        st.markdown("### 📚 Evidence Index")
+        st.markdown("Traceability from requirements to evidence.")
+        st.link_button("Open Evidence Index", f"{GITHUB_BASE}/docs/Evidence_Index.md")
     
     st.markdown("---")
     
