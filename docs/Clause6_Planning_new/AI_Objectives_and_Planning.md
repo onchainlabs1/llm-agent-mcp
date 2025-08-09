@@ -10,6 +10,20 @@
 
 ---
 
+## KPI Summary (Owners, Baselines, Measurement)
+
+| Objective | Owner | Baseline (2024-12) | Target | Frequency | Data Source | Last Measured | Status |
+|---|---|---|---|---|---|---|---|
+| MCP Protocol Excellence | Technical Lead | Tool discovery 90% | ≥95% success; 100% protocol compliance | Monthly | agent/tools_mcp_client.py metrics | 2025-08-06 | On track |
+| LLM Integration Reliability | AI System Developer | Uptime 98.5% | ≥99.5% uptime; 100% fallback | Monthly | logs/performance.log | 2025-08-06 | At risk |
+| Business Automation Accuracy | AI System Developer | 90% | ≥95% | Monthly | tests + logs/actions.log | 2025-08-06 | On track |
+| Multi-Interface Excellence | Technical Lead | 97% availability | ≥99.5%; <3s response | Monthly | Streamlit/FastAPI health | 2025-08-06 | On track |
+| Security & Privacy Protection | Security Officer | 90/100 | ≥95/100; <24h incident response | Quarterly | security scans + incidents | 2025-07-31 | On track |
+| Data Quality Excellence | Data Manager | 92% score | ≥95% | Monthly | data quality assessments | 2025-08-06 | On track |
+| Deployment Reliability | DevOps Engineer | 95% success | ≥99%; rollback ≤15m | Release-based | deployment logs | 2025-07-28 | At risk |
+| Monitoring & Logging Excellence | AI System Operator | Coverage 85% | 100% | Monthly | logs/performance.log | 2025-08-06 | On track |
+| Testing & QA | QA Lead | Coverage 70% | ≥90% | Monthly | pytest coverage | 2025-08-05 | Needs improvement |
+
 ## 6.2 AI Management System Objectives and Planning to Achieve Them
 
 ### 6.2.1 Purpose and Scope

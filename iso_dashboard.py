@@ -277,6 +277,10 @@ def main():
                     st.markdown(f"- [📄 {doc}]({doc_link})")
                 
                 st.markdown(f"**GitHub Folder:** [{clause_data['folder']}]({GITHUB_BASE}/docs/{clause_data['folder']})")
+        # Quick access to SoA and Risk Register
+        st.markdown("### 🔗 Quick Access")
+        st.markdown(f"- [🧾 Statement of Applicability]({GITHUB_BASE}/docs/Clause6_Planning_new/Statement_of_Applicability.csv)")
+        st.markdown(f"- [⚠️ AI Risk Register]({GITHUB_BASE}/docs/Clause6_Planning_new/AI_Risk_Register.csv)")
     
     with tab2:
         # Clauses 7-9
