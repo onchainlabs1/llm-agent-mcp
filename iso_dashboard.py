@@ -31,13 +31,17 @@ st.markdown(
         --secondary-background-color: #f5f7fb;
         --text-color: #0f172a; /* slate-900 for strong contrast */
     }
-    .stApp { background-color: var(--background-color); color: var(--text-color); }
+    .stApp, .block-container, body { background-color: var(--background-color); color: var(--text-color) !important; }
 
     /* General text contrast improvements */
-    .stMarkdown, .stText, .stCaption, .stHeader, .stDataFrame { color: var(--text-color) !important; }
+    .stMarkdown, .stText, .stCaption, .stHeader, .stDataFrame, .stTable, .st-emotion-cache * { color: var(--text-color) !important; }
     .stMarkdown p, .stMarkdown li, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
         color: var(--text-color) !important;
     }
+
+    /* Tabs and expanders */
+    [data-baseweb="tab"] { color: #111827 !important; }
+    [data-testid="stExpander"] button p { color: #111827 !important; }
 
     /* Buttons readable text */
     .stButton>button { color: #1f2937; font-weight: 600; }
@@ -51,6 +55,9 @@ st.markdown(
     }
     [data-testid="stMetricValue"] { color: #0b1320 !important; opacity: 1 !important; }
     [data-testid="stMetricDelta"] { opacity: 1 !important; }
+
+    /* Alerts (success/info/warning) text color */
+    [data-testid="stAlert"] * { color: #0f172a !important; }
 
     /* Footer text contrast */
     .iso-footer p { color: #374151 !important; }
