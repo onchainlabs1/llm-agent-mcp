@@ -24,13 +24,36 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+    /* Force a crisp light theme with higher contrast */
     :root {
         --primary-color: #1f77b4;
         --background-color: #ffffff;
-        --secondary-background-color: #f0f2f6;
-        --text-color: #262730;
+        --secondary-background-color: #f5f7fb;
+        --text-color: #0f172a; /* slate-900 for strong contrast */
     }
     .stApp { background-color: var(--background-color); color: var(--text-color); }
+
+    /* General text contrast improvements */
+    .stMarkdown, .stText, .stCaption, .stHeader, .stDataFrame { color: var(--text-color) !important; }
+    .stMarkdown p, .stMarkdown li, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
+        color: var(--text-color) !important;
+    }
+
+    /* Buttons readable text */
+    .stButton>button { color: #1f2937; font-weight: 600; }
+
+    /* Metric widget: remove low-contrast gray labels */
+    [data-testid="stMetricLabel"],
+    [data-testid="stMetric"] label {
+        color: #1f2937 !important; /* gray-800 */
+        opacity: 1 !important;
+        font-weight: 600 !important;
+    }
+    [data-testid="stMetricValue"] { color: #0b1320 !important; opacity: 1 !important; }
+    [data-testid="stMetricDelta"] { opacity: 1 !important; }
+
+    /* Footer text contrast */
+    .iso-footer p { color: #374151 !important; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -330,11 +353,11 @@ def main():
     
     # Footer
     st.markdown("""
-    <div style="text-align: center; padding: 1rem; background-color: #f0f2f6; border-radius: 5px; margin-top: 2rem;">
-        <p style="margin: 0; color: #666;">
+    <div class="iso-footer" style="text-align: center; padding: 1rem; background-color: #f0f2f6; border-radius: 5px; margin-top: 2rem;">
+        <p style="margin: 0;">
             Built with ❤️ by <strong>On-Chain Labs</strong> · ISO/IEC 42001:2023 AI Management System
         </p>
-        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #888;">
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
             Professional ISO compliance dashboard for external auditors and project reviewers
         </p>
     </div>
