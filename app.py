@@ -213,27 +213,6 @@ LOG_FILE=logs/actions.log
     """
     )
 
-# --- Example prompt chips ---
-prompt_examples = [
-    "List all clients with balance over 5000",
-    "Create a new client named Alice Smith with email alice@acme.com and balance 8000",
-    "Update order ORD-20250601-001 to shipped",
-    "Show all orders for client Acme Corp",
-    "Create order for client John Doe for 2 laptops",
-]
-
-st.markdown(
-    '<div class="prompt-chips">'
-    + "".join(
-        [
-            f"<button class=\"chip-btn\" onclick=\"navigator.clipboard.writeText('{ex}');window.dispatchEvent(new Event('input'));\">{ex}</button>"
-            for ex in prompt_examples
-        ]
-    )
-    + "</div>",
-    unsafe_allow_html=True,
-)
-
 # --- Main prompt input ---
 user_input = st.text_area(
     "Enter your request:",
@@ -362,12 +341,6 @@ with st.expander("🕑 Interaction History", expanded=False):
 
 # --- Help/Examples section ---
 st.markdown('<div style="margin-top:2.5rem;"></div>', unsafe_allow_html=True)
-st.markdown(
-    '<div class="response-card"><b>💡 Example Prompts:</b><br>'
-    + "<br>".join(prompt_examples)
-    + "</div>",
-    unsafe_allow_html=True,
-)
 
 st.markdown('<div style="margin-bottom:2.5rem;"></div>', unsafe_allow_html=True)
 
