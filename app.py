@@ -50,25 +50,25 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Lovable-style CSS (trimmed for light theme compatibility) ---
+# --- Dark theme CSS ---
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
     .prompt-chips { display: flex; gap: 1.1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
     .chip-btn {
-        background: #f0f2f6; color: #1f77b4; border: 1px solid #e5e7eb; border-radius: 16px;
+        background: #1a1f2b; color: #6fffb0; border: 1px solid #2b3345; border-radius: 16px;
         padding: 0.5rem 1.1rem; font-size: 1rem; font-weight: 700; cursor: pointer; margin-bottom: 0.2rem;
     }
-    .chip-btn:hover { background: #1f77b4; color: #fff; }
-    .response-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.4rem; }
-    .response-title { font-size: 1.15rem; font-weight: 800; color: #1f77b4; margin-bottom: 0.6rem; }
+    .chip-btn:hover { background: #3b82f6; color: #ffffff; }
+    .response-card { background: #111827; border: 1px solid #2b3345; border-radius: 12px; padding: 1.4rem; }
+    .response-title { font-size: 1.15rem; font-weight: 800; color: #6fffb0; margin-bottom: 0.6rem; }
     .response-status { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
     .response-success { color: #22c55e; }
     .response-error { color: #ef4444; }
-    .response-reason { color: #4b5563; font-size: 0.98rem; margin-bottom: 0.6rem; }
-    .response-params { color: #111827; font-size: 0.98rem; margin-bottom: 0.6rem; }
-    .response-result { color: #111827; font-size: 1rem; }
+    .response-reason { color: #9ca3af; font-size: 0.98rem; margin-bottom: 0.6rem; }
+    .response-params { color: #e5e7eb; font-size: 0.98rem; margin-bottom: 0.6rem; }
+    .response-result { color: #e5e7eb; font-size: 1rem; }
     .history-expander .stExpanderHeader { font-size: 1.03rem; font-weight: 700; }
     </style>
     """,
@@ -81,6 +81,7 @@ ISO_DOCS_URL = os.getenv("ISO_DOCS_URL", "/iso_docs")
 ISO_DASHBOARD_URL = os.getenv("ISO_DASHBOARD_URL", "/iso_dashboard")
 
 # --- Header / Title ---
+st.markdown('<div style="height: 6px"></div>', unsafe_allow_html=True)
 st.title("AgentMCP – AI Business Copilot")
 st.caption("Automate CRM & ERP actions with natural language. Powered by LLM + MCP.")
 
