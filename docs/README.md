@@ -27,7 +27,7 @@ The `llm-agent-mcp` project serves as a comprehensive reference implementation o
 
 **Previous Implementation:**
 - **Directory:** [`Clause4_Context/`](./Clause4_Context/)
-- **Status:** Legacy documentation (maintained for reference)
+- **Status:** Archived (legacy reference; see new structure in `Clause4_Context_new/`)
 
 ### 🎯 Clause 5: Leadership
 
@@ -42,7 +42,7 @@ The `llm-agent-mcp` project serves as a comprehensive reference implementation o
 
 **Previous Implementation:**
 - **Directory:** [`Clause5_Leadership/`](./Clause5_Leadership/)
-- **Status:** Legacy documentation (maintained for reference)
+- **Status:** Archived (legacy reference; see new structure in `Clause5_Leadership_new/`)
 
 ### 📊 Clause 6: Planning
 

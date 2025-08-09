@@ -371,6 +371,22 @@ def main():
     
     st.markdown("---")
     
+    # KPI Snapshot (optional)
+    st.markdown("## 📈 KPI Snapshot")
+    try:
+        import json
+        if os.path.exists("docs/KPI_Snapshot.json"):
+            with open("docs/KPI_Snapshot.json", "r") as f:
+                kpi = json.load(f)
+            cols = st.columns(5)
+            cols[0].metric("MCP Discovery", f"{kpi['kpis'].get('mcp_tool_discovery_success',0)*100:.0f}%")
+            cols[1].metric("LLM Uptime", f"{kpi['kpis'].get('llm_api_uptime',0)*100:.1f}%")
+            cols[2].metric("Fallback", f"{kpi['kpis'].get('fallback_success_rate',0)*100:.0f}%")
+            cols[3].metric("Decision Acc.", f"{kpi['kpis'].get('decision_accuracy',0)*100:.0f}%")
+            cols[4].metric("Resp. Time", f"{kpi['kpis'].get('avg_response_time_s',0):.1f}s")
+    except Exception as e:
+        st.warning(f"KPI snapshot not available: {e}")
+
     # Audit Information
     st.markdown("## 🔍 Audit Information")
     

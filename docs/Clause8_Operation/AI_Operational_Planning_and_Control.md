@@ -352,6 +352,24 @@ def collect_user_feedback(user_input: str, response: str, satisfaction: int):
 - **Emergency Training:** Training on emergency response procedures
 - **Continuous Learning:** Continuous learning and development programs
 
+### 8.1.9 Decommissioning Procedure
+
+Define safe retirement of AI components (tools, models, interfaces) to prevent residual risk and ensure controlled knowledge retention.
+
+High-level steps:
+- Obtain approval from AIMS Manager and Technical Lead
+- Snapshot and archive configs, schemas (`mcp_server/*.json`), and critical logs (`logs/`)
+- Disable API keys and revoke all related access
+- Remove Streamlit/FastAPI routes referencing the component
+- Tag release and archive documentation snapshot (`docs/Evidence_Index.md`)
+- Update SoA control A.4.11 with evidence links
+
+Checklist:
+- [ ] Data retention/disposal per 8.3.8 completed
+- [ ] Access revoked; secrets rotated
+- [ ] SoA and Evidence Index updated
+- [ ] Stakeholders notified and rollback plan documented
+
 ---
 
 **Document Approval:**
