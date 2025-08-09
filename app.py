@@ -50,101 +50,48 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Lovable-style CSS (reused from landing section) ---
+# --- Lovable-style CSS (trimmed for light theme compatibility) ---
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-    html, body, .stApp { background: #181c24; color: #f3f6fa; font-family: 'Inter', sans-serif; }
-    .main { background: #181c24; }
-    .block-container { padding-top: 110px !important; max-width: 100vw !important; margin-top: 0 !important; }
-    .lovable-header {
-        position: fixed;
-        top: 0; left: 0; right: 0;
-        background: #181c24;
-        z-index: 100000;
-        height: 90px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 3vw;
-        box-shadow: 0 2px 16px #0003;
-        border-bottom: 1.5px solid #23283a;
-    }
-    .lovable-logo {
-        font-size: 2.2rem;
-        font-weight: 900;
-        color: #6fffb0;
-        letter-spacing: -1px;
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-        line-height: 1;
-        user-select: none;
-    }
-    .lovable-logo svg {
-        height: 2.2rem;
-        width: 2.2rem;
-        display: inline-block;
-    }
-    .lovable-nav {
-        display: flex;
-        gap: 2.7rem;
-        align-items: center;
-    }
-    .lovable-nav a {
-        color: #f3f6fa;
-        font-size: 1.15rem;
-        font-weight: 700;
-        text-decoration: none;
-        transition: color 0.2s;
-        letter-spacing: 0.01em;
-        padding: 2px 0;
-        border-bottom: 2.5px solid transparent;
-    }
-    .lovable-nav a:hover {
-        color: #6f47eb;
-        border-bottom: 2.5px solid #6f47eb;
-    }
-    .prompt-chips {
-        display: flex;
-        gap: 1.1rem;
-        margin-bottom: 1.2rem;
-        flex-wrap: wrap;
-    }
+    .prompt-chips { display: flex; gap: 1.1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
     .chip-btn {
-        background: #23283a;
-        color: #6fffb0;
-        border: none;
-        border-radius: 16px;
-        padding: 0.5rem 1.3rem;
-        font-size: 1.08rem;
-        font-weight: 700;
-        cursor: pointer;
-        margin-bottom: 0.2rem;
-        transition: background 0.2s, color 0.2s;
+        background: #f0f2f6; color: #1f77b4; border: 1px solid #e5e7eb; border-radius: 16px;
+        padding: 0.5rem 1.1rem; font-size: 1rem; font-weight: 700; cursor: pointer; margin-bottom: 0.2rem;
     }
-    .chip-btn:hover { background: #3b82f6; color: #fff; }
-    .response-card {
-        background: #23283a;
-        border-radius: 18px;
-        box-shadow: 0 2px 16px #0002;
-        padding: 2.1rem 2.2rem 1.5rem 2.2rem;
-        margin-bottom: 2.5rem;
-        margin-top: 1.2rem;
-    }
-    .response-title { font-size: 1.35rem; font-weight: 900; color: #6fffb0; margin-bottom: 0.7rem; }
-    .response-status { font-size: 1.08rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .chip-btn:hover { background: #1f77b4; color: #fff; }
+    .response-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.4rem; }
+    .response-title { font-size: 1.15rem; font-weight: 800; color: #1f77b4; margin-bottom: 0.6rem; }
+    .response-status { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
     .response-success { color: #22c55e; }
     .response-error { color: #ef4444; }
-    .response-reason { color: #b0b8c9; font-size: 1.08rem; margin-bottom: 0.7rem; }
-    .response-params { color: #fff; font-size: 1.05rem; margin-bottom: 0.7rem; }
-    .response-result { color: #fff; font-size: 1.08rem; }
-    .history-expander .stExpanderHeader { font-size: 1.13rem; font-weight: 700; }
+    .response-reason { color: #4b5563; font-size: 0.98rem; margin-bottom: 0.6rem; }
+    .response-params { color: #111827; font-size: 0.98rem; margin-bottom: 0.6rem; }
+    .response-result { color: #111827; font-size: 1rem; }
+    .history-expander .stExpanderHeader { font-size: 1.03rem; font-weight: 700; }
     </style>
-""",
+    """,
     unsafe_allow_html=True,
 )
+
+# Quick navigation links (configurable via env)
+REPO_BASE = "https://github.com/onchainlabs1/llm-agent-mcp"
+ISO_DOCS_URL = os.getenv("ISO_DOCS_URL", "/iso_docs")
+ISO_DASHBOARD_URL = os.getenv("ISO_DASHBOARD_URL", "/iso_dashboard")
+
+# --- Header / Title ---
+st.title("AgentMCP – AI Business Copilot")
+st.caption("Automate CRM & ERP actions with natural language. Powered by LLM + MCP.")
+
+# Top navigation buttons
+nav1, nav2, nav3 = st.columns(3)
+with nav1:
+    st.link_button("📘 ISO Docs", ISO_DOCS_URL, use_container_width=True)
+with nav2:
+    st.link_button("📋 ISO Dashboard", ISO_DASHBOARD_URL, use_container_width=True)
+with nav3:
+    st.link_button("📚 GitHub", REPO_BASE, use_container_width=True)
 
 # --- Configuration Sidebar ---
 with st.sidebar:
@@ -264,49 +211,6 @@ LOG_FILE=logs/actions.log
     - "Create order for client with 2 laptops"
     """
     )
-
-# --- Header ---
-st.markdown(
-    """
-<div class="lovable-header">
-    <div class="lovable-logo">
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#ff6f91"/>
-                    <stop offset="1" stop-color="#6fffb0"/>
-                </linearGradient>
-            </defs>
-            <path d="M16 29s-9-6.5-9-14.5A7 7 0 0 1 16 7a7 7 0 0 1 9 7.5C25 22.5 16 29 16 29Z" fill="url(#g1)"/>
-            <circle cx="16" cy="13.5" r="3.5" fill="#fff"/>
-            <rect x="13.5" y="21" width="5" height="5" rx="2.5" fill="#3b82f6"/>
-            <rect x="10" y="25.5" width="12" height="3" rx="1.5" fill="#22c55e"/>
-        </svg>
-        AgentMCP
-    </div>
-    <div class="lovable-nav">
-        <a href="#agent">Agent</a>
-        <a href="#crm">CRM</a>
-        <a href="#erp">ERP</a>
-        <a href="#logs">Logs</a>
-        <a href="#help">Help</a>
-    </div>
-</div>
-""",
-    unsafe_allow_html=True,
-)
-
-# --- Page Title ---
-st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
-st.markdown(
-    '<h1 style="text-align:center; font-size:2.5rem; font-weight:900; color:#fff; margin-bottom:0.7rem;">AgentMCP – AI Business Copilot</h1>',
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    '<div style="text-align:center; color:#b0b8c9; font-size:1.18rem; margin-bottom:2.2rem;">Automate CRM & ERP actions with natural language. Powered by LLM + MCP.</div>',
-    unsafe_allow_html=True,
-)
 
 # --- Example prompt chips ---
 prompt_examples = [
