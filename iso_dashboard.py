@@ -231,6 +231,23 @@ def main():
     st.markdown("## 📁 ISO/IEC 42001:2023 Clauses")
     st.markdown("Click on each clause to view its documentation and implementation details.")
     
+    # Introductory clauses (1–3) – informational only
+    with st.expander("**Clauses 1–3 – Introductory (Scope, References, Terms)**", expanded=False):
+        st.markdown(
+            """
+            These clauses are foundational and informational in ISO/IEC 42001:
+            - **Clause 1 – Scope**: Defines the applicability of the AI Management System standard.
+            - **Clause 2 – Normative References**: References other standards that are indispensable for the application of ISO/IEC 42001.
+            - **Clause 3 – Terms and Definitions**: Establishes the terminology used across the standard.
+
+            For this project, Clauses 1–3 are acknowledged and used as context for the implementation evidence in Clauses 4–10. They typically do not require project-specific procedures, but can be cited in policy and training materials.
+            
+            Suggested references:
+            - Organization-wide policy or internal wiki referencing the standard’s scope and terminology
+            - Glossary within project documentation (if maintained)
+            """
+        )
+    
     # Create tabs for better organization
     tab1, tab2, tab3 = st.tabs(["📋 Clauses 4-6", "📋 Clauses 7-9", "📋 Clause 10 & Summary"])
     
