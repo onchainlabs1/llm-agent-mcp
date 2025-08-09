@@ -20,6 +20,22 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Force light theme for this dashboard only by overriding Streamlit CSS variables
+st.markdown(
+    """
+    <style>
+    :root {
+        --primary-color: #1f77b4;
+        --background-color: #ffffff;
+        --secondary-background-color: #f0f2f6;
+        --text-color: #262730;
+    }
+    .stApp { background-color: var(--background-color); color: var(--text-color); }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Constants
 GITHUB_BASE = "https://github.com/onchainlabs1/llm-agent-mcp/blob/main"
 REPO_BASE = "https://github.com/onchainlabs1/llm-agent-mcp"
