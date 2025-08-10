@@ -197,7 +197,7 @@ def main():
         st.markdown("⏱️ **Next refresh in:** 30 seconds")
     
     with col2:
-        if st.button("🔄 Manual Refresh", use_container_width=True):
+        if st.button("🔄 Manual Refresh", use_container_width=True, type="primary"):
             st.rerun()
         
         # Add file monitoring info
