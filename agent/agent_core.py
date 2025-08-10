@@ -30,12 +30,12 @@ try:
     from services.crm_service import CRMService
     from services.erp_service import ERPService
 except ImportError:
-import sys
+    import sys
     from pathlib import Path
     sys.path.append(str(Path(__file__).parent.parent))
     from config import config
-from services.crm_service import CRMService
-from services.erp_service import ERPService
+    from services.crm_service import CRMService
+    from services.erp_service import ERPService
 
 
 def call_llm(prompt, model=None):
@@ -159,11 +159,11 @@ class AgentConfig:
     
     def __init__(
         self,
-                 llm_provider: str = "simulated",
-                 llm_model: str = "gpt-4",
+        llm_provider: str = "simulated",
+        llm_model: str = "gpt-4",
         api_key: Optional[str] = None,
-                 max_retries: int = 3,
-                 timeout: int = 30,
+        max_retries: int = 3,
+        timeout: int = 30,
         log_level: str = "INFO",
     ):
         self.llm_provider = llm_provider
