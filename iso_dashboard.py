@@ -402,29 +402,144 @@ def main():
             total_entries = len(df)
             clause_breakdown = df.groupby('Clause')['Time (h)'].sum().sort_values(ascending=False)
             
-            col1, col2 = st.columns(2)
+            # Create a more visually appealing layout
+            st.markdown("### 🎯 Project Hours Overview")
+            
+            # Main metrics in a professional grid
+            col1, col2, col3, col4 = st.columns(4)
             
             with col1:
-                st.markdown("### 📈 Hours Summary")
-                st.metric("Total Hours", f"{total_hours:.1f}")
-                st.metric("Total Entries", total_entries)
-                st.metric("ISO Requirement", "300h")
-                st.metric("Status", "✅ Exceeds Requirement" if total_hours >= 300 else "⚠️ Needs More Hours")
+                st.metric(
+                    label="⏱️ Total Hours",
+                    value=f"{total_hours:.1f}h",
+                    delta="+53.5h above requirement" if total_hours >= 300 else f"{-300 + total_hours:.1f}h to go"
+                )
             
             with col2:
-                st.markdown("### 📊 Hours by Clause")
-                for clause, hours in clause_breakdown.items():
-                    st.metric(clause, f"{hours:.1f}h")
+                st.metric(
+                    label="📝 Total Entries",
+                    value=total_entries,
+                    delta="Comprehensive tracking"
+                )
             
-            # Show sample data
-            st.markdown("### 📋 Recent Entries")
-            st.dataframe(df.head(10), use_container_width=True)
+            with col3:
+                st.metric(
+                    label="🎯 ISO Requirement",
+                    value="300h",
+                    delta="✅ Exceeds Requirement" if total_hours >= 300 else "⚠️ Needs More Hours"
+                )
             
-            st.link_button("📊 View Full Hours Log", f"{GITHUB_BASE}/project_hours_log.md")
+            with col4:
+                status_color = "🟢" if total_hours >= 300 else "🟡"
+                st.metric(
+                    label="📊 Status",
+                    value=f"{status_color} {'Certified' if total_hours >= 300 else 'In Progress'}",
+                    delta="Lead Implementer Eligible" if total_hours >= 300 else "Working towards certification"
+                )
+            
+            st.markdown("---")
+            
+            # Hours breakdown with visual elements
+            col1, col2 = st.columns([2, 1])
+            
+            with col1:
+                st.markdown("### 📈 Hours Distribution by ISO Clause")
+                
+                # Create a horizontal bar chart for better visualization
+                if not clause_breakdown.empty:
+                    # Sort by hours for better visual hierarchy
+                    sorted_clauses = clause_breakdown.sort_values(ascending=True)
+                    
+                    # Create a custom bar chart using markdown for better control
+                    max_hours = sorted_clauses.max()
+                    
+                    for clause, hours in sorted_clauses.items():
+                        # Calculate percentage and bar width
+                        percentage = (hours / max_hours) * 100
+                        bar_width = int(percentage / 2)  # Scale down for better display
+                        
+                        # Create visual bar
+                        bar = "█" * bar_width
+                        remaining = 20 - bar_width  # 20 chars max width
+                        empty_bar = "░" * remaining
+                        
+                        # Color coding based on hours
+                        if hours >= 50:
+                            emoji = "🔴"
+                        elif hours >= 30:
+                            emoji = "🟠"
+                        elif hours >= 20:
+                            emoji = "🟡"
+                        else:
+                            emoji = "🟢"
+                        
+                        st.markdown(f"""
+                        **{emoji} {clause}**  
+                        {bar}{empty_bar} **{hours:.1f}h** ({percentage:.1f}%)
+                        """)
+                        
+                        # Add spacing between bars
+                        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+            
+            with col2:
+                st.markdown("### 📊 Quick Stats")
+                
+                # Top performers
+                st.markdown("**🏆 Top Clauses:**")
+                top_3 = clause_breakdown.head(3)
+                for i, (clause, hours) in enumerate(top_3.items(), 1):
+                    medal = "🥇" if i == 1 else "🥈" if i == 2 else "🥉"
+                    st.markdown(f"{medal} {clause}: **{hours:.1f}h**")
+                
+                st.markdown("---")
+                
+                # Progress indicators
+                st.markdown("**📈 Progress:**")
+                progress = min(100, (total_hours / 300) * 100)
+                st.progress(progress / 100)
+                st.caption(f"{progress:.1f}% of certification requirement")
+                
+                # Certification status
+                if total_hours >= 300:
+                    st.success("🎉 **Lead Implementer Certified!**")
+                else:
+                    remaining = 300 - total_hours
+                    st.info(f"📚 **{remaining:.1f}h remaining** for certification")
+            
+            st.markdown("---")
+            
+            # Recent activity with better formatting
+            st.markdown("### 📋 Recent Activity")
+            
+            # Show last 5 entries with better formatting
+            recent_df = df.tail(5)[['Date', 'Task Description', 'Clause', 'Time (h)']].copy()
+            
+            # Format the display
+            for _, row in recent_df.iterrows():
+                with st.container():
+                    col1, col2, col3, col4 = st.columns([1, 3, 1, 1])
+                    with col1:
+                        st.markdown(f"**{row['Date']}**")
+                    with col2:
+                        st.markdown(f"_{row['Task Description'][:60]}{'...' if len(row['Task Description']) > 60 else ''}_")
+                    with col3:
+                        st.markdown(f"**{row['Clause']}**")
+                    with col4:
+                        st.markdown(f"**{row['Time (h)']:.1f}h**")
+                    st.markdown("---")
+            
+            # Action buttons
+            col1, col2 = st.columns(2)
+            with col1:
+                st.link_button("📊 View Full Hours Log", f"{GITHUB_BASE}/project_hours_log.md", use_container_width=True)
+            with col2:
+                st.link_button("📥 Download CSV", f"{GITHUB_BASE}/project_hours_log.csv", use_container_width=True)
+                
         else:
             st.warning("Hours log file not found. Please run the hours tracking system first.")
     except Exception as e:
         st.error(f"Error loading hours log: {e}")
+        st.info("💡 **Tip:** Run `python log_hours.py` to generate the hours tracking data.")
     
     st.markdown("---")
     
