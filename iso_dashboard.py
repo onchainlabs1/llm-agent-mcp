@@ -335,47 +335,145 @@ def main():
     # Overview Metrics
     st.markdown("## 📊 Compliance Overview")
     
+    # Real-time metrics (calculating from actual data)
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
+        # Count real documents
+        docs_count = 0
+        if os.path.exists("docs"):
+            docs_path = Path("docs")
+            for item in docs_path.rglob("*.md"):
+                docs_count += 1
+        
         st.metric(
             label="📄 Total Documents",
-            value="38",
-            delta="Complete"
+            value=f"{docs_count}",
+            delta="Real count"
         )
     
     with col2:
+        # Calculate real hours from CSV
+        hours_value = "0h"
+        hours_delta = "No data"
+        if os.path.exists("project_hours_log.csv"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                hours_value = f"{total_hours:.1f}h"
+                if total_hours >= 300:
+                    hours_delta = "✅ Exceeds 300h requirement"
+                else:
+                    hours_delta = f"Need {300-total_hours:.1f}h more"
+            except:
+                hours_value = "Error"
+                hours_delta = "Cannot read"
+        
         st.metric(
             label="⏱️ Hours Logged",
-            value="353.5h",
-            delta="✅ Exceeds 300h requirement"
+            value=hours_value,
+            delta=hours_delta
         )
     
     with col3:
+        # Count real risks from CSV
+        risks_value = "0"
+        risks_delta = "No data"
+        if os.path.exists("docs/Clause6_Planning_new/AI_Risk_Register.csv"):
+            try:
+                df = pd.read_csv("docs/Clause6_Planning_new/AI_Risk_Register.csv")
+                risks_value = str(len(df))
+                risks_delta = "Real count"
+            except:
+                risks_value = "Error"
+                risks_delta = "Cannot read"
+        
         st.metric(
-            label="🎯 Audit Score",
-            value="98/100",
-            delta="✅ Excellent"
+            label="📋 Risk Register",
+            value=risks_value,
+            delta=risks_delta
         )
     
     with col4:
+        # Calculate real audit readiness
+        audit_value = "To assess"
+        audit_delta = "Real assessment needed"
+        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                docs_path = Path("docs")
+                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
+                
+                if total_hours >= 300 and len(clause_folders) >= 7:
+                    audit_value = "Ready"
+                    audit_delta = "✅ Requirements met"
+                elif total_hours >= 300:
+                    audit_value = "Partial"
+                    audit_delta = "Hours OK, docs incomplete"
+                else:
+                    audit_value = "Not ready"
+                    audit_delta = "Hours insufficient"
+            except:
+                audit_value = "Error"
+                audit_delta = "Cannot assess"
+        
         st.metric(
-            label="📋 Risk Register",
-            value="10 Risks",
-            delta="✅ Comprehensive"
+            label="🎯 Audit Status",
+            value=audit_value,
+            delta=audit_delta
         )
     
-    # Status indicators
+    # Status indicators - based on real data
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.success("✅ **ISO/IEC 42001:2023 Compliant**")
+        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                docs_path = Path("docs")
+                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
+                
+                if total_hours >= 300 and len(clause_folders) >= 7:
+                    st.success("✅ **ISO/IEC 42001:2023 Compliant**")
+                else:
+                    st.warning("⚠️ **ISO/IEC 42001:2023 In Progress**")
+            except:
+                st.info("🔍 **ISO/IEC 42001:2023 Status: Assessment Required**")
+        else:
+            st.info("🔍 **ISO/IEC 42001:2023 Status: Assessment Required**")
     
     with col2:
-        st.success("✅ **Lead Implementer Eligible**")
+        if os.path.exists("project_hours_log.csv"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                if total_hours >= 300:
+                    st.success("✅ **Lead Implementer Eligible**")
+                else:
+                    st.warning(f"⚠️ **Need {300-total_hours:.1f}h more**")
+            except:
+                st.info("🔍 **Lead Implementer Status: To be determined**")
+        else:
+            st.info("🔍 **Lead Implementer Status: To be determined**")
     
     with col3:
-        st.success("✅ **Ready for External Audit**")
+        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                docs_path = Path("docs")
+                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
+                
+                if total_hours >= 300 and len(clause_folders) >= 7:
+                    st.success("✅ **Ready for External Audit**")
+                else:
+                    st.warning("⚠️ **Not ready for external audit**")
+            except:
+                st.info("🔍 **External Audit Readiness: To be assessed**")
+        else:
+            st.info("🔍 **External Audit Readiness: To be assessed**")
     
     st.markdown("---")
     
@@ -404,11 +502,11 @@ def main():
     tab1, tab2, tab3 = st.tabs(["📋 Clauses 4-6", "📋 Clauses 7-9", "📋 Clause 10 & Summary"])
     
     with tab1:
-        # Clauses 4-6
+        # Clauses 4-6 - Real assessment status
         for clause_num in ["Clause 4", "Clause 5", "Clause 6"]:
             clause_data = ISO_CLAUSES[clause_num]
             
-            with st.expander(f"**{clause_num} - {clause_data['title']}** ✅ Complete", expanded=False):
+            with st.expander(f"**{clause_num} - {clause_data['title']}** 🔍 Review Required", expanded=False):
                 st.markdown(f"**Description:** {clause_data['description']}")
                 st.markdown("**Documents Created:**")
                 
@@ -417,17 +515,18 @@ def main():
                     st.markdown(f"- [📄 {doc}]({doc_link})")
                 
                 st.markdown(f"**GitHub Folder:** [{clause_data['folder']}]({GITHUB_BASE}/docs/{clause_data['folder']})")
+                st.info("🔍 **Status: Requires real assessment for completion**")
         # Quick access to SoA and Risk Register
         st.markdown("### 🔗 Quick Access")
         st.markdown(f"- [🧾 Statement of Applicability]({GITHUB_BASE}/docs/Clause6_Planning_new/Statement_of_Applicability.csv)")
         st.markdown(f"- [⚠️ AI Risk Register]({GITHUB_BASE}/docs/Clause6_Planning_new/AI_Risk_Register.csv)")
     
     with tab2:
-        # Clauses 7-9
+        # Clauses 7-9 - Real assessment status
         for clause_num in ["Clause 7", "Clause 8", "Clause 9"]:
             clause_data = ISO_CLAUSES[clause_num]
             
-            with st.expander(f"**{clause_num} - {clause_data['title']}** ✅ Complete", expanded=False):
+            with st.expander(f"**{clause_num} - {clause_data['title']}** 🔍 Review Required", expanded=False):
                 st.markdown(f"**Description:** {clause_data['description']}")
                 st.markdown("**Documents Created:**")
                 
@@ -436,12 +535,13 @@ def main():
                     st.markdown(f"- [📄 {doc}]({doc_link})")
                 
                 st.markdown(f"**GitHub Folder:** [{clause_data['folder']}]({GITHUB_BASE}/docs/{clause_data['folder']})")
+                st.info("🔍 **Status: Requires real assessment for completion**")
     
     with tab3:
-        # Clause 10
+        # Clause 10 - Real assessment status
         clause_data = ISO_CLAUSES["Clause 10"]
         
-        with st.expander(f"**Clause 10 - {clause_data['title']}** ✅ Complete", expanded=True):
+        with st.expander(f"**Clause 10 - {clause_data['title']}** 🔍 Review Required", expanded=True):
             st.markdown(f"**Description:** {clause_data['description']}")
             st.markdown("**Documents Created:**")
             
@@ -450,6 +550,7 @@ def main():
                 st.markdown(f"- [📄 {doc}]({doc_link})")
             
             st.markdown(f"**GitHub Folder:** [{clause_data['folder']}]({GITHUB_BASE}/docs/{clause_data['folder']})")
+            st.info("🔍 **Status: Requires real assessment for completion**")
         
         # Summary Documents
         st.markdown("## 📋 Summary Documents")
