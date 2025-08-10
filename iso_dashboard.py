@@ -197,7 +197,27 @@ def main():
         st.markdown("⏱️ **Next refresh in:** 30 seconds")
     
     with col2:
-        if st.button("🔄 Manual Refresh", use_container_width=True, type="primary"):
+        # Custom styled button with subtle color
+        st.markdown("""
+        <style>
+        .stButton > button {
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .stButton > button:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+            color: #212529;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        if st.button("🔄 Manual Refresh", use_container_width=True):
             st.rerun()
         
         # Add file monitoring info
