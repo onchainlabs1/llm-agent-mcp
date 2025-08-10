@@ -187,49 +187,23 @@ def main():
     """, unsafe_allow_html=True)
     
     # Add refresh button and status
-    st.markdown("### 🔄 Auto-Refresh & Monitoring")
-    
-    # Create a more organized layout with better visual hierarchy
-    col1, col2, col3 = st.columns([3, 2, 2])
-    
+    col1, col2, col3 = st.columns([2, 1, 1])
     with col1:
-        # Auto-refresh status with better formatting
-        st.markdown("**🔄 Auto-Refresh Status:**")
+        st.markdown("### 🔄 Auto-Refresh Status")
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        st.info(f"✅ **Active** | 📅 **Last updated:** {current_time}")
+        st.info(f"🔄 **Auto-refresh every 30 seconds** | 📅 **Last updated:** {current_time}")
         
-        # Countdown timer with better styling
+        # Add countdown timer
         st.markdown("⏱️ **Next refresh in:** 30 seconds")
-        
-        # Add a visual indicator that auto-refresh is working
-        st.markdown("🟢 **Status:** Auto-refresh is running")
-        st.markdown("📱 **Method:** JavaScript page reload")
-        st.markdown("⏰ **Interval:** Every 30 seconds")
-        
-        # Add a visual indicator that auto-refresh is working
-        st.markdown("🟢 **Status:** Auto-refresh is running")
-        st.markdown("📱 **Method:** JavaScript page reload")
-        st.markdown("⏰ **Interval:** Every 30 seconds")
     
     with col2:
-        # Manual refresh section with better styling
-        st.markdown("**🔄 Manual Controls:**")
-        
-        # Add some spacing before the button
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-        
-        # Style the refresh button better
-        if st.button("🔄 Refresh Now", use_container_width=True, type="primary"):
+        if st.button("🔄 Manual Refresh", use_container_width=True):
             st.rerun()
         
-        # Add file monitoring info below the button
-        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+        # Add file monitoring info
         st.markdown("📁 **Monitoring:** `project_hours_log.csv`")
     
     with col3:
-        # Data status section with better organization
-        st.markdown("**📊 Data Status:**")
-        
         # Check if hours log file was recently modified
         if os.path.exists("project_hours_log.csv"):
             file_time = os.path.getmtime("project_hours_log.csv")
@@ -243,19 +217,18 @@ def main():
             else:
                 age_str = f"{int(file_age/3600)}h ago"
             
-            # Better status indicators
             if file_age < 300:  # Less than 5 minutes
-                st.success(f"🟢 **Fresh** ({age_str})")
+                st.success(f"📊 **Data: Fresh** ({age_str})")
             elif file_age < 3600:  # Less than 1 hour
-                st.warning(f"🟡 **Recent** ({age_str})")
+                st.warning(f"📊 **Data: Recent** ({age_str})")
             else:
-                st.info(f"🔵 **Older** ({age_str})")
+                st.info(f"📊 **Data: Older** ({age_str})")
                 
-            # Show file size with better formatting
+            # Show file size
             file_size = os.path.getsize("project_hours_log.csv")
-            st.markdown(f"📄 **Size:** {file_size/1024:.1f} KB")
+            st.caption(f"📄 File size: {file_size/1024:.1f} KB")
         else:
-            st.error("❌ **Missing**")
+            st.error("📊 **Data: Missing**")
             st.caption("Run `python log_hours.py` to generate data")
     
     # Add a visual separator
