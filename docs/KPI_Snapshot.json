@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-06T12:00:00Z",
+  "timestamp": "2025-08-09T13:43:02.695180Z",
   "kpis": {
     "mcp_tool_discovery_success": 0.93,
     "llm_api_uptime": 0.985,
@@ -10,6 +10,7 @@
     "data_quality_score": 0.93,
     "deployment_success_rate": 0.96,
     "monitoring_coverage": 0.9,
-    "test_coverage": 0.72
+    "test_coverage": 0.72,
+    "hours_logged": 353.5
   }
 }

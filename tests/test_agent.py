@@ -26,9 +26,10 @@ except ImportError:
         from agentmcp.agent.agent_core import AgentConfig, AgentCore, ToolCall, ToolResult
     except ImportError:
         # Final fallback for development (avoid sys.path when possible)
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).parent.parent))
+        import sys
+        from pathlib import Path
+
+        sys.path.append(str(Path(__file__).parent.parent))
         from agent.agent_core import AgentConfig, AgentCore, ToolCall, ToolResult
 
 

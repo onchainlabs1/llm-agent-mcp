@@ -553,6 +553,6 @@ This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LI
 
 ---
 
-**AgentMCP** - Making CRM operations intelligent and accessible through natural language processing.
+**AgentMCP** - Making CRM operations intelligent and accessible through natural language processing. 
 
 *📸 See screenshots and visual documentation in [`docs/screenshots/`](docs/screenshots/)* 

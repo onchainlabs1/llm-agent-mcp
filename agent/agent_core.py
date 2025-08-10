@@ -30,12 +30,12 @@ try:
     from services.crm_service import CRMService
     from services.erp_service import ERPService
 except ImportError:
-    import sys
+import sys
     from pathlib import Path
     sys.path.append(str(Path(__file__).parent.parent))
     from config import config
-    from services.crm_service import CRMService
-    from services.erp_service import ERPService
+from services.crm_service import CRMService
+from services.erp_service import ERPService
 
 
 def call_llm(prompt, model=None):
@@ -519,8 +519,15 @@ class AgentCore:
         if match:
             return match.group(0)
         
-        # Pattern for simple IDs (numbers or alphanumeric)
-        id_pattern = r"(?:client\s+)?(?:id\s+)?([a-zA-Z0-9]+)"
+        # Pattern for simple IDs after 'client' or 'id', capturing the token following those words
+        id_pattern = r"(?:client\s+(?:balance\s+for\s+)?)|(?:id\s+)"
+        # Find position after keyword and grab next word token
+        m = re.search(id_pattern, user_input, re.IGNORECASE)
+        if m:
+            rest = user_input[m.end():].strip()
+            token = re.match(r"([a-zA-Z0-9-]+)", rest)
+            if token:
+                return token.group(1)
         match = re.search(id_pattern, user_input, re.IGNORECASE)
         if match:
             return match.group(1)
@@ -605,11 +612,13 @@ class AgentCore:
         if match:
             return match.group(0)
         
-        # Pattern for simple order numbers
-        id_pattern = r"(?:order\s+)?(?:id\s+)?([a-zA-Z0-9-]+)"
-        match = re.search(id_pattern, user_input, re.IGNORECASE)
-        if match:
-            return match.group(1)
+        # Simple number after the word 'order' or 'id'
+        m = re.search(r"(?:order\s+|id\s+)", user_input, re.IGNORECASE)
+        if m:
+            rest = user_input[m.end():].strip()
+            token = re.match(r"([a-zA-Z0-9-]+)", rest)
+            if token:
+                return token.group(1)
         
         return None
     
@@ -634,7 +643,7 @@ class AgentCore:
         
         # Extract description
         desc_pattern = (
-            r"(?:description|for|with)\s+([^.]+?)(?:\s+with|\s+total|\s+amount|$)"
+            r"description\s+([^.]+?)(?:\s+with|\s+total|\s+amount|$)"
         )
         desc_match = re.search(desc_pattern, user_input, re.IGNORECASE)
         
@@ -731,7 +740,7 @@ class AgentCore:
                 result = self.crm_service.filter_clients_by_balance(
                     min_balance, max_balance
                 )
-
+            
             # Execute ERP service methods
             elif tool_call.tool_name == "create_order":
                 result = self.erp_service.create_order(tool_call.parameters)

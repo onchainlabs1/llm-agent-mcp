@@ -140,6 +140,14 @@ class ERPService:
                 return False
         if not isinstance(order_data.get("items"), list):
             return False
+        # Accept numeric string for robustness
+        total_amount = order_data.get("total_amount")
+        if isinstance(total_amount, str):
+            try:
+                total_amount = float(total_amount)
+                order_data["total_amount"] = total_amount
+            except ValueError:
+                return False
         if not isinstance(order_data.get("total_amount"), (int, float)):
             return False
         if order_data.get("total_amount", 0) <= 0:

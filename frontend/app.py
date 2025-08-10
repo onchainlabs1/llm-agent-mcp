@@ -37,7 +37,7 @@ except ImportError:
         # Final fallback for development (avoid sys.path when possible)
         import sys
         from pathlib import Path
-        sys.path.append(str(Path(__file__).parent.parent))
+sys.path.append(str(Path(__file__).parent.parent))
         from agent.agent_core import AgentConfig, AgentCore
         from config import config
 
@@ -377,8 +377,8 @@ if send_button and user_input.strip():
         response = agent.process_user_request(user_input)
         st.session_state["history"].append(
             {
-                "input": user_input,
-                "response": response,
+            "input": user_input,
+            "response": response,
                 "timestamp": datetime.now().isoformat(),
             }
         )
@@ -467,9 +467,9 @@ st.markdown('<div style="margin-bottom:2.5rem;"></div>', unsafe_allow_html=True)
 
 # --- Footer ---
 st.markdown('<div style="margin-top:3rem;"></div>', unsafe_allow_html=True)
-st.markdown(
-    "<div style='text-align: center; color: #666;'>"
-    "AgentMCP - AI Business Assistant | Powered by Model Context Protocol"
-    "</div>",
+    st.markdown(
+        "<div style='text-align: center; color: #666;'>"
+        "AgentMCP - AI Business Assistant | Powered by Model Context Protocol"
+        "</div>",
     unsafe_allow_html=True,
-)
+    )
