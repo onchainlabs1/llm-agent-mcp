@@ -176,20 +176,19 @@ def main():
         initial_sidebar_state="expanded"
     )
     
-    # Add auto-refresh functionality
+    # Header - Banner principal no topo
     st.markdown("""
-    <script>
-    // Auto-refresh every 30 seconds
-    setTimeout(function(){
-        window.location.reload();
-    }, 30000);
-    </script>
+    <div class="iso-hero" style="text-align: center; padding: 2rem; background: linear-gradient(90deg, #1f77b4, #ff7f0e); border-radius: 10px; color: white; margin-bottom: 2rem;">
+        <h1>📋 ISO/IEC 42001:2023 Documentation Dashboard</h1>
+        <p style="font-size: 1.2rem; margin: 0;">AI Management System Compliance Center</p>
+        <p style="font-size: 1rem; margin: 0.5rem 0 0 0;">llm-agent-mcp Project</p>
+    </div>
     """, unsafe_allow_html=True)
     
-    # Add refresh button and status
+    # Auto-refresh status section - AGORA VEM LOGO APÓS O BANNER
+    st.markdown("## 🔄 Auto-Refresh Status")
     col1, col2, col3 = st.columns([2, 1, 1])
     with col1:
-        st.markdown("### 🔄 Auto-Refresh Status")
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         st.info(f"🔄 **Auto-refresh every 30 seconds** | 📅 **Last updated:** {current_time}")
         
@@ -239,7 +238,7 @@ def main():
             
             if file_age < 300:  # Less than 5 minutes
                 st.success(f"📊 **Data: Fresh** ({age_str})")
-            elif file_age < 3600:  # Less than 1 hour
+            elif file_age < 3600: # Less than 1 hour
                 st.warning(f"📊 **Data: Recent** ({age_str})")
             else:
                 st.info(f"📊 **Data: Older** ({age_str})")
@@ -251,19 +250,9 @@ def main():
             st.error("📊 **Data: Missing**")
             st.caption("Run `python log_hours.py` to generate data")
     
-    # Add a visual separator
     st.markdown("---")
     
-    # Header
-    st.markdown("""
-    <div class="iso-hero" style="text-align: center; padding: 2rem; background: linear-gradient(90deg, #1f77b4, #ff7f0e); border-radius: 10px; color: white; margin-bottom: 2rem;">
-        <h1>📋 ISO/IEC 42001:2023 Documentation Dashboard</h1>
-        <p style="font-size: 1.2rem; margin: 0;">AI Management System Compliance Center</p>
-        <p style="font-size: 1rem; margin: 0.5rem 0 0 0;">llm-agent-mcp Project</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Navigation
+    # Navigation - Botões de navegação AGORA VÊM DEPOIS DO AUTO-REFRESH
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.link_button("🏠 Main App", MAIN_APP_URL, use_container_width=True)
@@ -280,6 +269,72 @@ def main():
     
     st.markdown("---")
     
+    # Git Operations Section
+    st.markdown("## 🚀 Git Operations")
+    col1, col2, col3 = st.columns([1, 1, 1])
+    
+    with col1:
+        st.markdown("### 📝 Commit Changes")
+        commit_message = st.text_input("Commit message:", value="Update ISO dashboard interface and functionality", key="commit_msg")
+        if st.button("💾 Commit Changes", use_container_width=True):
+            try:
+                import subprocess
+                # Add all changes
+                subprocess.run(["git", "add", "."], check=True)
+                # Commit with message
+                subprocess.run(["git", "commit", "-m", commit_message], check=True)
+                st.success("✅ Changes committed successfully!")
+                st.info(f"Commit message: {commit_message}")
+            except Exception as e:
+                st.error(f"❌ Error committing changes: {e}")
+    
+    with col2:
+        st.markdown("### 🚀 Push to GitHub")
+        if st.button("📤 Push to GitHub", use_container_width=True):
+            try:
+                import subprocess
+                # Push to origin main
+                result = subprocess.run(["git", "push", "origin", "main"], capture_output=True, text=True)
+                if result.returncode == 0:
+                    st.success("✅ Successfully pushed to GitHub!")
+                    st.info("Your changes are now live on GitHub")
+                else:
+                    st.warning("⚠️ Push completed with warnings:")
+                    st.code(result.stderr)
+            except Exception as e:
+                st.error(f"❌ Error pushing to GitHub: {e}")
+    
+    with col3:
+        st.markdown("### 📊 Git Status")
+        try:
+            import subprocess
+            # Get git status
+            status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+            if status_result.stdout.strip():
+                st.warning("⚠️ Uncommitted changes detected")
+                st.code(status_result.stdout, language="bash")
+            else:
+                st.success("✅ Working directory is clean")
+            
+            # Get last commit info
+            last_commit = subprocess.run(["git", "log", "-1", "--oneline"], capture_output=True, text=True)
+            if last_commit.stdout:
+                st.info(f"📝 Last commit: {last_commit.stdout.strip()}")
+        except Exception as e:
+            st.error(f"❌ Error checking git status: {e}")
+    
+    st.markdown("---")
+    
+    # Add auto-refresh functionality
+    st.markdown("""
+    <script>
+    // Auto-refresh every 30 seconds
+    setTimeout(function(){
+        window.location.reload();
+    }, 30000);
+    </script>
+    """, unsafe_allow_html=True)
+
     # Compliance Checklist from SoA
     st.markdown("## ✅ Compliance Checklist (from SoA)")
     try:
@@ -916,9 +971,9 @@ def main():
         
         # Check for key procedures
         key_files = [
-            "docs/Clause8_Operation/AI_Incident_Management_Procedure.md",
+            "docs/Clause8_Operation/AI_Incident_Response_Procedure.md",
             "docs/Clause6_Planning_new/AI_Risk_Management_Procedure.md",
-            "docs/Clause5_Leadership/AI_Management_Policy.md"
+            "docs/Clause5_Leadership_new/AI_Management_Policy.md"
         ]
         
         for file_path in key_files:
