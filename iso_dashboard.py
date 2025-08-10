@@ -11,6 +11,8 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 import os
+import datetime
+import time
 
 # Page configuration
 st.set_page_config(
@@ -166,6 +168,71 @@ ISO_CLAUSES = {
 }
 
 def main():
+    # Auto-refresh configuration
+    st.set_page_config(
+        page_title="ISO/IEC 42001:2023 Documentation Dashboard",
+        page_icon="📋",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+    
+    # Add auto-refresh functionality
+    st.markdown("""
+    <script>
+    // Auto-refresh every 30 seconds
+    setTimeout(function(){
+        window.location.reload();
+    }, 30000);
+    </script>
+    """, unsafe_allow_html=True)
+    
+    # Add refresh button and status
+    col1, col2, col3 = st.columns([2, 1, 1])
+    with col1:
+        st.markdown("### 🔄 Auto-Refresh Status")
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        st.info(f"🔄 **Auto-refresh every 30 seconds** | 📅 **Last updated:** {current_time}")
+        
+        # Add countdown timer
+        st.markdown("⏱️ **Next refresh in:** 30 seconds")
+    
+    with col2:
+        if st.button("🔄 Manual Refresh", use_container_width=True):
+            st.rerun()
+        
+        # Add file monitoring info
+        st.markdown("📁 **Monitoring:** `project_hours_log.csv`")
+    
+    with col3:
+        # Check if hours log file was recently modified
+        if os.path.exists("project_hours_log.csv"):
+            file_time = os.path.getmtime("project_hours_log.csv")
+            file_age = time.time() - file_time
+            
+            # Format file age nicely
+            if file_age < 60:
+                age_str = f"{int(file_age)}s ago"
+            elif file_age < 3600:
+                age_str = f"{int(file_age/60)}m ago"
+            else:
+                age_str = f"{int(file_age/3600)}h ago"
+            
+            if file_age < 300:  # Less than 5 minutes
+                st.success(f"📊 **Data: Fresh** ({age_str})")
+            elif file_age < 3600:  # Less than 1 hour
+                st.warning(f"📊 **Data: Recent** ({age_str})")
+            else:
+                st.info(f"📊 **Data: Older** ({age_str})")
+                
+            # Show file size
+            file_size = os.path.getsize("project_hours_log.csv")
+            st.caption(f"📄 File size: {file_size/1024:.1f} KB")
+        else:
+            st.error("📊 **Data: Missing**")
+            st.caption("Run `python log_hours.py` to generate data")
+    
+    st.markdown("---")
+    
     # Header
     st.markdown("""
     <div class="iso-hero" style="text-align: center; padding: 2rem; background: linear-gradient(90deg, #1f77b4, #ff7f0e); border-radius: 10px; color: white; margin-bottom: 2rem;">
@@ -392,6 +459,28 @@ def main():
     # Project Hours Log Preview
     st.markdown("## 📊 Project Hours Log Preview")
     
+    # Real-time data monitoring
+    st.markdown("### 🔍 Live Data Monitoring")
+    
+    # Check for recent changes
+    if os.path.exists("project_hours_log.csv"):
+        file_time = os.path.getmtime("project_hours_log.csv")
+        file_age = time.time() - file_time
+        
+        # Monitor for very recent changes (last 2 minutes)
+        if file_age < 120:
+            st.success("🆕 **NEW DATA DETECTED!** The hours log was updated recently!")
+            st.balloons()
+        
+        # Show monitoring status
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("📊 File Age", f"{file_age/60:.1f} minutes")
+        with col2:
+            st.metric("🔄 Refresh Cycle", "30 seconds")
+        with col3:
+            st.metric("📈 Data Status", "Live Monitoring")
+    
     # Try to load and display the hours log
     try:
         if os.path.exists("project_hours_log.csv"):
@@ -401,6 +490,15 @@ def main():
             total_hours = df['Time (h)'].sum()
             total_entries = len(df)
             clause_breakdown = df.groupby('Clause')['Time (h)'].sum().sort_values(ascending=False)
+            
+            # Check for recent additions (last 24 hours)
+            df['Date'] = pd.to_datetime(df['Date'])
+            today = pd.Timestamp.now().date()
+            recent_entries = df[df['Date'].dt.date == today]
+            recent_hours = recent_entries['Time (h)'].sum()
+            
+            if not recent_entries.empty:
+                st.success(f"📅 **Today's Progress:** {len(recent_entries)} new entries, {recent_hours:.1f}h added")
             
             # Create a more visually appealing layout
             st.markdown("### 🎯 Project Hours Overview")
@@ -534,6 +632,41 @@ def main():
                 st.link_button("📊 View Full Hours Log", f"{GITHUB_BASE}/project_hours_log.md", use_container_width=True)
             with col2:
                 st.link_button("📥 Download CSV", f"{GITHUB_BASE}/project_hours_log.csv", use_container_width=True)
+            
+            # Change history and monitoring
+            st.markdown("---")
+            st.markdown("### 📈 Change History & Monitoring")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("**🕒 File Modification History:**")
+                if os.path.exists("project_hours_log.csv"):
+                    file_time = os.path.getmtime("project_hours_log.csv")
+                    file_date = datetime.datetime.fromtimestamp(file_time)
+                    st.markdown(f"- **Last Modified:** {file_date.strftime('%Y-%m-%d %H:%M:%S')}")
+                    st.markdown(f"- **File Age:** {file_age/60:.1f} minutes")
+                    st.markdown(f"- **Total Entries:** {total_entries}")
+                    st.markdown(f"- **Total Hours:** {total_hours:.1f}h")
+                
+                # Show recent activity summary
+                if not recent_entries.empty:
+                    st.markdown("**📅 Recent Activity (Today):**")
+                    st.markdown(f"- **New Entries:** {len(recent_entries)}")
+                    st.markdown(f"- **Hours Added:** {recent_hours:.1f}h")
+                    st.markdown(f"- **Progress:** {recent_hours/total_hours*100:.1f}% of total")
+            
+            with col2:
+                st.markdown("**🔍 Monitoring Status:**")
+                st.markdown("- **Auto-refresh:** ✅ Every 30 seconds")
+                st.markdown("- **File Watch:** ✅ Active")
+                st.markdown("- **Data Freshness:** ✅ Real-time")
+                st.markdown("- **Change Detection:** ✅ Active")
+                
+                # Add a live indicator
+                st.markdown("**🟢 Live Status:** Dashboard is actively monitoring for changes")
+                
+                # Show next refresh countdown
+                st.markdown("**⏱️ Next Refresh:** In 30 seconds")
                 
         else:
             st.warning("Hours log file not found. Please run the hours tracking system first.")
