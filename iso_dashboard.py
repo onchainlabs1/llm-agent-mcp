@@ -697,43 +697,150 @@ def main():
     
     st.markdown("---")
     
-    # KPI Snapshot (optional)
-    st.markdown("## 📈 KPI Snapshot")
+    # Real System Metrics (based on actual system data)
+    st.markdown("## 📊 Real System Metrics")
+    
     try:
-        import json
-        if os.path.exists("docs/KPI_Snapshot.json"):
-            with open("docs/KPI_Snapshot.json", "r") as f:
-                kpi = json.load(f)
-            cols = st.columns(5)
-            cols[0].metric("MCP Discovery", f"{kpi['kpis'].get('mcp_tool_discovery_success',0)*100:.0f}%")
-            cols[1].metric("LLM Uptime", f"{kpi['kpis'].get('llm_api_uptime',0)*100:.1f}%")
-            cols[2].metric("Fallback", f"{kpi['kpis'].get('fallback_success_rate',0)*100:.0f}%")
-            cols[3].metric("Decision Acc.", f"{kpi['kpis'].get('decision_accuracy',0)*100:.0f}%")
-            cols[4].metric("Resp. Time", f"{kpi['kpis'].get('avg_response_time_s',0):.1f}s")
+        # Collect real metrics from the system
+        metrics = {}
+        
+        # 1. File System Health (real)
+        if os.path.exists("project_hours_log.csv"):
+            file_size = os.path.getsize("project_hours_log.csv")
+            file_age = time.time() - os.path.getmtime("project_hours_log.csv")
+            metrics["File Size"] = f"{file_size/1024:.1f} KB"
+            metrics["Data Age"] = f"{file_age/60:.1f} min"
+        else:
+            metrics["File Size"] = "Missing"
+            metrics["Data Age"] = "N/A"
+        
+        # 2. Documentation Coverage (real)
+        docs_path = Path("docs")
+        if docs_path.exists():
+            total_files = sum(1 for _ in docs_path.rglob("*.md"))
+            total_csv = sum(1 for _ in docs_path.rglob("*.csv"))
+            metrics["Markdown Files"] = total_files
+            metrics["CSV Files"] = total_csv
+        else:
+            metrics["Markdown Files"] = 0
+            metrics["CSV Files"] = 0
+        
+        # 3. Repository Health (real)
+        try:
+            import subprocess
+            result = subprocess.run(["git", "rev-parse", "--short", "HEAD"], 
+                                  capture_output=True, text=True, timeout=5)
+            if result.returncode == 0:
+                metrics["Git Commit"] = result.stdout.strip()
+            else:
+                metrics["Git Commit"] = "Unknown"
+        except:
+            metrics["Git Commit"] = "N/A"
+        
+        # 4. System Uptime (real)
+        import psutil
+        uptime_seconds = time.time() - psutil.boot_time()
+        uptime_hours = uptime_seconds / 3600
+        metrics["System Uptime"] = f"{uptime_hours:.1f}h"
+        
+        # 5. Memory Usage (real)
+        memory = psutil.virtual_memory()
+        metrics["Memory Usage"] = f"{memory.percent:.1f}%"
+        
+        # Display real metrics in columns
+        cols = st.columns(5)
+        metric_items = list(metrics.items())
+        
+        for i, (label, value) in enumerate(metric_items):
+            with cols[i]:
+                st.metric(label, value)
+        
+        # Add explanation
+        st.info("📊 **These are REAL system metrics collected live from your system**")
+        
     except Exception as e:
-        st.warning(f"KPI snapshot not available: {e}")
+        st.warning(f"Could not collect real metrics: {e}")
+        st.info("💡 **Tip:** Install psutil with 'pip install psutil' for system metrics")
 
-    # Audit Information
-    st.markdown("## 🔍 Audit Information")
+    # Real Audit Information (based on actual data)
+    st.markdown("## 🔍 Real Audit Status")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 📋 Audit Readiness")
-        st.success("✅ **Ready for External Audit**")
-        st.info("📊 **Audit Score: 98/100**")
-        st.success("📄 **All Documentation Complete**")
-        st.success("⏱️ **Hours Requirement Met**")
+        st.markdown("### 📋 Actual Compliance Status")
+        
+        # Check real compliance based on actual files
+        compliance_checks = []
+        
+        # Check if hours requirement is met
+        if os.path.exists("project_hours_log.csv"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                if total_hours >= 300:
+                    compliance_checks.append(("✅ Hours Requirement", "Met (300h+)", "success"))
+                else:
+                    compliance_checks.append(("⚠️ Hours Requirement", f"Need {300-total_hours:.1f}h more", "warning"))
+            except:
+                compliance_checks.append(("❌ Hours Data", "Cannot read", "error"))
+        else:
+            compliance_checks.append(("❌ Hours Data", "File missing", "error"))
+        
+        # Check documentation completeness
+        docs_path = Path("docs")
+        if docs_path.exists():
+            clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
+            if len(clause_folders) >= 7:  # Clauses 4-10
+                compliance_checks.append(("✅ Documentation", f"{len(clause_folders)} clauses", "success"))
+            else:
+                compliance_checks.append(("⚠️ Documentation", f"{len(clause_folders)}/7 clauses", "warning"))
+        else:
+            compliance_checks.append(("❌ Documentation", "Missing", "error"))
+        
+        # Display real compliance status
+        for label, status, level in compliance_checks:
+            if level == "success":
+                st.success(f"{label}: {status}")
+            elif level == "warning":
+                st.warning(f"{label}: {status}")
+            else:
+                st.error(f"{label}: {status}")
     
     with col2:
-        st.markdown("### 🎯 Certification Status")
-        st.success("✅ **ISO/IEC 42001:2023 Compliant**")
-        st.success("✅ **Lead Implementer Eligible**")
-        st.success("✅ **Documentation Audit-Ready**")
-        st.success("✅ **Implementation Evidence Complete**")
-    
-    st.markdown("---")
-    
+        st.markdown("### 🎯 Real Implementation Status")
+        
+        # Check actual implementation files
+        implementation_checks = []
+        
+        # Check for key procedures
+        key_files = [
+            "docs/Clause8_Operation/AI_Incident_Management_Procedure.md",
+            "docs/Clause6_Planning_new/AI_Risk_Management_Procedure.md",
+            "docs/Clause5_Leadership/AI_Management_Policy.md"
+        ]
+        
+        for file_path in key_files:
+            if os.path.exists(file_path):
+                implementation_checks.append(("✅", os.path.basename(file_path).replace(".md", "")))
+            else:
+                implementation_checks.append(("❌", os.path.basename(file_path).replace(".md", "")))
+        
+        # Display implementation status
+        for status, name in implementation_checks:
+            st.markdown(f"{status} **{name}**")
+        
+        # Overall assessment
+        existing_files = sum(1 for _, name in implementation_checks if name.startswith("✅"))
+        total_files = len(implementation_checks)
+        
+        if existing_files == total_files:
+            st.success(f"🎉 **Complete Implementation** ({existing_files}/{total_files})")
+        elif existing_files > total_files / 2:
+            st.warning(f"📚 **Good Progress** ({existing_files}/{total_files})")
+        else:
+            st.error(f"⚠️ **Needs Work** ({existing_files}/{total_files})")
+
     # Footer
     st.markdown("""
     <div class="iso-footer" style="text-align: center; padding: 1rem; background-color: #f0f2f6; border-radius: 5px; margin-top: 2rem;">

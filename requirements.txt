@@ -27,3 +27,6 @@ structlog>=23.0.0
 
 # JSON logging
 python-json-logger>=2.0.0
+
+# System metrics (for real dashboard data)
+psutil>=5.9.0
