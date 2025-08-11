@@ -372,7 +372,152 @@ def main():
         st.link_button("📊 Hours Log", f"{GITHUB_BASE}/project_hours_log.md", use_container_width=True)
     
     st.markdown("---")
-    
+
+    # Compliance Overview - moved to top after navigation
+    st.markdown("## 📊 Compliance Overview")
+
+    # Real-time metrics (calculating from actual data)
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        # Count real documents
+        docs_count = 0
+        if os.path.exists("docs"):
+            docs_path = Path("docs")
+            for item in docs_path.rglob("*.md"):
+                docs_count += 1
+
+        st.metric(
+            label="📄 Total Documents",
+            value=f"{docs_count}",
+            delta="Real count"
+        )
+
+    with col2:
+        # Calculate real hours from CSV
+        hours_value = "0h"
+        hours_delta = "No data"
+        if os.path.exists("project_hours_log.csv"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                hours_value = f"{total_hours:.1f}h"
+                if total_hours >= 300:
+                    hours_delta = "✅ Exceeds 300h requirement"
+                else:
+                    hours_delta = f"Need {300-total_hours:.1f}h more"
+            except:
+                hours_value = "Error"
+                hours_delta = "Cannot read"
+
+        st.metric(
+            label="⏱️ Hours Logged",
+            value=hours_value,
+            delta=hours_delta
+        )
+
+    with col3:
+        # Count real risks from CSV
+        risks_value = "0"
+        risks_delta = "No data"
+        if os.path.exists("docs/Clause6_Planning_new/AI_Risk_Register.csv"):
+            try:
+                df = pd.read_csv("docs/Clause6_Planning_new/AI_Risk_Register.csv")
+                risks_value = str(len(df))
+                risks_delta = "Real count"
+            except:
+                risks_value = "Error"
+                risks_delta = "Cannot read"
+
+        st.metric(
+            label="📋 Risk Register",
+            value=risks_value,
+            delta=risks_delta
+        )
+
+    with col4:
+        # Calculate real audit readiness
+        audit_value = "To assess"
+        audit_delta = "Real assessment needed"
+        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                docs_path = Path("docs")
+                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
+
+                if total_hours >= 300 and len(clause_folders) >= 7:
+                    audit_value = "Ready"
+                    audit_delta = "✅ Requirements met"
+                elif total_hours >= 300:
+                    audit_value = "Partial"
+                    audit_delta = "Hours OK, docs incomplete"
+                else:
+                    audit_value = "Not ready"
+                    audit_delta = "Hours insufficient"
+            except:
+                audit_value = "Error"
+                audit_delta = "Cannot assess"
+
+        st.metric(
+            label="🎯 Audit Status",
+            value=audit_value,
+            delta=audit_delta
+        )
+
+    # Status indicators - based on real data
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                docs_path = Path("docs")
+                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
+
+                if total_hours >= 300 and len(clause_folders) >= 7:
+                    st.success("✅ **ISO/IEC 42001:2023 Compliant**")
+                else:
+                    st.warning("⚠️ **ISO/IEC 42001:2023 In Progress**")
+            except:
+                st.info("🔍 **ISO/IEC 42001:2023 Status: Assessment Required**")
+        else:
+            st.info("🔍 **ISO/IEC 42001:2023 Status: Assessment Required**")
+
+    with col2:
+        if os.path.exists("project_hours_log.csv"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                if total_hours >= 300:
+                    st.success("✅ **Lead Implementer Eligible**")
+                else:
+                    st.warning(f"⚠️ **Need {300-total_hours:.1f}h more**")
+            except:
+                st.info("🔍 **Lead Implementer Status: To be determined**")
+        else:
+            st.info("🔍 **Lead Implementer Status: To be determined**")
+
+    with col3:
+        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
+            try:
+                df = pd.read_csv("project_hours_log.csv")
+                total_hours = df['Time (h)'].sum()
+                docs_path = Path("docs")
+                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
+
+                if total_hours >= 300 and len(clause_folders) >= 7:
+                    st.success("✅ **Ready for External Audit**")
+                else:
+                    st.warning("⚠️ **Not ready for external audit**")
+            except:
+                st.info("🔍 **External Audit Readiness: To be assessed**")
+        else:
+            st.info("🔍 **External Audit Readiness: To be assessed**")
+
+    st.markdown("---")
+
     # Audit Trail and Compliance Status Section
     st.markdown("## 🔍 Audit Trail & Compliance Status")
     
@@ -383,6 +528,7 @@ def main():
         
         # Calculate compliance score based on implemented controls
         compliance_items = [
+
             ("✅ AIMS Scope Definition", True),
             ("✅ Stakeholder Mapping", True),
             ("✅ Risk Register", True),
@@ -518,150 +664,7 @@ def main():
     except Exception as e:
         st.warning(f"Unable to load SoA summary: {e}")
 
-    # Overview Metrics
-    st.markdown("## 📊 Compliance Overview")
-    
-    # Real-time metrics (calculating from actual data)
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        # Count real documents
-        docs_count = 0
-        if os.path.exists("docs"):
-            docs_path = Path("docs")
-            for item in docs_path.rglob("*.md"):
-                docs_count += 1
-        
-        st.metric(
-            label="📄 Total Documents",
-            value=f"{docs_count}",
-            delta="Real count"
-        )
-    
-    with col2:
-        # Calculate real hours from CSV
-        hours_value = "0h"
-        hours_delta = "No data"
-        if os.path.exists("project_hours_log.csv"):
-            try:
-                df = pd.read_csv("project_hours_log.csv")
-                total_hours = df['Time (h)'].sum()
-                hours_value = f"{total_hours:.1f}h"
-                if total_hours >= 300:
-                    hours_delta = "✅ Exceeds 300h requirement"
-                else:
-                    hours_delta = f"Need {300-total_hours:.1f}h more"
-            except:
-                hours_value = "Error"
-                hours_delta = "Cannot read"
-        
-        st.metric(
-            label="⏱️ Hours Logged",
-            value=hours_value,
-            delta=hours_delta
-        )
-    
-    with col3:
-        # Count real risks from CSV
-        risks_value = "0"
-        risks_delta = "No data"
-        if os.path.exists("docs/Clause6_Planning_new/AI_Risk_Register.csv"):
-            try:
-                df = pd.read_csv("docs/Clause6_Planning_new/AI_Risk_Register.csv")
-                risks_value = str(len(df))
-                risks_delta = "Real count"
-            except:
-                risks_value = "Error"
-                risks_delta = "Cannot read"
-        
-        st.metric(
-            label="📋 Risk Register",
-            value=risks_value,
-            delta=risks_delta
-        )
-    
-    with col4:
-        # Calculate real audit readiness
-        audit_value = "To assess"
-        audit_delta = "Real assessment needed"
-        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
-            try:
-                df = pd.read_csv("project_hours_log.csv")
-                total_hours = df['Time (h)'].sum()
-                docs_path = Path("docs")
-                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
-                
-                if total_hours >= 300 and len(clause_folders) >= 7:
-                    audit_value = "Ready"
-                    audit_delta = "✅ Requirements met"
-                elif total_hours >= 300:
-                    audit_value = "Partial"
-                    audit_delta = "Hours OK, docs incomplete"
-                else:
-                    audit_value = "Not ready"
-                    audit_delta = "Hours insufficient"
-            except:
-                audit_value = "Error"
-                audit_delta = "Cannot assess"
-        
-        st.metric(
-            label="🎯 Audit Status",
-            value=audit_value,
-            delta=audit_delta
-        )
-    
-    # Status indicators - based on real data
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
-            try:
-                df = pd.read_csv("project_hours_log.csv")
-                total_hours = df['Time (h)'].sum()
-                docs_path = Path("docs")
-                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
-                
-                if total_hours >= 300 and len(clause_folders) >= 7:
-                    st.success("✅ **ISO/IEC 42001:2023 Compliant**")
-                else:
-                    st.warning("⚠️ **ISO/IEC 42001:2023 In Progress**")
-            except:
-                st.info("🔍 **ISO/IEC 42001:2023 Status: Assessment Required**")
-        else:
-            st.info("🔍 **ISO/IEC 42001:2023 Status: Assessment Required**")
-    
-    with col2:
-        if os.path.exists("project_hours_log.csv"):
-            try:
-                df = pd.read_csv("project_hours_log.csv")
-                total_hours = df['Time (h)'].sum()
-                if total_hours >= 300:
-                    st.success("✅ **Lead Implementer Eligible**")
-                else:
-                    st.warning(f"⚠️ **Need {300-total_hours:.1f}h more**")
-            except:
-                st.info("🔍 **Lead Implementer Status: To be determined**")
-        else:
-            st.info("🔍 **Lead Implementer Status: To be determined**")
-    
-    with col3:
-        if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
-            try:
-                df = pd.read_csv("project_hours_log.csv")
-                total_hours = df['Time (h)'].sum()
-                docs_path = Path("docs")
-                clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
-                
-                if total_hours >= 300 and len(clause_folders) >= 7:
-                    st.success("✅ **Ready for External Audit**")
-                else:
-                    st.warning("⚠️ **Not ready for external audit**")
-            except:
-                st.info("🔍 **External Audit Readiness: To be assessed**")
-        else:
-            st.info("🔍 **External Audit Readiness: To be assessed**")
-    
-    st.markdown("---")
+    # (Compliance Overview moved above)
     
     # ISO Clauses Section
     st.markdown("## 📁 ISO/IEC 42001:2023 Clauses")
