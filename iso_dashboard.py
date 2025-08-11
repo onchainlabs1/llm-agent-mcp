@@ -17,6 +17,8 @@ import json
 import logging
 from logging.handlers import RotatingFileHandler
 import hashlib
+from typing import Optional
+import pandas as pd
 
 # Page configuration
 st.set_page_config(
@@ -210,6 +212,20 @@ def encrypt_data(data, key="default_key"):
     except:
         return {"encrypted": False, "error": "Encryption failed"}
 
+# --------- Robust CSV utilities ---------
+def tolerant_read_csv(path: str) -> Optional[pd.DataFrame]:
+    """Read a CSV file robustly. Returns a DataFrame or None if all attempts fail."""
+    try:
+        return pd.read_csv(path)
+    except Exception:
+        try:
+            return pd.read_csv(path, engine="python", on_bad_lines="skip", encoding="utf-8")
+        except Exception:
+            try:
+                return pd.read_csv(path, engine="python", on_bad_lines="skip", encoding="latin-1")
+            except Exception:
+                return None
+
 # Configurable external links (override via env vars in Streamlit Cloud settings)
 # Provide sensible cross-app defaults to avoid self-linking
 MAIN_APP_URL = os.getenv("MAIN_APP_URL", "https://llm-agent-mcp-portfolio.streamlit.app")
@@ -337,7 +353,9 @@ def main():
         st.info(f"🔄 **Auto-refresh every 30 seconds** | 📅 **Last updated:** {current_time}")
     
     with col2:
-        if st.button("🔄 Manual Refresh", use_container_width=True):
+        # High-contrast refresh button
+        refresh_clicked = st.button("🔄 Manual Refresh", help="Reload data now", use_container_width=True)
+        if refresh_clicked:
             st.rerun()
     
     # Simple data status
@@ -399,7 +417,9 @@ def main():
         hours_delta = "No data"
         if os.path.exists("project_hours_log.csv"):
             try:
-                df = pd.read_csv("project_hours_log.csv")
+                df = tolerant_read_csv("project_hours_log.csv")
+                if df is None or 'Time (h)' not in df.columns:
+                    raise ValueError("Invalid hours CSV")
                 total_hours = df['Time (h)'].sum()
                 hours_value = f"{total_hours:.1f}h"
                 if total_hours >= 300:
@@ -422,7 +442,9 @@ def main():
         risks_delta = "No data"
         if os.path.exists("docs/Clause6_Planning_new/AI_Risk_Register.csv"):
             try:
-                df = pd.read_csv("docs/Clause6_Planning_new/AI_Risk_Register.csv")
+                df = tolerant_read_csv("docs/Clause6_Planning_new/AI_Risk_Register.csv")
+                if df is None:
+                    raise ValueError("Invalid risks CSV")
                 risks_value = str(len(df))
                 risks_delta = "Real count"
             except:
@@ -441,7 +463,9 @@ def main():
         audit_delta = "Real assessment needed"
         if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
             try:
-                df = pd.read_csv("project_hours_log.csv")
+                df = tolerant_read_csv("project_hours_log.csv")
+                if df is None or 'Time (h)' not in df.columns:
+                    raise ValueError("Invalid hours CSV")
                 total_hours = df['Time (h)'].sum()
                 docs_path = Path("docs")
                 clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
@@ -488,7 +512,9 @@ def main():
     with col2:
         if os.path.exists("project_hours_log.csv"):
             try:
-                df = pd.read_csv("project_hours_log.csv")
+                df = tolerant_read_csv("project_hours_log.csv")
+                if df is None or 'Time (h)' not in df.columns:
+                    raise ValueError("Invalid hours CSV")
                 total_hours = df['Time (h)'].sum()
                 if total_hours >= 300:
                     st.success("✅ **Lead Implementer Eligible**")
@@ -502,7 +528,9 @@ def main():
     with col3:
         if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
             try:
-                df = pd.read_csv("project_hours_log.csv")
+                df = tolerant_read_csv("project_hours_log.csv")
+                if df is None or 'Time (h)' not in df.columns:
+                    raise ValueError("Invalid hours CSV")
                 total_hours = df['Time (h)'].sum()
                 docs_path = Path("docs")
                 clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
