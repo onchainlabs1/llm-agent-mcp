@@ -260,7 +260,7 @@ def main():
     # Log dashboard access for audit trail
     log_audit_event(
         "Dashboard Access",
-        {"page": "ISO_Dashboard", "user": "auditor", "timestamp": current_time},
+        {"page": "ISO_Dashboard", "user": "auditor", "timestamp": datetime.datetime.now().isoformat()},
         level="INFO"
     )
     
