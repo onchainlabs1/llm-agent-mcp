@@ -146,11 +146,9 @@ def log_audit_event(action, details, level="INFO", user_agent="dashboard", sessi
             st.info(f"🔵 Audit Log: {action}")
             
     except Exception as e:
-        st.error(f"Failed to log audit event: {e}")
 
-# Security Functions for ISO Compliance (R003, R001, R002, R008)
+# Security Functions for ISO Compliance (R003, R001, R002)
 def sanitize_prompt_input(user_input):
-    """Sanitize user input to prevent prompt injection attacks (R003)"""
     if not user_input:
         return ""
     input_str = str(user_input)
@@ -161,7 +159,6 @@ def sanitize_prompt_input(user_input):
     return sanitized[:1000] if len(sanitized) > 1000 else sanitized
 
 def validate_llm_prompt(prompt):
-    """Validate LLM prompt for security and compliance (R003)"""
     result = {"is_safe": True, "warnings": []}
     dangerous_patterns = ["system:", "user:", "assistant:", "role:", "function:"]
     for pattern in dangerous_patterns:
@@ -171,7 +168,6 @@ def validate_llm_prompt(prompt):
     return result
 
 def detect_bias_in_client_data(client_data):
-    """Detect bias in client filtering and data (R001)"""
     bias_indicators = {"gender_bias": False, "age_bias": False, "confidence_score": 0.0}
     try:
         if isinstance(client_data, dict) and "name" in client_data:
@@ -184,7 +180,6 @@ def detect_bias_in_client_data(client_data):
     return bias_indicators
 
 def fact_check_llm_output(output_text, confidence_threshold=0.7):
-    """Implement fact-checking layer for LLM outputs (R002)"""
     result = {"is_factual": True, "confidence_score": 0.5, "warnings": []}
     try:
         text_lower = output_text.lower()
@@ -199,16 +194,7 @@ def fact_check_llm_output(output_text, confidence_threshold=0.7):
         result["is_factual"] = False
         result["confidence_score"] = 0.0
     return result
-
-def encrypt_data(data, key="default_key"):
-    """Basic data encryption for compliance (R008)"""
-    try:
-        import hashlib
-        data_str = str(data)
-        encrypted = hashlib.sha256((data_str + key).encode()).hexdigest()
-        return {"encrypted": True, "hash": encrypted, "method": "SHA256"}
-    except:
-        return {"encrypted": False, "error": "Encryption failed"}
+        st.error(f"Failed to log audit event: {e}")
 
 # Configurable external links (override via env vars in Streamlit Cloud settings)
 # Provide sensible cross-app defaults to avoid self-linking
@@ -389,9 +375,9 @@ def main():
             ("✅ LLM API Fallback", True),
             ("✅ Input Validation", True),
             ("✅ Structured Logging", True),   # ✅ IMPLEMENTED!
-            ("✅ Bias Detection", True),      # From feedback
-            ("✅ Fact-checking", True),       # From feedback
-            ("✅ Data Encryption", True),     # From feedback
+            ("❌ Bias Detection", False),      # From feedback
+            ("❌ Fact-checking", False),       # From feedback
+            ("❌ Data Encryption", False),     # From feedback
         ]
         
         implemented = sum(1 for _, status in compliance_items if status)
@@ -413,11 +399,11 @@ def main():
         st.markdown("### 🚨 Critical Gaps (from Audit)")
         
         critical_gaps = [
-            "✅ **Structured JSON Logging** - IMPLEMENTED (rotating JSON logs with audit trails)",
-            "✅ **Prompt Injection Protection** - IMPLEMENTED (input sanitization and validation)",
-            "✅ **Bias Detection** - IMPLEMENTED (client data bias analysis)",
-            "✅ **Fact-checking** - IMPLEMENTED (confidence scoring and validation)",
-            "✅ **Data Encryption** - IMPLEMENTED (SHA256 hashing for data integrity)"
+            "📝 **Structured JSON Logging** - Implement rotating JSON logs for audit trails",
+            "🛡️ **Prompt Injection** - Sanitize user input before LLM calls",
+            "⚖️ **Bias Detection** - Add bias detection for client filtering",
+            "🔍 **Fact-checking** - Implement confidence scoring for LLM outputs",
+            "🔐 **Data Encryption** - Encrypt data at rest and in transit"
         ]
         
         for gap in critical_gaps:
