@@ -13,6 +13,10 @@ from pathlib import Path
 import os
 import datetime
 import time
+import json
+import logging
+from logging.handlers import RotatingFileHandler
+import hashlib
 
 # Page configuration
 st.set_page_config(
@@ -75,6 +79,74 @@ st.markdown(
 # Constants
 GITHUB_BASE = "https://github.com/onchainlabs1/llm-agent-mcp/blob/main"
 REPO_BASE = "https://github.com/onchainlabs1/llm-agent-mcp"
+
+# Structured JSON Logging Setup
+def setup_structured_logging():
+    """Setup structured JSON logging with rotation for ISO compliance audit trails"""
+    log_dir = Path("logs")
+    log_dir.mkdir(exist_ok=True)
+    
+    # Create rotating file handler (10MB max, keep 5 files)
+    log_file = log_dir / "iso_audit_trail.json"
+    handler = RotatingFileHandler(log_file, maxBytes=10*1024*1024, backupCount=5)
+    
+    # Create formatter for JSON logs
+    class JSONFormatter(logging.Formatter):
+        def format(self, record):
+            log_entry = {
+                "timestamp": datetime.datetime.utcnow().isoformat(),
+                "level": record.levelname,
+                "module": record.module,
+                "function": record.funcName,
+                "line": record.lineno,
+                "message": record.getMessage(),
+                "user_agent": getattr(record, 'user_agent', 'unknown'),
+                "session_id": getattr(record, 'session_id', 'unknown'),
+                "action": getattr(record, 'action', 'unknown'),
+                "data_hash": getattr(record, 'data_hash', 'unknown')
+            }
+            return json.dumps(log_entry)
+    
+    handler.setFormatter(JSONFormatter())
+    
+    # Setup logger
+    logger = logging.getLogger("iso_audit")
+    logger.setLevel(logging.INFO)
+    logger.addHandler(handler)
+    
+    return logger
+
+# Initialize structured logging
+audit_logger = setup_structured_logging()
+
+def log_audit_event(action, details, level="INFO", user_agent="dashboard", session_id="main"):
+    """Log structured audit events for ISO compliance"""
+    try:
+        # Create data hash for integrity
+        data_str = json.dumps(details, sort_keys=True)
+        data_hash = hashlib.sha256(data_str.encode()).hexdigest()
+        
+        # Log with structured data
+        audit_logger.info(
+            f"Audit Event: {action}",
+            extra={
+                'action': action,
+                'user_agent': user_agent,
+                'session_id': session_id,
+                'data_hash': data_hash
+            }
+        )
+        
+        # Also log to Streamlit for real-time display
+        if level == "ERROR":
+            st.error(f"🔴 Audit Log: {action}")
+        elif level == "WARNING":
+            st.warning(f"🟡 Audit Log: {action}")
+        else:
+            st.info(f"🔵 Audit Log: {action}")
+            
+    except Exception as e:
+        st.error(f"Failed to log audit event: {e}")
 
 # Configurable external links (override via env vars in Streamlit Cloud settings)
 # Provide sensible cross-app defaults to avoid self-linking
@@ -185,6 +257,13 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
+    # Log dashboard access for audit trail
+    log_audit_event(
+        "Dashboard Access",
+        {"page": "ISO_Dashboard", "user": "auditor", "timestamp": current_time},
+        level="INFO"
+    )
+    
     # Auto-refresh status section - AGORA VEM LOGO APÓS O BANNER
     st.markdown("## 🔄 Auto-Refresh Status")
     
@@ -229,6 +308,97 @@ def main():
         st.link_button("📚 GitHub Repository", REPO_BASE, use_container_width=True)
     with col4:
         st.link_button("📊 Hours Log", f"{GITHUB_BASE}/project_hours_log.md", use_container_width=True)
+    
+    st.markdown("---")
+    
+    # Audit Trail and Compliance Status Section
+    st.markdown("## 🔍 Audit Trail & Compliance Status")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("### 📊 ISO Compliance Score")
+        
+        # Calculate compliance score based on implemented controls
+        compliance_items = [
+            ("✅ AIMS Scope Definition", True),
+            ("✅ Stakeholder Mapping", True),
+            ("✅ Risk Register", True),
+            ("✅ LLM API Fallback", True),
+            ("✅ Input Validation", True),
+            ("✅ Structured Logging", True),   # ✅ IMPLEMENTED!
+            ("❌ Bias Detection", False),      # From feedback
+            ("❌ Fact-checking", False),       # From feedback
+            ("❌ Data Encryption", False),     # From feedback
+        ]
+        
+        implemented = sum(1 for _, status in compliance_items if status)
+        total = len(compliance_items)
+        compliance_score = (implemented / total) * 100
+        
+        st.metric("Overall Compliance", f"{compliance_score:.1f}%")
+        
+        # Show compliance breakdown
+        for item, status in compliance_items:
+            if status:
+                st.success(item)
+            elif "⚠️" in item:
+                st.warning(item)
+            else:
+                st.error(item)
+    
+    with col2:
+        st.markdown("### 🚨 Critical Gaps (from Audit)")
+        
+        critical_gaps = [
+            "📝 **Structured JSON Logging** - Implement rotating JSON logs for audit trails",
+            "🛡️ **Prompt Injection** - Sanitize user input before LLM calls",
+            "⚖️ **Bias Detection** - Add bias detection for client filtering",
+            "🔍 **Fact-checking** - Implement confidence scoring for LLM outputs",
+            "🔐 **Data Encryption** - Encrypt data at rest and in transit"
+        ]
+        
+        for gap in critical_gaps:
+            st.info(gap)
+        
+        st.markdown("---")
+        st.markdown("**Priority:** Address critical gaps to achieve full ISO compliance")
+    
+    st.markdown("---")
+    
+    # Real-time Audit Trail Display
+    st.markdown("### 📋 Live Audit Trail")
+    
+    # Show recent audit logs
+    try:
+        log_file = Path("logs/iso_audit_trail.json")
+        if log_file.exists():
+            with open(log_file, 'r') as f:
+                lines = f.readlines()
+                if lines:
+                    # Show last 5 log entries
+                    recent_logs = lines[-5:]
+                    for log_line in recent_logs:
+                        try:
+                            log_data = json.loads(log_line.strip())
+                            timestamp = log_data.get('timestamp', 'Unknown')
+                            action = log_data.get('action', 'Unknown')
+                            level = log_data.get('level', 'INFO')
+                            
+                            if level == 'ERROR':
+                                st.error(f"🔴 {timestamp} - {action}")
+                            elif level == 'WARNING':
+                                st.warning(f"🟡 {timestamp} - {action}")
+                            else:
+                                st.info(f"🔵 {timestamp} - {action}")
+                        except:
+                            st.text(log_line.strip())
+                else:
+                    st.info("No audit logs yet")
+        else:
+            st.info("Audit trail file not found - logging system initializing")
+    except Exception as e:
+        st.warning(f"Could not display audit trail: {e}")
     
     st.markdown("---")
     
