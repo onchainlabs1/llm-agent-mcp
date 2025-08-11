@@ -353,8 +353,33 @@ def main():
         st.info(f"🔄 **Auto-refresh every 30 seconds** | 📅 **Last updated:** {current_time}")
     
     with col2:
-        # High-contrast refresh button
-        refresh_clicked = st.button("🔄 Manual Refresh", help="Reload data now", use_container_width=True)
+        # High-contrast refresh button (accessible)
+        st.markdown(
+            """
+            <style>
+            /* Style only Streamlit buttons (navigation uses link_button) */
+            div.stButton > button {
+                background-color: #111827; /* slate-900 */
+                color: #ffffff !important;
+                border: 1px solid #0b1220;
+                border-radius: 10px;
+                padding: 0.6rem 1rem;
+                font-weight: 700;
+                letter-spacing: 0.2px;
+            }
+            div.stButton > button:hover {
+                background-color: #1f2937; /* slate-800 */
+                border-color: #0b1220;
+            }
+            div.stButton > button:focus {
+                outline: 3px solid #93c5fd; /* focus ring */
+                outline-offset: 2px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+        refresh_clicked = st.button("🔄 Manual Refresh", help="Reload data now", use_container_width=True, key="manual_refresh_btn")
         if refresh_clicked:
             st.rerun()
     
