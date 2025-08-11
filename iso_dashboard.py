@@ -187,68 +187,31 @@ def main():
     
     # Auto-refresh status section - AGORA VEM LOGO APÓS O BANNER
     st.markdown("## 🔄 Auto-Refresh Status")
-    col1, col2, col3 = st.columns([2, 1, 1])
+    
+    # Simplified status display
+    col1, col2 = st.columns([3, 1])
+    
     with col1:
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         st.info(f"🔄 **Auto-refresh every 30 seconds** | 📅 **Last updated:** {current_time}")
-        
-        # Add countdown timer
-        st.markdown("⏱️ **Next refresh in:** 30 seconds")
     
     with col2:
-        # Custom styled button with subtle color
-        st.markdown("""
-        <style>
-        .stButton > button {
-            background-color: #f8f9fa;
-            color: #495057;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 8px 16px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        .stButton > button:hover {
-            background-color: #e9ecef;
-            border-color: #adb5bd;
-            color: #212529;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
         if st.button("🔄 Manual Refresh", use_container_width=True):
             st.rerun()
-        
-        # Add file monitoring info
-        st.markdown("📁 **Monitoring:** `project_hours_log.csv`")
     
-    with col3:
-        # Check if hours log file was recently modified
-        if os.path.exists("project_hours_log.csv"):
-            file_time = os.path.getmtime("project_hours_log.csv")
-            file_age = time.time() - file_time
-            
-            # Format file age nicely
-            if file_age < 60:
-                age_str = f"{int(file_age)}s ago"
-            elif file_age < 3600:
-                age_str = f"{int(file_age/60)}m ago"
-            else:
-                age_str = f"{int(file_age/3600)}h ago"
-            
-            if file_age < 300:  # Less than 5 minutes
-                st.success(f"📊 **Data: Fresh** ({age_str})")
-            elif file_age < 3600: # Less than 1 hour
-                st.warning(f"📊 **Data: Recent** ({age_str})")
-            else:
-                st.info(f"📊 **Data: Older** ({age_str})")
-                
-            # Show file size
-            file_size = os.path.getsize("project_hours_log.csv")
-            st.caption(f"📄 File size: {file_size/1024:.1f} KB")
+    # Simple data status
+    if os.path.exists("project_hours_log.csv"):
+        file_time = os.path.getmtime("project_hours_log.csv")
+        file_age = time.time() - file_time
+        
+        if file_age < 300:  # Less than 5 minutes
+            st.success("📊 **Data Status:** Fresh")
+        elif file_age < 3600: # Less than 1 hour
+            st.warning("📊 **Data Status:** Recent")
         else:
-            st.error("📊 **Data: Missing**")
-            st.caption("Run `python log_hours.py` to generate data")
+            st.info("📊 **Data Status:** Older")
+    else:
+        st.error("📊 **Data Status:** Missing")
     
     st.markdown("---")
     
@@ -269,72 +232,8 @@ def main():
     
     st.markdown("---")
     
-    # Git Operations Section
-    st.markdown("## 🚀 Git Operations")
-    col1, col2, col3 = st.columns([1, 1, 1])
+    # Git Operations Section removed - not needed for ISO compliance dashboard
     
-    with col1:
-        st.markdown("### 📝 Commit Changes")
-        commit_message = st.text_input("Commit message:", value="Update ISO dashboard interface and functionality", key="commit_msg")
-        if st.button("💾 Commit Changes", use_container_width=True):
-            try:
-                import subprocess
-                # Add all changes
-                subprocess.run(["git", "add", "."], check=True)
-                # Commit with message
-                subprocess.run(["git", "commit", "-m", commit_message], check=True)
-                st.success("✅ Changes committed successfully!")
-                st.info(f"Commit message: {commit_message}")
-            except Exception as e:
-                st.error(f"❌ Error committing changes: {e}")
-    
-    with col2:
-        st.markdown("### 🚀 Push to GitHub")
-        if st.button("📤 Push to GitHub", use_container_width=True):
-            try:
-                import subprocess
-                # Push to origin main
-                result = subprocess.run(["git", "push", "origin", "main"], capture_output=True, text=True)
-                if result.returncode == 0:
-                    st.success("✅ Successfully pushed to GitHub!")
-                    st.info("Your changes are now live on GitHub")
-                else:
-                    st.warning("⚠️ Push completed with warnings:")
-                    st.code(result.stderr)
-            except Exception as e:
-                st.error(f"❌ Error pushing to GitHub: {e}")
-    
-    with col3:
-        st.markdown("### 📊 Git Status")
-        try:
-            import subprocess
-            # Get git status
-            status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
-            if status_result.stdout.strip():
-                st.warning("⚠️ Uncommitted changes detected")
-                st.code(status_result.stdout, language="bash")
-            else:
-                st.success("✅ Working directory is clean")
-            
-            # Get last commit info
-            last_commit = subprocess.run(["git", "log", "-1", "--oneline"], capture_output=True, text=True)
-            if last_commit.stdout:
-                st.info(f"📝 Last commit: {last_commit.stdout.strip()}")
-        except Exception as e:
-            st.error(f"❌ Error checking git status: {e}")
-    
-    st.markdown("---")
-    
-    # Add auto-refresh functionality
-    st.markdown("""
-    <script>
-    // Auto-refresh every 30 seconds
-    setTimeout(function(){
-        window.location.reload();
-    }, 30000);
-    </script>
-    """, unsafe_allow_html=True)
-
     # Compliance Checklist from SoA
     st.markdown("## ✅ Compliance Checklist (from SoA)")
     try:
