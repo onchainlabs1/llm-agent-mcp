@@ -18,6 +18,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import hashlib
 from typing import Optional
+import re
 import pandas as pd
 
 # Page configuration
@@ -733,10 +734,34 @@ def main():
 
                     if partial_count + no_count > 0:
                         st.markdown("### 🔧 Open Items")
-                        open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][
-                            ["Control ID", "Control Title", "Implemented (Yes/No)", "Justification", "Linked Document"]
+                        # Dynamically include extra fields if present
+                        base_cols = [
+                            "Control ID",
+                            "Control Title",
+                            "Implemented (Yes/No)",
+                            "Justification",
+                            "Linked Document",
                         ]
-                        st.dataframe(open_df, use_container_width=True)
+                        optional_cols = [
+                            c for c in [
+                                next((c for c in soa_df.columns if c.lower().startswith("implementation date")), None),
+                                next((c for c in soa_df.columns if c.lower().startswith("review date")), None),
+                                next((c for c in soa_df.columns if c.lower().startswith("status date")), None),
+                                next((c for c in soa_df.columns if c.lower() == "owner"), None),
+                                next((c for c in soa_df.columns if c.lower() == "notes"), None),
+                            ] if c
+                        ]
+                        cols_to_show = [c for c in base_cols + optional_cols if c in soa_df.columns]
+                        try:
+                            open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][cols_to_show]
+                            st.dataframe(open_df, use_container_width=True)
+                        except Exception:
+                            st.caption("Unable to render open items table with enriched columns; showing base columns")
+                            try:
+                                open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][base_cols]
+                                st.dataframe(open_df, use_container_width=True)
+                            except Exception:
+                                st.caption("Open items not available")
                 except Exception as parse_err:
                     # Fallback: tolerant parsing just to compute counts
                     with open(soa_path, "r", encoding="utf-8") as f:
@@ -851,6 +876,61 @@ def main():
                 st.warning(f"Risk summary unavailable: {e}")
         else:
             st.info("Risk Register not found at docs/Clause6_Planning_new/AI_Risk_Register.csv")
+
+    # Traceability Section
+    st.markdown("## 🔗 Traceability (Controls ↔ Risks)")
+    try:
+        soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
+        risk_path = "docs/Clause6_Planning_new/AI_Risk_Register.csv"
+        soa_df = tolerant_read_csv(soa_path) if os.path.exists(soa_path) else None
+        risk_df = tolerant_read_csv(risk_path) if os.path.exists(risk_path) else None
+        if soa_df is None or risk_df is None:
+            st.info("Traceability requires both SoA and Risk Register")
+        else:
+            # Build control -> risk IDs map from Risk Register 'Control(s)'
+            control_to_risks = {}
+            ctrl_col = next((c for c in risk_df.columns if "control" in c.lower()), None)
+            rid_col = next((c for c in risk_df.columns if c.lower().startswith("risk id")), None)
+            if ctrl_col and rid_col:
+                for _, row in risk_df.iterrows():
+                    rid = str(row.get(rid_col, "")).strip()
+                    ctrls = str(row.get(ctrl_col, "")).strip()
+                    if not ctrls:
+                        continue
+                    # Split by '/' or ','
+                    parts = [p.strip() for p in re.split(r"[\\/,]", ctrls) if p.strip()]
+                    for cid in parts:
+                        control_to_risks.setdefault(cid, []).append(rid)
+
+            id_col = next((c for c in soa_df.columns if c.lower().startswith("control id")), None)
+            title_col = next((c for c in soa_df.columns if c.lower().startswith("control title")), None)
+            impl_col = next((c for c in soa_df.columns if c.lower().startswith("implemented")), None)
+            link_col = next((c for c in soa_df.columns if c.lower() in ("linked document", "evidence link")), None)
+
+            rows = []
+            if id_col and title_col and impl_col:
+                for _, row in soa_df.iterrows():
+                    cid = str(row.get(id_col, "")).strip()
+                    risks = control_to_risks.get(cid, [])
+                    rows.append({
+                        "Control ID": cid,
+                        "Control Title": row.get(title_col, ""),
+                        "Implemented": row.get(impl_col, ""),
+                        "Risk Count": len(risks),
+                        "Risk IDs": ", ".join(risks[:6]) + ("…" if len(risks) > 6 else ""),
+                        "Linked Document": row.get(link_col, "") if link_col else "",
+                    })
+                trace_df = pd.DataFrame(rows)
+                # KPIs
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Controls", len(trace_df))
+                c2.metric("Controls with Risks", int((trace_df["Risk Count"] > 0).sum()))
+                c3.metric("Total Risk Links", int(trace_df["Risk Count"].sum()))
+                st.dataframe(trace_df, use_container_width=True)
+            else:
+                st.caption("Traceability table requires Control ID/Title/Implemented columns in SoA")
+    except Exception as e:
+        st.warning(f"Unable to compute traceability: {e}")
 
     # Records Section
     st.markdown("## 📚 Records (Evidence)")
