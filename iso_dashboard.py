@@ -19,6 +19,7 @@ from logging.handlers import RotatingFileHandler
 import hashlib
 from typing import Optional
 import re
+import io
 import pandas as pd
 
 # Page configuration
@@ -720,7 +721,7 @@ def main():
                     # Status chips
                     st.markdown("---")
                     st.markdown("### Status Distribution")
-                    counts = soa_df["Implemented (Yes/No)"].str.title().value_counts(dropna=False).to_dict()
+                    counts = soa_df["Implemented (Yes/No)"].astype(str).str.title().value_counts(dropna=False).to_dict()
                     chips_cols = st.columns(max(1, len(counts)))
                     color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
                     for i, (status, count) in enumerate(counts.items()):
@@ -740,7 +741,7 @@ def main():
                             tmp = soa_df[[c for c in [id_col, title_col, owner_col, review_col] if c]]
                             tmp = tmp.copy()
                             tmp["_review_dt"] = pd.to_datetime(tmp[review_col], errors="coerce")
-                            tmp = tmp.dropna(subset=["_review_dt"]).sort_values("_review_dt").head(5)
+                            tmp = tmp.dropna(subset=["_review_dt"]).sort_values("_review_dt").head(10)
                             tmp = tmp.drop(columns=["_review_dt"]).rename(columns={review_col: "Review Date"})
                             st.dataframe(tmp, use_container_width=True)
                         except Exception:
@@ -882,6 +883,24 @@ def main():
                             emoji = status_colors.get(status, "⚫")
                             st.markdown(f"{emoji} **{status}**: {count}")
                     
+                    # Filters
+                    st.markdown("---")
+                    st.markdown("### Filters")
+                    statuses = list(by_status.keys())
+                    sel_status = st.multiselect("Status", options=statuses, default=statuses)
+                    max_score = int(df_scored["_Score"].max()) if "_Score" in df_scored.columns else 0
+                    min_score = st.slider("Minimum Score", min_value=0, max_value=max(0, max_score), value=0)
+                    query = st.text_input("Search text (any column)", "")
+
+                    filtered = df_scored.copy()
+                    if sel_status and "Status" in filtered.columns:
+                        filtered = filtered[filtered["Status"].isin(sel_status)]
+                    if "_Score" in filtered.columns and min_score > 0:
+                        filtered = filtered[filtered["_Score"] >= min_score]
+                    if query:
+                        q = query.lower()
+                        filtered = filtered[[q in str(v).lower() for v in filtered.astype(str).agg(" ".join, axis=1)]]
+
                     # Top risks by score
                     st.markdown("---")
                     st.markdown("### Top Risks by Score")
@@ -891,7 +910,7 @@ def main():
                     status_col = next((c for c in df_scored.columns if c.lower() == "status"), None)
                     show_cols = [c for c in [id_col, desc_col, owner_col, status_col, "_Score"] if c]
                     try:
-                        top_df = df_scored.sort_values(by="_Score", ascending=False)[show_cols].head(5).rename(columns={"_Score": "Score"})
+                        top_df = filtered.sort_values(by="_Score", ascending=False)[show_cols].head(10).rename(columns={"_Score": "Score"})
                         st.dataframe(top_df, use_container_width=True)
                     except Exception:
                         st.caption("Unable to compute top risks view")
@@ -1005,6 +1024,9 @@ def main():
                     return f"{GITHUB_BASE}/{rel.as_posix()}"
                 nc_df["GitHub"] = nc_df["File"].apply(lambda x: to_link(x))
                 st.dataframe(nc_df, use_container_width=True)
+                # Export CSV
+                csv_bytes = nc_df.to_csv(index=False).encode("utf-8")
+                st.download_button("⬇️ Download CSV", data=csv_bytes, file_name="non_compliant_docs.csv", mime="text/csv")
     except Exception as e:
         st.warning(f"Unable to compute document control compliance: {e}")
 
@@ -1039,7 +1061,13 @@ def main():
             c1.metric("Records", len(df))
             c2.metric("Total Hours", f"{total_hours:.1f}")
             c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
-            st.dataframe(df, use_container_width=True)
+            # Filters
+            q = st.text_input("Search (name/title)", "", key="f_train")
+            fdf = df
+            if q:
+                ql = q.lower()
+                fdf = df[[ql in str(v).lower() for v in df.astype(str).agg(" ".join, axis=1)]]
+            st.dataframe(fdf, use_container_width=True)
         else:
             st.info("Training log not found")
 
@@ -1054,7 +1082,13 @@ def main():
             c1.metric("Changes", len(df))
             c2.metric("Approved", int(approved))
             c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
-            st.dataframe(df, use_container_width=True)
+            # Filters
+            q = st.text_input("Search (description/requester)", "", key="f_change")
+            fdf = df
+            if q:
+                ql = q.lower()
+                fdf = df[[ql in str(v).lower() for v in df.astype(str).agg(" ".join, axis=1)]]
+            st.dataframe(fdf, use_container_width=True)
         else:
             st.info("Change log not found")
 
@@ -1069,7 +1103,13 @@ def main():
             c1.metric("Incidents", len(df))
             c2.metric("Resolved", int(resolved))
             c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
-            st.dataframe(df, use_container_width=True)
+            # Filters
+            q = st.text_input("Search (description/root cause)", "", key="f_incident")
+            fdf = df
+            if q:
+                ql = q.lower()
+                fdf = df[[ql in str(v).lower() for v in df.astype(str).agg(" ".join, axis=1)]]
+            st.dataframe(fdf, use_container_width=True)
         else:
             st.info("Incident log not found")
 
@@ -1084,7 +1124,12 @@ def main():
             c1.metric("Audits", len(df))
             c2.metric("Closed", int(closed))
             c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
-            st.dataframe(df, use_container_width=True)
+            q = st.text_input("Search (scope/findings)", "", key="f_audit")
+            fdf = df
+            if q:
+                ql = q.lower()
+                fdf = df[[ql in str(v).lower() for v in df.astype(str).agg(" ".join, axis=1)]]
+            st.dataframe(fdf, use_container_width=True)
         else:
             st.info("Internal audit log not found")
 
@@ -1099,7 +1144,12 @@ def main():
             c1.metric("CAPAs", len(df))
             c2.metric("Implemented", int(implemented))
             c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
-            st.dataframe(df, use_container_width=True)
+            q = st.text_input("Search (description/owner)", "", key="f_capa")
+            fdf = df
+            if q:
+                ql = q.lower()
+                fdf = df[[ql in str(v).lower() for v in df.astype(str).agg(" ".join, axis=1)]]
+            st.dataframe(fdf, use_container_width=True)
         else:
             st.info("CAPA log not found")
 
