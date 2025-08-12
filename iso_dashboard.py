@@ -793,6 +793,19 @@ def main():
                                 st.dataframe(open_df, use_container_width=True)
                             except Exception:
                                 st.caption("Open items not available")
+
+                    # SoA completeness checks
+                    st.markdown("---")
+                    st.markdown("### Completeness Checks")
+                    missing_evidence = 0
+                    missing_owner = 0
+                    if "Linked Document" in soa_df.columns:
+                        missing_evidence = int(soa_df["Linked Document"].astype(str).str.strip().eq("").sum())
+                    if "Owner" in soa_df.columns:
+                        missing_owner = int(soa_df["Owner"].astype(str).str.strip().eq("").sum())
+                    cc1, cc2 = st.columns(2)
+                    cc1.metric("Controls missing Evidence link", missing_evidence)
+                    cc2.metric("Controls missing Owner", missing_owner)
                 except Exception as parse_err:
                     # Fallback: tolerant parsing just to compute counts
                     with open(soa_path, "r", encoding="utf-8") as f:
@@ -919,6 +932,21 @@ def main():
 
                     st.markdown("---")
                     st.link_button("📊 View Risk Register on GitHub", f"{GITHUB_BASE}/docs/Clause6_Planning_new/AI_Risk_Register.csv")
+                    # Risk Register completeness checks
+                    st.markdown("### Completeness Checks")
+                    req_cols = [
+                        "Risk ID", "Risk Category", "Risk Description", "Likelihood (1-5)",
+                        "Impact (1-5)", "Status", "Responsible Owner"
+                    ]
+                    missing_cols = [c for c in req_cols if c not in risk_df.columns]
+                    if missing_cols:
+                        st.warning(f"Missing columns: {', '.join(missing_cols)}")
+                    else:
+                        missing_owner = int(risk_df["Responsible Owner"].astype(str).str.strip().eq("").sum())
+                        missing_status = int(risk_df["Status"].astype(str).str.strip().eq("").sum())
+                        rc1, rc2 = st.columns(2)
+                        rc1.metric("Risks missing Owner", missing_owner)
+                        rc2.metric("Risks missing Status", missing_status)
                 else:
                     st.info("Unable to parse Risk Register")
             except Exception as e:
