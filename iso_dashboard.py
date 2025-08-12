@@ -734,12 +734,39 @@ def main():
                 if risk_df is not None:
                     total_risks = len(risk_df)
                     by_status = risk_df["Status"].value_counts(dropna=False).to_dict()
-                    c1, c2, c3 = st.columns(3)
-                    c1.metric("Total Risks", total_risks)
-                    c2.metric("Implemented", by_status.get("Implemented", 0))
-                    c3.metric("In Progress", by_status.get("In Progress", 0))
-                    st.caption(f"Other statuses: { {k:v for k,v in by_status.items() if k not in ['Implemented','In Progress']} }")
-                    st.link_button("Open Risk Register", f"{GITHUB_BASE}/docs/Clause6_Planning_new/AI_Risk_Register.csv")
+                    
+                    # KPIs with better spacing
+                    st.markdown("### Key Metrics")
+                    col1, col2, col3, col4 = st.columns(4)
+                    with col1:
+                        st.metric("Total Risks", total_risks)
+                    with col2:
+                        st.metric("Implemented", by_status.get("Implemented", 0))
+                    with col3:
+                        st.metric("In Progress", by_status.get("In Progress", 0))
+                    with col4:
+                        st.metric("Planned", by_status.get("Planned", 0))
+                    
+                    st.markdown("---")
+                    
+                    # Status chips with colors
+                    st.markdown("### Status Distribution")
+                    status_cols = st.columns(len(by_status))
+                    status_colors = {
+                        "Implemented": "🟢",
+                        "In Progress": "🟡", 
+                        "Planned": "🔵",
+                        "Under Review": "🟠",
+                        "Not Started": "⚪"
+                    }
+                    
+                    for i, (status, count) in enumerate(by_status.items()):
+                        with status_cols[i]:
+                            emoji = status_colors.get(status, "⚫")
+                            st.markdown(f"{emoji} **{status}**: {count}")
+                    
+                    st.markdown("---")
+                    st.link_button("📊 View Risk Register on GitHub", f"{GITHUB_BASE}/docs/Clause6_Planning_new/AI_Risk_Register.csv")
                 else:
                     st.info("Unable to parse Risk Register")
             except Exception as e:
