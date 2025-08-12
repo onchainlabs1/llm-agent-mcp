@@ -1205,8 +1205,9 @@ def main():
 
     # Print-friendly view hint
     st.markdown("---")
-    st.markdown("### 🖨️ Print-Friendly View")
-    st.caption("Use your browser's print dialog to save key sections (Audit Prep, Traceability, Records) as PDF for submission.")
+    st.markdown("### 🖨️ Print-Friendly View & Report")
+    st.caption("Use your browser's print dialog to save key sections as PDF, or open the consolidated Audit Report.")
+    st.link_button("Open Audit Report (MD)", f"{GITHUB_BASE}/docs/Audit_Report.md")
     # Document Control Compliance
     st.markdown("## 🧾 Document Control Compliance")
     try:
