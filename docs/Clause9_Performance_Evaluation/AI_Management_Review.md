@@ -1,3 +1,11 @@
+---
+owner: AIMS Manager
+version: 1.0
+approved_by: AIMS Manager
+approved_on: 2024-12-20
+next_review: 2025-06-20
+---
+
 # AI Management Review
 *AI Management System - ISO/IEC 42001:2023 Compliance*
 
