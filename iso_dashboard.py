@@ -723,6 +723,30 @@ def main():
 
     # (Compliance Overview moved above)
     
+    # Risks Tab (summary)
+    st.markdown("## ⚠️ Risks")
+    risks_tab, = st.tabs(["Risk Register Summary"])
+    with risks_tab:
+        risk_path = "docs/Clause6_Planning_new/AI_Risk_Register.csv"
+        if os.path.exists(risk_path):
+            try:
+                risk_df = tolerant_read_csv(risk_path)
+                if risk_df is not None:
+                    total_risks = len(risk_df)
+                    by_status = risk_df["Status"].value_counts(dropna=False).to_dict()
+                    c1, c2, c3 = st.columns(3)
+                    c1.metric("Total Risks", total_risks)
+                    c2.metric("Implemented", by_status.get("Implemented", 0))
+                    c3.metric("In Progress", by_status.get("In Progress", 0))
+                    st.caption(f"Other statuses: { {k:v for k,v in by_status.items() if k not in ['Implemented','In Progress']} }")
+                    st.link_button("Open Risk Register", f"{GITHUB_BASE}/docs/Clause6_Planning_new/AI_Risk_Register.csv")
+                else:
+                    st.info("Unable to parse Risk Register")
+            except Exception as e:
+                st.warning(f"Risk summary unavailable: {e}")
+        else:
+            st.info("Risk Register not found at docs/Clause6_Planning_new/AI_Risk_Register.csv")
+
     # ISO Clauses Section
     st.markdown("## 📁 ISO/IEC 42001:2023 Clauses")
     st.markdown("Click on each clause to view its documentation and implementation details.")
