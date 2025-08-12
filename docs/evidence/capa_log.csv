@@ -1,3 +1,4 @@
 CAPAID,Date,RelatedNCR,Description,Owner,DueDate,Status,EffectivenessCheckDate,EvidenceLink
 CAPA-2025-001,2025-02-06,NCR-2025-001,Fix and backfill evidence links in SoA,Compliance Officer,2025-02-15,Implemented,2025-03-01,docs/evidence/NCR_CAPA_Example_NCR-2025-001.md
+CAPA-2025-002,2025-03-15,NCR-2025-002,Implement document front-matter across docs,Documentation Manager,2025-03-25,Implemented,2025-04-05,docs/evidence/Management_Review_Minutes_MR-2025-001.md
 

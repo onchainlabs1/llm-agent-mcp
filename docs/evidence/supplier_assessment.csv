@@ -1,0 +1,4 @@
+SupplierID,SupplierName,Service,AssessmentDate,AssessedBy,RiskRating,Controls,Decision,NextReview,EvidenceLink
+SUP-001,OpenAI,LLM API,2025-01-10,Compliance Officer,Medium,"MFA, API key rotation, DPA in place",Approved,2025-07-10,https://openai.com/security
+SUP-002,Anthropic,LLM API,2025-01-10,Compliance Officer,Medium,"MFA, API key rotation, DPA in place",Approved,2025-07-10,https://www.anthropic.com/trust
+

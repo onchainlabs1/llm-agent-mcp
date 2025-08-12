@@ -1,0 +1,7 @@
+Role,TrainingTitle,Required,Frequency,Provider
+AI Management Team,ISO/IEC 42001 Foundations,Yes,Annual,Accredited Provider
+Technical Lead,Secure Coding for AI,Yes,Annual,Internal
+Compliance Officer,Data Protection (GDPR),Yes,Annual,Accredited Provider
+Risk Owner,AI Risk Management,Yes,Annual,Internal
+Security Officer,Incident Response for AI,Yes,Semi-Annual,Internal
+

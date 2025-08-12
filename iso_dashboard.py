@@ -1260,12 +1260,14 @@ def main():
 
     # Records Section
     st.markdown("## 📚 Records (Evidence)")
-    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5 = st.tabs([
+    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5, rec_tab6, rec_tab7 = st.tabs([
         "Training",
         "Changes",
         "Incidents",
         "Internal Audits",
         "CAPA",
+        "Supplier Assessments",
+        "Training Matrix",
     ])
 
     def read_csv_optional(path: str) -> Optional[pd.DataFrame]:
@@ -1380,6 +1382,36 @@ def main():
             st.dataframe(fdf, use_container_width=True)
         else:
             st.info("CAPA log not found")
+
+    with rec_tab6:
+        path = "docs/evidence/supplier_assessment.csv"
+        df = read_csv_optional(path)
+        if df is not None:
+            st.markdown("### Supplier Due Diligence")
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Suppliers", len(df))
+            if "RiskRating" in df.columns:
+                high = (df["RiskRating"].astype(str).str.lower() == "high").sum()
+                c2.metric("High Risk", int(high))
+            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
+            q = st.text_input("Search (supplier/service)", "", key="f_sup")
+            fdf = df
+            if q:
+                ql = q.lower()
+                fdf = df[[ql in str(v).lower() for v in df.astype(str).agg(" ".join, axis=1)]]
+            st.dataframe(fdf, use_container_width=True)
+        else:
+            st.info("Supplier assessment log not found")
+
+    with rec_tab7:
+        path = "docs/evidence/training_matrix.csv"
+        df = read_csv_optional(path)
+        if df is not None:
+            st.markdown("### Training Matrix (Roles vs Trainings)")
+            st.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("Training matrix not found")
 
     # ISO Clauses Section
     st.markdown("## 📁 ISO/IEC 42001:2023 Clauses")
