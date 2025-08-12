@@ -974,11 +974,164 @@ def main():
                 c2.metric("Controls with Risks", int((trace_df["Risk Count"] > 0).sum()))
                 c3.metric("Total Risk Links", int(trace_df["Risk Count"].sum()))
                 st.dataframe(trace_df, use_container_width=True)
+
+                # Drill-down pickers
+                st.markdown("---")
+                st.markdown("### Drill-down")
+                col_a, col_b = st.columns(2)
+
+                with col_a:
+                    control_options = sorted([r["Control ID"] for r in rows if r["Control ID"]])
+                    sel_ctrl = st.selectbox("Select Control ID", options=[""] + control_options)
+                    if sel_ctrl:
+                        related = control_to_risks.get(sel_ctrl, [])
+                        st.caption(f"Related Risks: {', '.join(related) if related else 'None'}")
+                        if related and rid_col:
+                            idc = rid_col
+                            desc_col = next((c for c in risk_df.columns if c.lower().startswith("risk description")), None)
+                            owner_col = next((c for c in risk_df.columns if "owner" in c.lower()), None)
+                            status_col = next((c for c in risk_df.columns if c.lower() == "status"), None)
+                            like_col = next((c for c in risk_df.columns if c.lower().startswith("likelihood")), None)
+                            imp_col = next((c for c in risk_df.columns if c.lower().startswith("impact")), None)
+                            rc = next((c for c in risk_df.columns if "risk level" in c.lower()), None)
+                            tmp = risk_df[risk_df[idc].isin(related)].copy()
+                            if like_col and imp_col:
+                                tmp["Score"] = pd.to_numeric(tmp[like_col], errors="coerce").fillna(0) * pd.to_numeric(tmp[imp_col], errors="coerce").fillna(0)
+                            elif rc:
+                                tmp["Score"] = pd.to_numeric(tmp[rc], errors="coerce").fillna(0)
+                            show_cols = [c for c in [idc, desc_col, owner_col, status_col, "Score"] if c and c in tmp.columns]
+                            st.dataframe(tmp[show_cols].sort_values(by="Score", ascending=False) if "Score" in show_cols else tmp[show_cols], use_container_width=True)
+
+                with col_b:
+                    risk_options = sorted([str(v).strip() for v in risk_df[rid_col].dropna().unique()]) if rid_col else []
+                    sel_risk = st.selectbox("Select Risk ID", options=[""] + risk_options)
+                    if sel_risk and rid_col:
+                        row = risk_df[risk_df[rid_col] == sel_risk].head(1)
+                        if not row.empty:
+                            st.json(row.iloc[0].to_dict())
+                            ctrls = str(row.iloc[0].get(ctrl_col, "")).strip() if ctrl_col else ""
+                            if ctrls:
+                                st.caption(f"Controls: {ctrls}")
+                            ev = next((c for c in risk_df.columns if "evidence" in c.lower()), None)
+                            if ev and str(row.iloc[0].get(ev, "")).strip():
+                                doc = str(row.iloc[0][ev]).strip()
+                                st.markdown(f"[Open Evidence]({GITHUB_BASE}/{doc})")
             else:
                 st.caption("Traceability table requires Control ID/Title/Implemented columns in SoA")
     except Exception as e:
         st.warning(f"Unable to compute traceability: {e}")
 
+    # Audit Preparation Summary
+    st.markdown("## 🛠️ Audit Preparation")
+    try:
+        # SoA open items and reviews
+        open_items = 0
+        upcoming_reviews = 0
+        soa_df = tolerant_read_csv("docs/Clause6_Planning_new/Statement_of_Applicability.csv") if os.path.exists("docs/Clause6_Planning_new/Statement_of_Applicability.csv") else None
+        if soa_df is not None and "Implemented (Yes/No)" in soa_df.columns:
+            open_items = int(soa_df["Implemented (Yes/No)"].astype(str).str.lower().isin(["partial", "no"]).sum())
+            review_col = next((c for c in soa_df.columns if c.lower().startswith("review date")), None)
+            if review_col:
+                dt = pd.to_datetime(soa_df[review_col], errors="coerce")
+                upcoming_reviews = int(((dt - pd.Timestamp.now()).dt.days.between(0, 30, inclusive="left")).sum())
+
+        # Risks top
+        top_risks = []
+        risk_df = tolerant_read_csv("docs/Clause6_Planning_new/AI_Risk_Register.csv") if os.path.exists("docs/Clause6_Planning_new/AI_Risk_Register.csv") else None
+        if risk_df is not None:
+            like_col = next((c for c in risk_df.columns if c.lower().startswith("likelihood")), None)
+            imp_col = next((c for c in risk_df.columns if c.lower().startswith("impact")), None)
+            rc = next((c for c in risk_df.columns if "risk level" in c.lower()), None)
+            rid_col = next((c for c in risk_df.columns if c.lower().startswith("risk id")), None)
+            desc_col = next((c for c in risk_df.columns if c.lower().startswith("risk description")), None)
+            tmp = risk_df.copy()
+            if like_col and imp_col:
+                tmp["_Score"] = pd.to_numeric(tmp[like_col], errors="coerce").fillna(0) * pd.to_numeric(tmp[imp_col], errors="coerce").fillna(0)
+            elif rc:
+                tmp["_Score"] = pd.to_numeric(tmp[rc], errors="coerce").fillna(0)
+            else:
+                tmp["_Score"] = 0
+            show_cols = [c for c in [rid_col, desc_col, "_Score"] if c]
+            top_risks = tmp.sort_values(by="_Score", ascending=False)[show_cols].head(5)
+
+        # Records statuses
+        incidents_open = 0
+        if os.path.exists("docs/evidence/incident_log.csv"):
+            idf = tolerant_read_csv("docs/evidence/incident_log.csv")
+            if idf is not None:
+                sc = next((c for c in idf.columns if c.lower() == "status"), None)
+                incidents_open = int((idf[sc].astype(str).str.lower() != "resolved").sum()) if sc else 0
+
+        changes_pending = 0
+        if os.path.exists("docs/evidence/change_log.csv"):
+            cdf = tolerant_read_csv("docs/evidence/change_log.csv")
+            if cdf is not None:
+                ac = next((c for c in cdf.columns if "approval" in c.lower()), None)
+                changes_pending = int((cdf[ac].astype(str).str.lower() != "approved").sum()) if ac else 0
+
+        capas_open = 0
+        if os.path.exists("docs/evidence/capa_log.csv"):
+            cadf = tolerant_read_csv("docs/evidence/capa_log.csv")
+            if cadf is not None:
+                sc = next((c for c in cadf.columns if c.lower() == "status"), None)
+                capas_open = int((cadf[sc].astype(str).str.lower().isin(["open", "in progress"]).sum())) if sc else 0
+
+        # Document control non-compliance count
+        docs_root = Path("docs")
+        non_compliant_count = 0
+        if docs_root.exists():
+            required_keys = ["owner", "version", "approved_by", "approved_on", "next_review"]
+            for md_path in docs_root.rglob("*.md"):
+                try:
+                    with open(md_path, "r", encoding="utf-8") as f:
+                        text = f.read()
+                    meta, _ = parse_front_matter_text(text)
+                    missing = [k for k in required_keys if k not in {m.lower(): v for m, v in meta.items()}]
+                    if missing:
+                        non_compliant_count += 1
+                except Exception:
+                    non_compliant_count += 1
+
+        c1, c2, c3, c4, c5 = st.columns(5)
+        c1.metric("Open SoA Items", open_items)
+        c2.metric("Upcoming Reviews (30d)", upcoming_reviews)
+        c3.metric("Open Incidents", incidents_open)
+        c4.metric("Changes Pending", changes_pending)
+        c5.metric("Docs Missing FM", non_compliant_count)
+
+        col_l, col_r = st.columns(2)
+        with col_l:
+            st.markdown("### Top Risks")
+            if isinstance(top_risks, pd.DataFrame) and not top_risks.empty:
+                st.dataframe(top_risks.rename(columns={"_Score": "Score"}), use_container_width=True)
+            else:
+                st.caption("No risks available")
+        with col_r:
+            st.markdown("### Open SoA Items")
+            if soa_df is not None:
+                try:
+                    open_df = soa_df[soa_df["Implemented (Yes/No)"].astype(str).str.lower().isin(["partial", "no"])][[
+                        "Control ID", "Control Title", "Implemented (Yes/No)", "Justification"
+                    ]].head(10)
+                    st.dataframe(open_df, use_container_width=True)
+                except Exception:
+                    st.caption("Unable to render open items table")
+
+        # Download Audit Pack (JSON)
+        pack = {
+            "open_soa_items": int(open_items),
+            "upcoming_reviews_30d": int(upcoming_reviews),
+            "open_incidents": int(incidents_open),
+            "changes_pending": int(changes_pending),
+            "docs_missing_front_matter": int(non_compliant_count),
+        }
+        try:
+            pack_bytes = json.dumps(pack, indent=2).encode("utf-8")
+            st.download_button("⬇️ Download Audit Pack (JSON)", data=pack_bytes, file_name="audit_pack.json", mime="application/json")
+        except Exception:
+            pass
+    except Exception as e:
+        st.warning(f"Unable to build Audit Prep: {e}")
     # Document Control Compliance
     st.markdown("## 🧾 Document Control Compliance")
     try:
