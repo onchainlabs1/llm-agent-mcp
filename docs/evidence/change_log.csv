@@ -1,0 +1,4 @@
+ChangeID,Date,Requester,Description,Impact,ApprovalStatus,ApprovedBy,LinkedPR,RollbackPlan,EvidenceLink
+CHG-2025-001,2025-01-12,AI Manager,Enable JSON structured logging with rotation,Low,Approved,CTO,https://github.com/onchainlabs1/llm-agent-mcp/pull/1,Revert logging handler config,docs/Clause9_Performance_Evaluation/AI_Performance_Monitoring_and_Measurement.md
+CHG-2025-002,2025-01-25,Security Officer,Add input sanitization and prompt controls,Medium,Approved,CISO,https://github.com/onchainlabs1/llm-agent-mcp/pull/2,Feature flag to disable,docs/Clause8_Operation/AI_Incident_Response_Procedure.md
+

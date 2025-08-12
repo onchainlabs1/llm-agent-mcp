@@ -1,0 +1,4 @@
+RecordID,EmployeeID,EmployeeName,TrainingTitle,TrainingType,Date,Hours,Provider,Result,EvidenceLink,ApprovedBy
+TRN-2025-001,EMP001,John Smith,ISO/IEC 42001 Foundations,Course,2025-01-10,4.0,Acme Compliance,Completed,docs/templates/Management_Review_Minutes_Template.md,Compliance Officer
+TRN-2025-002,EMP002,Jane Doe,AI Risk Management Workshop,Workshop,2025-01-20,3.0,Internal,Completed,docs/Clause6_Planning_new/AI_Risk_Management_Procedure.md,AI Manager
+

@@ -852,6 +852,101 @@ def main():
         else:
             st.info("Risk Register not found at docs/Clause6_Planning_new/AI_Risk_Register.csv")
 
+    # Records Section
+    st.markdown("## 📚 Records (Evidence)")
+    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5 = st.tabs([
+        "Training",
+        "Changes",
+        "Incidents",
+        "Internal Audits",
+        "CAPA",
+    ])
+
+    def read_csv_optional(path: str) -> Optional[pd.DataFrame]:
+        try:
+            return tolerant_read_csv(path)
+        except Exception:
+            return None
+
+    with rec_tab1:
+        path = "docs/evidence/training_log.csv"
+        df = read_csv_optional(path)
+        if df is not None:
+            st.markdown("### Training Log")
+            total_hours = 0.0
+            if "Hours" in df.columns:
+                try:
+                    total_hours = pd.to_numeric(df["Hours"], errors="coerce").fillna(0).sum()
+                except Exception:
+                    total_hours = 0.0
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Records", len(df))
+            c2.metric("Total Hours", f"{total_hours:.1f}")
+            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("Training log not found")
+
+    with rec_tab2:
+        path = "docs/evidence/change_log.csv"
+        df = read_csv_optional(path)
+        if df is not None:
+            st.markdown("### Change Log")
+            approve_col = next((c for c in df.columns if "approval" in c.lower()), None)
+            approved = (df[approve_col].str.lower() == "approved").sum() if approve_col else 0
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Changes", len(df))
+            c2.metric("Approved", int(approved))
+            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("Change log not found")
+
+    with rec_tab3:
+        path = "docs/evidence/incident_log.csv"
+        df = read_csv_optional(path)
+        if df is not None:
+            st.markdown("### Incident Log")
+            status_col = next((c for c in df.columns if c.lower() == "status"), None)
+            resolved = (df[status_col].str.lower() == "resolved").sum() if status_col else 0
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Incidents", len(df))
+            c2.metric("Resolved", int(resolved))
+            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("Incident log not found")
+
+    with rec_tab4:
+        path = "docs/evidence/internal_audit_log.csv"
+        df = read_csv_optional(path)
+        if df is not None:
+            st.markdown("### Internal Audit Log")
+            status_col = next((c for c in df.columns if c.lower() == "status"), None)
+            closed = (df[status_col].str.lower() == "closed").sum() if status_col else 0
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Audits", len(df))
+            c2.metric("Closed", int(closed))
+            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("Internal audit log not found")
+
+    with rec_tab5:
+        path = "docs/evidence/capa_log.csv"
+        df = read_csv_optional(path)
+        if df is not None:
+            st.markdown("### CAPA Log")
+            status_col = next((c for c in df.columns if c.lower() == "status"), None)
+            implemented = (df[status_col].str.lower() == "implemented").sum() if status_col else 0
+            c1, c2, c3 = st.columns(3)
+            c1.metric("CAPAs", len(df))
+            c2.metric("Implemented", int(implemented))
+            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("CAPA log not found")
+
     # ISO Clauses Section
     st.markdown("## 📁 ISO/IEC 42001:2023 Clauses")
     st.markdown("Click on each clause to view its documentation and implementation details.")
