@@ -1,0 +1,3 @@
+DPIAID,System,Date,AssessedBy,LawfulBasis,Risks,Mitigations,ResidualRisk,Decision,NextReview,EvidenceLink
+DPIA-2025-001,llm-agent-mcp,2025-01-18,Compliance Officer,Legitimate Interests,"Data leakage; Improper access; Retention issues","Access controls; Minimization; Retention policy",Medium,Proceed with controls,2025-07-18,docs/evidence/DPIA_Example_001.md
+

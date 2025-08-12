@@ -1260,7 +1260,7 @@ def main():
 
     # Records Section
     st.markdown("## 📚 Records (Evidence)")
-    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5, rec_tab6, rec_tab7 = st.tabs([
+    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5, rec_tab6, rec_tab7, rec_tab8 = st.tabs([
         "Training",
         "Changes",
         "Incidents",
@@ -1268,6 +1268,7 @@ def main():
         "CAPA",
         "Supplier Assessments",
         "Training Matrix",
+        "Privacy (DPIA)",
     ])
 
     def read_csv_optional(path: str) -> Optional[pd.DataFrame]:
@@ -1412,6 +1413,27 @@ def main():
             st.dataframe(df, use_container_width=True)
         else:
             st.info("Training matrix not found")
+
+    with rec_tab8:
+        path = "docs/evidence/dpia_register.csv"
+        df = read_csv_optional(path)
+        if df is not None:
+            st.markdown("### DPIA Register")
+            c1, c2, c3 = st.columns(3)
+            c1.metric("DPIAs", len(df))
+            medium = (df["ResidualRisk"].astype(str).str.lower() == "medium").sum() if "ResidualRisk" in df.columns else 0
+            c2.metric("Residual Medium+", int(medium))
+            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
+            st.dataframe(df, use_container_width=True)
+            # Evidence links preview
+            if "EvidenceLink" in df.columns:
+                st.markdown("#### Evidence Links")
+                for _, row in df.head(5).iterrows():
+                    link = str(row.get("EvidenceLink", "")).strip()
+                    if link:
+                        st.markdown(f"- [{row.get('DPIAID','')}]({GITHUB_BASE}/{link})")
+        else:
+            st.info("DPIA register not found")
 
     # ISO Clauses Section
     st.markdown("## 📁 ISO/IEC 42001:2023 Clauses")
