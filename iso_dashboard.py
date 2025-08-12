@@ -227,6 +227,34 @@ def tolerant_read_csv(path: str) -> Optional[pd.DataFrame]:
             except Exception:
                 return None
 
+# --------- Minimal front-matter parser (YAML-like) ---------
+def parse_front_matter_text(markdown_text: str):
+    """Return (meta: dict, body: str). Only supports simple key: value pairs between --- delimiters."""
+    try:
+        if not markdown_text or not markdown_text.lstrip().startswith('---'):
+            return {}, markdown_text
+        lines = markdown_text.splitlines()
+        if not lines or lines[0].strip() != '---':
+            return {}, markdown_text
+        meta = {}
+        end_idx = None
+        for idx in range(1, len(lines)):
+            if lines[idx].strip() == '---':
+                end_idx = idx
+                break
+            line = lines[idx].strip()
+            if not line or line.startswith('#'):
+                continue
+            if ':' in line:
+                k, v = line.split(':', 1)
+                meta[k.strip()] = v.strip()
+        if end_idx is None:
+            return {}, markdown_text
+        body = '\n'.join(lines[end_idx + 1 :])
+        return meta, body
+    except Exception:
+        return {}, markdown_text
+
 # Configurable external links (override via env vars in Streamlit Cloud settings)
 # Provide sensible cross-app defaults to avoid self-linking
 MAIN_APP_URL = os.getenv("MAIN_APP_URL", "https://llm-agent-mcp-portfolio.streamlit.app")
@@ -931,6 +959,54 @@ def main():
                 st.caption("Traceability table requires Control ID/Title/Implemented columns in SoA")
     except Exception as e:
         st.warning(f"Unable to compute traceability: {e}")
+
+    # Document Control Compliance
+    st.markdown("## 🧾 Document Control Compliance")
+    try:
+        docs_root = Path("docs")
+        if not docs_root.exists():
+            st.info("Docs folder not found")
+        else:
+            required_keys = ["owner", "version", "approved_by", "approved_on", "next_review"]
+            non_compliant = []
+            total = 0
+            for md_path in docs_root.rglob("*.md"):
+                total += 1
+                try:
+                    with open(md_path, "r", encoding="utf-8") as f:
+                        text = f.read()
+                    meta, _ = parse_front_matter_text(text)
+                    missing = [k for k in required_keys if k not in {m.lower(): v for m, v in meta.items()}]
+                    if missing:
+                        non_compliant.append({
+                            "File": str(md_path),
+                            "Missing": ", ".join(missing)
+                        })
+                except Exception:
+                    non_compliant.append({"File": str(md_path), "Missing": "read error"})
+
+            compliant = total - len(non_compliant)
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Total Docs", total)
+            c2.metric("Compliant", compliant)
+            c3.metric("Missing/Errors", len(non_compliant))
+
+            if non_compliant:
+                st.markdown("### Non-compliant Documents")
+                nc_df = pd.DataFrame(non_compliant)
+                # Add GitHub link column
+                def to_link(file_str: str) -> str:
+                    rel = Path(file_str)
+                    # ensure path after repo root
+                    try:
+                        rel = rel.relative_to(Path.cwd())
+                    except Exception:
+                        pass
+                    return f"{GITHUB_BASE}/{rel.as_posix()}"
+                nc_df["GitHub"] = nc_df["File"].apply(lambda x: to_link(x))
+                st.dataframe(nc_df, use_container_width=True)
+    except Exception as e:
+        st.warning(f"Unable to compute document control compliance: {e}")
 
     # Records Section
     st.markdown("## 📚 Records (Evidence)")
