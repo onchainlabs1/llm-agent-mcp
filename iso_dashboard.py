@@ -666,57 +666,60 @@ def main():
     
     # Git Operations Section removed - not needed for ISO compliance dashboard
     
-    # Compliance Checklist from SoA
-    st.markdown("## ✅ Compliance Checklist (from SoA)")
-    try:
-        import pandas as pd  # ensure available
-        soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
-        if os.path.exists(soa_path):
-            try:
-                soa_df = pd.read_csv(soa_path)
-                total_controls = len(soa_df)
-                yes_count = (soa_df["Implemented (Yes/No)"].str.lower() == "yes").sum()
-                partial_count = (soa_df["Implemented (Yes/No)"].str.lower() == "partial").sum()
-                no_count = (soa_df["Implemented (Yes/No)"].str.lower() == "no").sum()
+    # Docs & SoA Tab
+    st.markdown("## 📘 Docs & SoA")
+    docs_tab, = st.tabs(["✅ Compliance Checklist (SoA)"])
+    with docs_tab:
+        st.markdown("### ✅ Compliance Checklist (from SoA)")
+        try:
+            import pandas as pd  # ensure available
+            soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
+            if os.path.exists(soa_path):
+                try:
+                    soa_df = pd.read_csv(soa_path)
+                    total_controls = len(soa_df)
+                    yes_count = (soa_df["Implemented (Yes/No)"].str.lower() == "yes").sum()
+                    partial_count = (soa_df["Implemented (Yes/No)"].str.lower() == "partial").sum()
+                    no_count = (soa_df["Implemented (Yes/No)"].str.lower() == "no").sum()
 
-                c1, c2, c3, c4 = st.columns(4)
-                c1.metric("Total Controls", total_controls)
-                c2.metric("Implemented", yes_count)
-                c3.metric("Partial", partial_count)
-                c4.metric("Not Implemented", no_count)
+                    c1, c2, c3, c4 = st.columns(4)
+                    c1.metric("Total Controls", total_controls)
+                    c2.metric("Implemented", yes_count)
+                    c3.metric("Partial", partial_count)
+                    c4.metric("Not Implemented", no_count)
 
-                if partial_count + no_count > 0:
-                    st.markdown("### 🔧 Open Items")
-                    open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][
-                        ["Control ID", "Control Title", "Implemented (Yes/No)", "Justification", "Linked Document"]
-                    ]
-                    st.dataframe(open_df, use_container_width=True)
-            except Exception as parse_err:
-                # Fallback: tolerant parsing just to compute counts
-                with open(soa_path, "r", encoding="utf-8") as f:
-                    lines = [ln.strip() for ln in f.readlines() if ln.strip()]
-                # Skip header
-                statuses = []
-                for ln in lines[1:]:
-                    parts = ln.split(",")
-                    if len(parts) >= 3:
-                        statuses.append(parts[2].strip().lower())
-                total_controls = len(statuses)
-                yes_count = sum(1 for s in statuses if s == "yes")
-                partial_count = sum(1 for s in statuses if s == "partial")
-                no_count = sum(1 for s in statuses if s == "no")
+                    if partial_count + no_count > 0:
+                        st.markdown("### 🔧 Open Items")
+                        open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][
+                            ["Control ID", "Control Title", "Implemented (Yes/No)", "Justification", "Linked Document"]
+                        ]
+                        st.dataframe(open_df, use_container_width=True)
+                except Exception as parse_err:
+                    # Fallback: tolerant parsing just to compute counts
+                    with open(soa_path, "r", encoding="utf-8") as f:
+                        lines = [ln.strip() for ln in f.readlines() if ln.strip()]
+                    # Skip header
+                    statuses = []
+                    for ln in lines[1:]:
+                        parts = ln.split(",")
+                        if len(parts) >= 3:
+                            statuses.append(parts[2].strip().lower())
+                    total_controls = len(statuses)
+                    yes_count = sum(1 for s in statuses if s == "yes")
+                    partial_count = sum(1 for s in statuses if s == "partial")
+                    no_count = sum(1 for s in statuses if s == "no")
 
-                c1, c2, c3, c4 = st.columns(4)
-                c1.metric("Total Controls", total_controls)
-                c2.metric("Implemented", yes_count)
-                c3.metric("Partial", partial_count)
-                c4.metric("Not Implemented", no_count)
+                    c1, c2, c3, c4 = st.columns(4)
+                    c1.metric("Total Controls", total_controls)
+                    c2.metric("Implemented", yes_count)
+                    c3.metric("Partial", partial_count)
+                    c4.metric("Not Implemented", no_count)
 
-                st.info("Displayed counts using tolerant parser; open items table hidden due to CSV formatting (commas in text).")
-        else:
-            st.info("SoA not found. Add it at docs/Clause6_Planning_new/Statement_of_Applicability.csv")
-    except Exception as e:
-        st.warning(f"Unable to load SoA summary: {e}")
+                    st.info("Displayed counts using tolerant parser; open items table hidden due to CSV formatting (commas in text).")
+            else:
+                st.info("SoA not found. Add it at docs/Clause6_Planning_new/Statement_of_Applicability.csv")
+        except Exception as e:
+            st.warning(f"Unable to load SoA summary: {e}")
 
     # (Compliance Overview moved above)
     
