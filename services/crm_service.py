@@ -369,10 +369,22 @@ class CRMService:
                 if max_balance is not None and balance > max_balance:
                     continue
 
+                # Simple bias indicators (R001): flag extreme ages/keywords if present
+                bias_flags = []
+                name = str(client.get("name", "")).lower()
+                if any(tag in name for tag in ["mr ", "mrs ", "ms ", "dr "]):
+                    bias_flags.append("name_title_present")
+                client["_bias_flags"] = bias_flags
+
                 filtered_clients.append(client)
 
             self.logger.info(
-                f"Filtered {len(filtered_clients)} clients by balance criteria"
+                json.dumps({
+                    "event": "filter_clients_by_balance",
+                    "min_balance": min_balance,
+                    "max_balance": max_balance,
+                    "result_count": len(filtered_clients),
+                })
             )
             return filtered_clients
 

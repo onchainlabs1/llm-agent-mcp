@@ -15,6 +15,7 @@ to use based on the user's request and available capabilities.
 
 import json
 import logging
+from logging.handlers import RotatingFileHandler
 import re
 from datetime import datetime
 from pathlib import Path
@@ -226,23 +227,64 @@ class AgentCore:
         self.erp_service = ERPService()
         
     def _setup_logging(self) -> logging.Logger:
-        """Set up structured logging for the agent."""
+        """Set up structured JSON logging with rotation for the agent."""
         logger = logging.getLogger("agentmcp.core")
         logger.setLevel(config.get_log_level())
-        
+
         # Create logs directory if it doesn't exist
         log_file_path = Path(config.logging.file)
         log_file_path.parent.mkdir(exist_ok=True)
-        
-        # Add structured logging handler
-        handler = logging.FileHandler(config.logging.file)
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+        # Rotating file handler
+        handler = RotatingFileHandler(
+            str(config.logging.file), maxBytes=5 * 1024 * 1024, backupCount=5
         )
-        handler.setFormatter(formatter)
+
+        class JSONFormatter(logging.Formatter):
+            def format(self, record: logging.LogRecord) -> str:
+                payload = {
+                    "timestamp": datetime.now().isoformat(),
+                    "logger": record.name,
+                    "level": record.levelname,
+                    "message": record.getMessage(),
+                    "module": record.module,
+                    "function": record.funcName,
+                    "line": record.lineno,
+                }
+                # include any extra fields if present
+                for key, value in getattr(record, "__dict__", {}).items():
+                    if key not in payload and not key.startswith("_"):
+                        try:
+                            json.dumps(value)
+                            payload[key] = value
+                        except Exception:
+                            payload[key] = str(value)
+                return json.dumps(payload)
+
+        handler.setFormatter(JSONFormatter())
+        logger.handlers.clear()
         logger.addHandler(handler)
-        
+
         return logger
+
+    # ---------- Prompt Security ----------
+    @staticmethod
+    def _sanitize_prompt_text(text: str, max_len: int = 2000) -> str:
+        """Sanitize user input to mitigate prompt-injection patterns (R003)."""
+        if not isinstance(text, str):
+            return ""
+        cleaned = text
+        # Block role keywords and common separators
+        blocked = ["system:", "user:", "assistant:", "role:", "function:",
+                   "```", "'''", "<!--", "</script>", "<script>"]
+        for token in blocked:
+            cleaned = cleaned.replace(token, "[BLOCKED]")
+            cleaned = cleaned.replace(token.upper(), "[BLOCKED]")
+        # Remove excessive whitespace
+        cleaned = re.sub(r"\s+", " ", cleaned).strip()
+        if len(cleaned) > max_len:
+            cleaned = cleaned[:max_len] + " …"
+        return cleaned
     
     def load_mcp_schema(self, schema_file: str) -> bool:
         """
@@ -362,6 +404,8 @@ class AgentCore:
         """
         try:
             # Use configured LLM to interpret the user input
+            # Sanitize incoming text for prompt safety (R003)
+            safe_user_input = self._sanitize_prompt_text(user_input)
             prompt = (
                 "You are an AI agent that maps user requests to business tools. "
                 "Given the following user request, return a JSON object with two fields: "
@@ -369,7 +413,7 @@ class AgentCore:
                 "and 'parameters' (a JSON object with the required parameters for the tool, or empty if none). "
                 "IMPORTANT: Use 'filter_clients_by_balance' when users ask for clients with specific balance criteria (e.g., 'clients with balance over 5000', 'clients with balance under 1000', etc.). "
                 "For filter_clients_by_balance, use parameters like {'min_balance': 5000} for 'over 5000' or {'max_balance': 1000} for 'under 1000'. "
-                f"User request: {user_input}\n"
+                f"User request: {safe_user_input}\n"
                 "Respond ONLY with the JSON object."
             )
             llm_response = call_llm(prompt)
