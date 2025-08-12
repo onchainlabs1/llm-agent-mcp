@@ -688,6 +688,49 @@ def main():
                     c3.metric("Partial", partial_count)
                     c4.metric("Not Implemented", no_count)
 
+                    # Status chips
+                    st.markdown("---")
+                    st.markdown("### Status Distribution")
+                    counts = soa_df["Implemented (Yes/No)"].str.title().value_counts(dropna=False).to_dict()
+                    chips_cols = st.columns(max(1, len(counts)))
+                    color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
+                    for i, (status, count) in enumerate(counts.items()):
+                        with chips_cols[i]:
+                            emoji = color_map.get(status, "⚪")
+                            st.markdown(f"{emoji} **{status}**: {count}")
+
+                    # Upcoming reviews table (if Review Date present)
+                    st.markdown("---")
+                    st.markdown("### Upcoming Reviews")
+                    review_col = next((c for c in soa_df.columns if c.lower().startswith("review date")), None)
+                    id_col = next((c for c in soa_df.columns if c.lower().startswith("control id")), None)
+                    title_col = next((c for c in soa_df.columns if c.lower().startswith("control title")), None)
+                    owner_col = next((c for c in soa_df.columns if "owner" in c.lower()), None)
+                    if review_col:
+                        try:
+                            tmp = soa_df[[c for c in [id_col, title_col, owner_col, review_col] if c]]
+                            tmp = tmp.copy()
+                            tmp["_review_dt"] = pd.to_datetime(tmp[review_col], errors="coerce")
+                            tmp = tmp.dropna(subset=["_review_dt"]).sort_values("_review_dt").head(5)
+                            tmp = tmp.drop(columns=["_review_dt"]).rename(columns={review_col: "Review Date"})
+                            st.dataframe(tmp, use_container_width=True)
+                        except Exception:
+                            st.caption("Unable to compute upcoming reviews table")
+
+                    # Evidence links list (if Linked Document / Evidence Link present)
+                    st.markdown("---")
+                    st.markdown("### Evidence Links")
+                    evidence_cols = [c for c in soa_df.columns if c.lower() in ("linked document", "evidence link")]
+                    if evidence_cols:
+                        ev_col = evidence_cols[0]
+                        sample = soa_df[[id_col, ev_col]].head(8) if id_col else soa_df[[ev_col]].head(8)
+                        for _, row in sample.iterrows():
+                            doc = str(row.get(ev_col, "")).strip()
+                            cid = str(row.get(id_col, "")).strip() if id_col else ""
+                            if doc:
+                                label = f"{cid} – {os.path.basename(doc)}" if cid else os.path.basename(doc)
+                                st.markdown(f"- [{label}]({GITHUB_BASE}/{doc})")
+
                     if partial_count + no_count > 0:
                         st.markdown("### 🔧 Open Items")
                         open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][
@@ -732,8 +775,29 @@ def main():
             try:
                 risk_df = tolerant_read_csv(risk_path)
                 if risk_df is not None:
+                    # Compute totals and scoring safely
                     total_risks = len(risk_df)
                     by_status = risk_df["Status"].value_counts(dropna=False).to_dict()
+                    # Likelihood/Impact columns names seen in repo: "Likelihood (1-5)", "Impact (1-5)", optional precomputed "Risk Level (L×I)"
+                    likelihood_col = next((c for c in risk_df.columns if c.lower().startswith("likelihood")), None)
+                    impact_col = next((c for c in risk_df.columns if c.lower().startswith("impact")), None)
+                    level_col = next((c for c in risk_df.columns if "risk level" in c.lower()), None)
+
+                    df_scored = risk_df.copy()
+                    if likelihood_col and impact_col:
+                        try:
+                            df_scored["_Likelihood"] = pd.to_numeric(df_scored[likelihood_col], errors="coerce").fillna(0)
+                            df_scored["_Impact"] = pd.to_numeric(df_scored[impact_col], errors="coerce").fillna(0)
+                            df_scored["_Score"] = (df_scored["_Likelihood"] * df_scored["_Impact"]).astype(int)
+                        except Exception:
+                            df_scored["_Score"] = 0
+                    elif level_col:
+                        try:
+                            df_scored["_Score"] = pd.to_numeric(df_scored[level_col], errors="coerce").fillna(0).astype(int)
+                        except Exception:
+                            df_scored["_Score"] = 0
+                    else:
+                        df_scored["_Score"] = 0
                     
                     # KPIs with better spacing
                     st.markdown("### Key Metrics")
@@ -765,6 +829,20 @@ def main():
                             emoji = status_colors.get(status, "⚫")
                             st.markdown(f"{emoji} **{status}**: {count}")
                     
+                    # Top risks by score
+                    st.markdown("---")
+                    st.markdown("### Top Risks by Score")
+                    id_col = next((c for c in df_scored.columns if c.lower().startswith("risk id")), None)
+                    desc_col = next((c for c in df_scored.columns if c.lower().startswith("risk description")), None)
+                    owner_col = next((c for c in df_scored.columns if "owner" in c.lower()), None)
+                    status_col = next((c for c in df_scored.columns if c.lower() == "status"), None)
+                    show_cols = [c for c in [id_col, desc_col, owner_col, status_col, "_Score"] if c]
+                    try:
+                        top_df = df_scored.sort_values(by="_Score", ascending=False)[show_cols].head(5).rename(columns={"_Score": "Score"})
+                        st.dataframe(top_df, use_container_width=True)
+                    except Exception:
+                        st.caption("Unable to compute top risks view")
+
                     st.markdown("---")
                     st.link_button("📊 View Risk Register on GitHub", f"{GITHUB_BASE}/docs/Clause6_Planning_new/AI_Risk_Register.csv")
                 else:

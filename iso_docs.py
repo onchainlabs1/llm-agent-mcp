@@ -119,6 +119,45 @@ def read_markdown_file(file_path):
     except Exception as e:
         return f"Error reading file: {str(e)}"
 
+def parse_front_matter(markdown_text):
+    """Parse simple YAML-like front matter at the top of a markdown file.
+
+    Supports a minimal subset: lines between the first two '---' delimiters are parsed
+    as `key: value`. Returns (metadata_dict, body_text).
+    Does not require external YAML dependency and ignores malformed lines.
+    """
+    if not markdown_text or not markdown_text.lstrip().startswith('---'):
+        return {}, markdown_text
+
+    lines = markdown_text.splitlines()
+    if not lines:
+        return {}, markdown_text
+
+    # find front matter block
+    if lines[0].strip() != '---':
+        return {}, markdown_text
+
+    metadata = {}
+    end_idx = None
+    for idx in range(1, len(lines)):
+        if lines[idx].strip() == '---':
+            end_idx = idx
+            break
+        # parse key: value
+        line = lines[idx].strip()
+        if not line or line.startswith('#'):
+            continue
+        if ':' in line:
+            key, value = line.split(':', 1)
+            metadata[key.strip()] = value.strip()
+
+    if end_idx is None:
+        # No closing delimiter, treat as normal content
+        return {}, markdown_text
+
+    body = '\n'.join(lines[end_idx + 1 :])
+    return metadata, body
+
 def main():
     # Header
     st.title("📘 ISO/IEC 42001 Documentation Center")
@@ -198,6 +237,7 @@ def main():
         
         with st.expander(expander_title, expanded=is_readme):
             content = read_markdown_file(file)
+            meta, body = parse_front_matter(content)
             
             # Generate GitHub link for this document
             github_link = f"https://github.com/onchainlabs1/llm-agent-mcp/blob/main/docs/{selected_folder.name}/{file_name}"
@@ -211,9 +251,31 @@ def main():
                 st.markdown(f"[🔗 View on GitHub]({github_link})")
             
             st.markdown("---")
-            
-            # Render markdown content
-            st.markdown(content, unsafe_allow_html=True)
+
+            # Render standardized document header if metadata present
+            if meta:
+                owner = meta.get('owner') or meta.get('Owner') or 'Unassigned'
+                version = meta.get('version') or meta.get('Version') or '0.1'
+                approved_by = meta.get('approved_by') or meta.get('ApprovedBy') or 'Pending'
+                approved_on = meta.get('approved_on') or meta.get('ApprovedOn') or '—'
+                next_review = meta.get('next_review') or meta.get('NextReview') or '—'
+                st.markdown(
+                    f"""
+<div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 0.75rem; background: #f9fafb;">
+  <strong>Document Control</strong><br/>
+  <span>Owner:</span> <code>{owner}</code> &nbsp;|&nbsp;
+  <span>Version:</span> <code>{version}</code> &nbsp;|&nbsp;
+  <span>Approved By:</span> <code>{approved_by}</code> &nbsp;|&nbsp;
+  <span>Approved On:</span> <code>{approved_on}</code> &nbsp;|&nbsp;
+  <span>Next Review:</span> <code>{next_review}</code>
+</div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                st.caption("Standardized header rendered from document front matter")
+
+            # Render markdown body (without front matter)
+            st.markdown(body if meta else content, unsafe_allow_html=True)
     
     # Footer
     st.markdown("---")
