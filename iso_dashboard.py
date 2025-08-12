@@ -20,6 +20,8 @@ import hashlib
 from typing import Optional
 import re
 import io
+import zipfile
+from io import BytesIO
 import pandas as pd
 
 # Page configuration
@@ -1132,6 +1134,79 @@ def main():
             pass
     except Exception as e:
         st.warning(f"Unable to build Audit Prep: {e}")
+
+    # Lead Implementer Evidence
+    st.markdown("## 👤 Lead Implementer Evidence")
+    try:
+        hours = 0.0
+        if os.path.exists("project_hours_log.csv"):
+            hdf = tolerant_read_csv("project_hours_log.csv")
+            if hdf is not None and "Time (h)" in hdf.columns:
+                hours = float(pd.to_numeric(hdf["Time (h)"], errors="coerce").fillna(0).sum())
+        audits_done = 0
+        if os.path.exists("docs/evidence/internal_audit_log.csv"):
+            adf = tolerant_read_csv("docs/evidence/internal_audit_log.csv")
+            if adf is not None:
+                audits_done = len(adf)
+        ncrs = 0
+        if os.path.exists("docs/evidence/NCR_CAPA_Example_NCR-2025-001.md"):
+            ncrs = 1
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Hours Logged", f"{hours:.1f}h")
+        c2.metric("Internal Audits", audits_done)
+        c3.metric("NCR/CAPA Cycles", ncrs)
+        c4.metric("Controls Implemented", "Live from SoA")
+        st.caption("These indicators support your Lead Implementer portfolio; training/cert exam still required.")
+    except Exception as e:
+        st.warning(f"Unable to compute lead implementer evidence: {e}")
+
+    # Management Review Summary
+    st.markdown("## 📝 Management Review Summary")
+    try:
+        mr_path = "docs/evidence/Management_Review_Minutes_MR-2025-001.md"
+        if os.path.exists(mr_path):
+            with open(mr_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            # Show first 2000 chars preview
+            st.markdown("### Latest Management Review Minutes")
+            st.code(content[:2000] + ("\n..." if len(content) > 2000 else ""))
+            st.link_button("Open Full Minutes", f"{GITHUB_BASE}/{mr_path}")
+        else:
+            st.info("No management review minutes found in docs/evidence/")
+    except Exception as e:
+        st.warning(f"Unable to display management review: {e}")
+
+    # Portfolio Pack (ZIP)
+    st.markdown("## 📦 Portfolio Pack")
+    try:
+        files_to_include = [
+            "README.md",
+            "docs/ISO_Compliance_Summary.md",
+            "docs/Evidence_Index.md",
+            "docs/Clause6_Planning_new/Statement_of_Applicability.csv",
+            "docs/Clause6_Planning_new/AI_Risk_Register.csv",
+            "docs/evidence/internal_audit_log.csv",
+            "docs/evidence/change_log.csv",
+            "docs/evidence/incident_log.csv",
+            "docs/evidence/capa_log.csv",
+            "project_hours_log.csv",
+        ]
+        buf = BytesIO()
+        with zipfile.ZipFile(buf, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+            for p in files_to_include:
+                if os.path.exists(p):
+                    try:
+                        zf.write(p)
+                    except Exception:
+                        pass
+        st.download_button("⬇️ Download Portfolio Pack (ZIP)", data=buf.getvalue(), file_name="portfolio_pack.zip", mime="application/zip")
+    except Exception as e:
+        st.warning(f"Unable to build portfolio pack: {e}")
+
+    # Print-friendly view hint
+    st.markdown("---")
+    st.markdown("### 🖨️ Print-Friendly View")
+    st.caption("Use your browser's print dialog to save key sections (Audit Prep, Traceability, Records) as PDF for submission.")
     # Document Control Compliance
     st.markdown("## 🧾 Document Control Compliance")
     try:
