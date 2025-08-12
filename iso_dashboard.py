@@ -627,39 +627,40 @@ def main():
     
     st.markdown("---")
     
-    # Real-time Audit Trail Display
-    st.markdown("### 📋 Live Audit Trail")
-    
-    # Show recent audit logs
-    try:
-        log_file = Path("logs/iso_audit_trail.json")
-        if log_file.exists():
-            with open(log_file, 'r') as f:
-                lines = f.readlines()
-                if lines:
-                    # Show last 5 log entries
-                    recent_logs = lines[-5:]
-                    for log_line in recent_logs:
-                        try:
-                            log_data = json.loads(log_line.strip())
-                            timestamp = log_data.get('timestamp', 'Unknown')
-                            action = log_data.get('action', 'Unknown')
-                            level = log_data.get('level', 'INFO')
-                            
-                            if level == 'ERROR':
-                                st.error(f"🔴 {timestamp} - {action}")
-                            elif level == 'WARNING':
-                                st.warning(f"🟡 {timestamp} - {action}")
-                            else:
-                                st.info(f"🔵 {timestamp} - {action}")
-                        except:
-                            st.text(log_line.strip())
-                else:
-                    st.info("No audit logs yet")
-        else:
-            st.info("Audit trail file not found - logging system initializing")
-    except Exception as e:
-        st.warning(f"Could not display audit trail: {e}")
+    # Logs Tab (incremental UI improvement)
+    st.markdown("## 🧾 Logs")
+    logs_tab, = st.tabs(["📋 Live Audit Trail"])
+    with logs_tab:
+        # Show recent audit logs
+        try:
+            log_file = Path("logs/iso_audit_trail.json")
+            if log_file.exists():
+                with open(log_file, 'r') as f:
+                    lines = f.readlines()
+                    if lines:
+                        # Show last 5 log entries
+                        recent_logs = lines[-5:]
+                        for log_line in recent_logs:
+                            try:
+                                log_data = json.loads(log_line.strip())
+                                timestamp = log_data.get('timestamp', 'Unknown')
+                                action = log_data.get('action', 'Unknown')
+                                level = log_data.get('level', 'INFO')
+                                
+                                if level == 'ERROR':
+                                    st.error(f"🔴 {timestamp} - {action}")
+                                elif level == 'WARNING':
+                                    st.warning(f"🟡 {timestamp} - {action}")
+                                else:
+                                    st.info(f"🔵 {timestamp} - {action}")
+                            except:
+                                st.text(log_line.strip())
+                    else:
+                        st.info("No audit logs yet")
+            else:
+                st.info("Audit trail file not found - logging system initializing")
+        except Exception as e:
+            st.warning(f"Could not display audit trail: {e}")
     
     st.markdown("---")
     
