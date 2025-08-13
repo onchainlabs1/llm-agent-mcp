@@ -965,12 +965,30 @@ def main():
                 except Exception:
                     non_compliant_count += 1
 
-        c1, c2, c3, c4, c5 = st.columns(5)
+        # Cycles completed (distinct ISO weeks with internal audits) and independent audits
+        cycles_completed = 0
+        independent_audits = 0
+        try:
+            adf = tolerant_read_csv("docs/evidence/internal_audit_log.csv") if os.path.exists("docs/evidence/internal_audit_log.csv") else None
+            if adf is not None and "Date" in adf.columns:
+                # Count distinct ISO weeks
+                dates = pd.to_datetime(adf["Date"], errors="coerce").dropna()
+                cycles_completed = len(set(d.dt.isocalendar().week.astype(int).tolist()))
+                # Independent = auditor not equal to "Compliance Officer"
+                if "Auditor" in adf.columns:
+                    independent_audits = int((adf["Auditor"].astype(str).str.lower() != "compliance officer").sum())
+        except Exception:
+            cycles_completed = 0
+            independent_audits = 0
+
+        c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
         c1.metric("Open SoA Items", open_items)
         c2.metric("Upcoming Reviews (30d)", upcoming_reviews)
         c3.metric("Open Incidents", incidents_open)
         c4.metric("Changes Pending", changes_pending)
         c5.metric("Docs Missing FM", non_compliant_count)
+        c6.metric("Cycles Completed", cycles_completed)
+        c7.metric("Independent Audits", independent_audits)
 
         col_l, col_r = st.columns(2)
         with col_l:
