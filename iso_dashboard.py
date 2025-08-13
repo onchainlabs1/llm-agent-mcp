@@ -1289,7 +1289,7 @@ def main():
 
     # Records Section
     st.markdown("## 📚 Records (Evidence)")
-    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5, rec_tab6, rec_tab7, rec_tab8 = st.tabs([
+    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5, rec_tab6, rec_tab7, rec_tab8, rec_tab9 = st.tabs([
         "Training",
         "Changes",
         "Incidents",
@@ -1298,6 +1298,7 @@ def main():
         "Supplier Assessments",
         "Training Matrix",
         "Privacy (DPIA)",
+        "Monitoring Snapshots",
     ])
 
     def read_csv_optional(path: str) -> Optional[pd.DataFrame]:
@@ -1463,6 +1464,33 @@ def main():
                         st.markdown(f"- [{row.get('DPIAID','')}]({GITHUB_BASE}/{link})")
         else:
             st.info("DPIA register not found")
+
+    with rec_tab9:
+        st.markdown("### Monitoring Snapshots")
+        # Load available snapshots
+        try:
+            import glob
+            files = sorted(glob.glob("docs/evidence/monitoring_snapshot_*.csv"))
+            if files:
+                combined = []
+                for p in files:
+                    df = read_csv_optional(p)
+                    if df is not None:
+                        df["_file"] = p
+                        combined.append(df)
+                if combined:
+                    mdf = pd.concat(combined, ignore_index=True)
+                    st.dataframe(mdf, use_container_width=True)
+                    c1, c2, c3 = st.columns(3)
+                    c1.metric("Snapshots", len(files))
+                    c2.metric("Avg Success Rate", f"{mdf['SuccessRate'].mean()*100:.1f}%" if 'SuccessRate' in mdf.columns else "-")
+                    c3.metric("Avg Error Rate", f"{mdf['ErrorRate'].mean()*100:.1f}%" if 'ErrorRate' in mdf.columns else "-")
+                else:
+                    st.info("No readable snapshots")
+            else:
+                st.info("No monitoring snapshots found")
+        except Exception as e:
+            st.warning(f"Unable to load snapshots: {e}")
 
     # ISO Clauses Section
     st.markdown("## 📁 ISO/IEC 42001:2023 Clauses")
