@@ -426,6 +426,8 @@ def main():
         <p style="font-size: 1rem; margin: 0.5rem 0 0 0;">llm-agent-mcp Project</p>
     </div>
     """, unsafe_allow_html=True)
+    # Portfolio/demo badge
+    st.caption("This is a functional demo with simulated portfolio evidence (clearly labeled and dated).")
     
     # Log dashboard access for audit trail
     log_audit_event(
@@ -732,6 +734,8 @@ def main():
                     cc1, cc2 = st.columns(2)
                     cc1.metric("Controls missing Evidence link", missing_evidence)
                     cc2.metric("Controls missing Owner", missing_owner)
+                    if (missing_evidence + missing_owner) > 0:
+                        st.warning("SoA completeness: add missing Owner/Evidence links before external audit.")
 
                     # Download current SoA view
                     st.markdown("#### Export SoA (current)")

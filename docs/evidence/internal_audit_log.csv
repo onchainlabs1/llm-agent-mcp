@@ -2,3 +2,4 @@ AuditID,Date,Auditor,Scope,Findings,NCRsRaised,CAPAsRaised,Status,ReportLink
 AUD-2025-001,2025-02-05,Compliance Officer,Clauses 6-9,"Minor gaps in SoA evidence links; risk review cadence not documented",1,1,Closed,docs/evidence/Internal_Audit_Report_AUD-2025-001.md
 AUD-2025-002,2025-03-10,Compliance Officer,Clauses 4-5,"Document control metadata missing in 5 docs; approvals inconsistent",1,1,Closed,docs/evidence/Internal_Audit_Report_AUD-2025-001.md
 
+AUD-2025-0813,2025-08-13,Independent Reviewer (Simulated),Clauses 6-9,Minor SoA completeness gaps,1,1,Closed,docs/evidence/Internal_Audit_Report_AUD-2025-0813.md

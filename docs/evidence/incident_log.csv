@@ -1,3 +1,4 @@
 IncidentID,Date,Severity,ReportedBy,Description,Status,RootCause,Containment,CorrectiveAction,PreventiveAction,ResolutionDate,EvidenceLink
 INC-2025-001,2025-02-01,Medium,DevOps,Streamlit deployment outage due to quota,Resolved,Quota exceeded,Rollback and redeploy,Increase quota and add monitoring,Add alerting for usage,2025-02-02,docs/Clause8_Operation/AI_Incident_Response_Procedure.md
 
+INC-2025-0813,2025-08-13,Low,Compliance,Documentation gap detected in SoA,Resolved,Process oversight,Review SoA fields,Add missing Owner/Evidence,Add pre-commit check,2025-08-13,docs/Clause6_Planning_new/Statement_of_Applicability.csv
