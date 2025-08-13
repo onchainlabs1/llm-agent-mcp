@@ -82,6 +82,51 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# High-contrast styling for Filters (multiselect, slider, search)
+st.markdown(
+    """
+    <style>
+    /* Multiselect / Select */
+    [data-baseweb="select"] > div {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 10px !important;
+    }
+    [data-baseweb="select"] [data-baseweb="tag"] {
+        background-color: #dcfce7 !important; /* light green */
+        color: #065f46 !important; /* emerald-800 */
+        border-color: #bbf7d0 !important;
+    }
+    [data-baseweb="select"] svg { fill: #0f172a !important; }
+
+    /* Text input */
+    [data-testid="stTextInput"] input {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 10px !important;
+    }
+    [data-testid="stTextInput"] label { color: #0f172a !important; }
+
+    /* Slider */
+    .stSlider .noUi-target {
+        background: #e5e7eb !important; /* gray-200 */
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+    }
+    .stSlider .noUi-connect { background: #1f77b4 !important; }
+    .stSlider .noUi-handle {
+        background: #ffffff !important;
+        border: 2px solid #1f77b4 !important;
+        box-shadow: none !important;
+    }
+    .stSlider .noUi-tooltip { color: #0f172a !important; background: #ffffff !important; border: 1px solid #cbd5e1 !important; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Constants
 GITHUB_BASE = "https://github.com/onchainlabs1/llm-agent-mcp/blob/main"
 REPO_BASE = "https://github.com/onchainlabs1/llm-agent-mcp"
