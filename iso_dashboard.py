@@ -258,6 +258,21 @@ def parse_front_matter_text(markdown_text: str):
     except Exception:
         return {}, markdown_text
 
+# --------- Print-friendly CSS ---------
+st.markdown(
+    """
+    <style>
+    @media print {
+      header, footer, [data-testid="stSidebar"], [data-testid="stToolbar"] { display: none !important; }
+      .block-container { padding: 0 !important; }
+      .stButton, .stDownloadButton { display: none !important; }
+      .stTabs { page-break-before: avoid; }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Configurable external links (override via env vars in Streamlit Cloud settings)
 # Provide sensible cross-app defaults to avoid self-linking
 MAIN_APP_URL = os.getenv("MAIN_APP_URL", "https://llm-agent-mcp-portfolio.streamlit.app")
@@ -806,6 +821,14 @@ def main():
                     cc1, cc2 = st.columns(2)
                     cc1.metric("Controls missing Evidence link", missing_evidence)
                     cc2.metric("Controls missing Owner", missing_owner)
+
+                    # Download current SoA view
+                    st.markdown("#### Export SoA (current)")
+                    try:
+                        csv_bytes = soa_df.to_csv(index=False).encode("utf-8")
+                        st.download_button("⬇️ Download SoA CSV", data=csv_bytes, file_name="Statement_of_Applicability.csv", mime="text/csv")
+                    except Exception:
+                        st.caption("Unable to export SoA")
                 except Exception as parse_err:
                     # Fallback: tolerant parsing just to compute counts
                     with open(soa_path, "r", encoding="utf-8") as f:
@@ -1217,6 +1240,11 @@ def main():
             "docs/evidence/change_log.csv",
             "docs/evidence/incident_log.csv",
             "docs/evidence/capa_log.csv",
+            "docs/evidence/supplier_assessment.csv",
+            "docs/evidence/dpia_register.csv",
+            "docs/evidence/monitoring_snapshot_2025-03-05.csv",
+            "docs/evidence/monitoring_snapshot_2025-03-12.csv",
+            "docs/evidence/monitoring_snapshot_2025-03-19.csv",
             "project_hours_log.csv",
         ]
         buf = BytesIO()
