@@ -990,6 +990,38 @@ def main():
         c6.metric("Cycles Completed", cycles_completed)
         c7.metric("Independent Audits", independent_audits)
 
+        st.markdown("---")
+        btn_col1, btn_col2 = st.columns(2)
+        with btn_col1:
+            if st.button("▶️ Run Simulated Cycle", help="Appends one demo cycle to evidence logs"):
+                try:
+                    import subprocess
+                    result = subprocess.run(["python3", "scripts/simulate_cycle.py"], capture_output=True, text=True, timeout=30)
+                    if result.returncode == 0:
+                        st.success("Simulated cycle recorded.")
+                        log_audit_event("SimulateCycle", {"stdout": result.stdout[:200]})
+                        st.rerun()
+                    else:
+                        st.warning(f"Simulation failed (code {result.returncode}).")
+                except Exception as e:
+                    st.error(f"Failed to run simulation: {e}")
+        with btn_col2:
+            if st.button("🧾 Record Daily Log Hash", help="Append SHA256 of audit log to daily hashes"):
+                try:
+                    log_file = Path("logs/iso_audit_trail.json")
+                    if log_file.exists():
+                        digest = hashlib.sha256(log_file.read_bytes()).hexdigest()
+                        hashes_path = Path("logs/daily_hashes.txt")
+                        hashes_path.parent.mkdir(exist_ok=True)
+                        with hashes_path.open("a", encoding="utf-8") as f:
+                            f.write(f"{datetime.datetime.utcnow().isoformat()} {digest}\n")
+                        st.success("Daily log hash recorded.")
+                        log_audit_event("DailyLogHash", {"sha256": digest[:16] + "..."})
+                    else:
+                        st.info("Audit log file not found.")
+                except Exception as e:
+                    st.error(f"Failed to record hash: {e}")
+
         col_l, col_r = st.columns(2)
         with col_l:
             st.markdown("### Top Risks")
