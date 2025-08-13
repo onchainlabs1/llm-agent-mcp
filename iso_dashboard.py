@@ -389,62 +389,7 @@ def main():
         level="INFO"
     )
     
-    # Auto-refresh status section - AGORA VEM LOGO APÓS O BANNER
-    st.markdown("## 🔄 Auto-Refresh Status")
-    
-    # Simplified status display
-    col1, col2 = st.columns([3, 1])
-    
-    with col1:
-        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        st.info(f"🔄 **Auto-refresh every 30 seconds** | 📅 **Last updated:** {current_time}")
-    
-    with col2:
-        # High-contrast refresh button (accessible)
-        st.markdown(
-            """
-            <style>
-            /* Style only Streamlit buttons (navigation uses link_button) */
-            div.stButton > button {
-                background-color: #111827; /* slate-900 */
-                color: #ffffff !important;
-                border: 1px solid #0b1220;
-                border-radius: 10px;
-                padding: 0.6rem 1rem;
-                font-weight: 700;
-                letter-spacing: 0.2px;
-            }
-            div.stButton > button:hover {
-                background-color: #1f2937; /* slate-800 */
-                border-color: #0b1220;
-            }
-            div.stButton > button:focus {
-                outline: 3px solid #93c5fd; /* focus ring */
-                outline-offset: 2px;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True,
-        )
-        refresh_clicked = st.button("🔄 Manual Refresh", help="Reload data now", use_container_width=True, key="manual_refresh_btn")
-        if refresh_clicked:
-            st.rerun()
-    
-    # Simple data status
-    if os.path.exists("project_hours_log.csv"):
-        file_time = os.path.getmtime("project_hours_log.csv")
-        file_age = time.time() - file_time
-        
-        if file_age < 300:  # Less than 5 minutes
-            st.success("📊 **Data Status:** Fresh")
-        elif file_age < 3600: # Less than 1 hour
-            st.warning("📊 **Data Status:** Recent")
-        else:
-            st.info("📊 **Data Status:** Older")
-    else:
-        st.error("📊 **Data Status:** Missing")
-    
-    st.markdown("---")
+    # Navigation – placed right after the banner
     
     # Navigation - Botões de navegação AGORA VÊM DEPOIS DO AUTO-REFRESH
     col1, col2, col3, col4 = st.columns(4)
@@ -462,13 +407,13 @@ def main():
         st.link_button("📊 Hours Log", f"{GITHUB_BASE}/project_hours_log.md", use_container_width=True)
     
     st.markdown("---")
-
+    
     # Compliance Overview - moved to top after navigation
     st.markdown("## 📊 Compliance Overview")
-
+    
     # Real-time metrics (calculating from actual data)
     col1, col2, col3, col4 = st.columns(4)
-
+    
     with col1:
         # Count real documents
         docs_count = 0
@@ -476,13 +421,13 @@ def main():
             docs_path = Path("docs")
             for item in docs_path.rglob("*.md"):
                 docs_count += 1
-
+        
         st.metric(
             label="📄 Total Documents",
             value=f"{docs_count}",
             delta="Real count"
         )
-
+    
     with col2:
         # Calculate real hours from CSV
         hours_value = "0h"
@@ -501,13 +446,13 @@ def main():
             except:
                 hours_value = "Error"
                 hours_delta = "Cannot read"
-
+        
         st.metric(
             label="⏱️ Hours Logged",
             value=hours_value,
             delta=hours_delta
         )
-
+    
     with col3:
         # Count real risks from CSV
         risks_value = "0"
@@ -522,13 +467,13 @@ def main():
             except:
                 risks_value = "Error"
                 risks_delta = "Cannot read"
-
+        
         st.metric(
             label="📋 Risk Register",
             value=risks_value,
             delta=risks_delta
         )
-
+    
     with col4:
         # Calculate real audit readiness
         audit_value = "To assess"
@@ -541,7 +486,7 @@ def main():
                 total_hours = df['Time (h)'].sum()
                 docs_path = Path("docs")
                 clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
-
+                
                 if total_hours >= 300 and len(clause_folders) >= 7:
                     audit_value = "Ready"
                     audit_delta = "✅ Requirements met"
@@ -554,16 +499,16 @@ def main():
             except:
                 audit_value = "Error"
                 audit_delta = "Cannot assess"
-
+        
         st.metric(
             label="🎯 Audit Status",
             value=audit_value,
             delta=audit_delta
         )
-
+    
     # Status indicators - based on real data
     col1, col2, col3 = st.columns(3)
-
+    
     with col1:
         if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
             try:
@@ -571,7 +516,7 @@ def main():
                 total_hours = df['Time (h)'].sum()
                 docs_path = Path("docs")
                 clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
-
+                
                 if total_hours >= 300 and len(clause_folders) >= 7:
                     st.success("✅ **ISO/IEC 42001:2023 Compliant**")
                 else:
@@ -580,7 +525,7 @@ def main():
                 st.info("🔍 **ISO/IEC 42001:2023 Status: Assessment Required**")
         else:
             st.info("🔍 **ISO/IEC 42001:2023 Status: Assessment Required**")
-
+    
     with col2:
         if os.path.exists("project_hours_log.csv"):
             try:
@@ -596,7 +541,7 @@ def main():
                 st.info("🔍 **Lead Implementer Status: To be determined**")
         else:
             st.info("🔍 **Lead Implementer Status: To be determined**")
-
+    
     with col3:
         if os.path.exists("project_hours_log.csv") and os.path.exists("docs"):
             try:
@@ -606,7 +551,7 @@ def main():
                 total_hours = df['Time (h)'].sum()
                 docs_path = Path("docs")
                 clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
-
+                
                 if total_hours >= 300 and len(clause_folders) >= 7:
                     st.success("✅ **Ready for External Audit**")
                 else:
@@ -615,101 +560,22 @@ def main():
                 st.info("🔍 **External Audit Readiness: To be assessed**")
         else:
             st.info("🔍 **External Audit Readiness: To be assessed**")
-
+    
     st.markdown("---")
 
-    # Audit Trail and Compliance Status Section
-    st.markdown("## 🔍 Audit Trail & Compliance Status")
-    
+    # Compact Compliance Status
+    st.markdown("## 🔍 Compliance Status")
     col1, col2 = st.columns(2)
-    
     with col1:
-        st.markdown("### 📊 ISO Compliance Score")
-        
-        # Calculate compliance score based on implemented controls
-        compliance_items = [
-
-            ("✅ AIMS Scope Definition", True),
-            ("✅ Stakeholder Mapping", True),
-            ("✅ Risk Register", True),
-            ("✅ LLM API Fallback", True),
-            ("✅ Input Validation", True),
-            ("✅ Structured Logging", True),   # ✅ IMPLEMENTED!
-            ("✅ Bias Detection", True),      # From feedback
-            ("✅ Fact-checking", True),       # From feedback
-            ("✅ Data Encryption", True),     # From feedback
-        ]
-        
-        implemented = sum(1 for _, status in compliance_items if status)
-        total = len(compliance_items)
-        compliance_score = (implemented / total) * 100
-        
-        st.metric("Overall Compliance", f"{compliance_score:.1f}%")
-        
-        # Show compliance breakdown
-        for item, status in compliance_items:
-            if status:
-                st.success(item)
-            elif "⚠️" in item:
-                st.warning(item)
-            else:
-                st.error(item)
-    
+        st.metric("Structured Logging", "Implemented")
+        st.metric("Prompt Sanitization", "Implemented")
+        st.metric("Bias Detection", "Implemented")
     with col2:
-        st.markdown("### 🚨 Critical Gaps (from Audit)")
-        
-        critical_gaps = [
-            "✅ **Structured JSON Logging** - IMPLEMENTED (rotating JSON logs with audit trails)",
-            "✅ **Prompt Injection Protection** - IMPLEMENTED (input sanitization and validation)",
-            "✅ **Bias Detection** - IMPLEMENTED (client data bias analysis)",
-            "✅ **Fact-checking** - IMPLEMENTED (confidence scoring and validation)",
-            "✅ **Data Encryption** - IMPLEMENTED (SHA256 hashing for data integrity)"
-        ]
-        
-        for gap in critical_gaps:
-            st.info(gap)
-        
-        st.markdown("---")
-        st.markdown("**Priority:** Address critical gaps to achieve full ISO compliance")
-    
+        st.metric("Fact-checking", "Implemented")
+        st.metric("Data Encryption", "Implemented")
     st.markdown("---")
     
-    # Logs Tab (incremental UI improvement)
-    st.markdown("## 🧾 Logs")
-    logs_tab, = st.tabs(["📋 Live Audit Trail"])
-    with logs_tab:
-        # Show recent audit logs
-        try:
-            log_file = Path("logs/iso_audit_trail.json")
-            if log_file.exists():
-                with open(log_file, 'r') as f:
-                    lines = f.readlines()
-                    if lines:
-                        # Show last 5 log entries
-                        recent_logs = lines[-5:]
-                        for log_line in recent_logs:
-                            try:
-                                log_data = json.loads(log_line.strip())
-                                timestamp = log_data.get('timestamp', 'Unknown')
-                                action = log_data.get('action', 'Unknown')
-                                level = log_data.get('level', 'INFO')
-                                
-                                if level == 'ERROR':
-                                    st.error(f"🔴 {timestamp} - {action}")
-                                elif level == 'WARNING':
-                                    st.warning(f"🟡 {timestamp} - {action}")
-                                else:
-                                    st.info(f"🔵 {timestamp} - {action}")
-                            except:
-                                st.text(log_line.strip())
-                    else:
-                        st.info("No audit logs yet")
-            else:
-                st.info("Audit trail file not found - logging system initializing")
-        except Exception as e:
-            st.warning(f"Could not display audit trail: {e}")
-    
-    st.markdown("---")
+    # Logs section removed for simplicity
     
     # Git Operations Section removed - not needed for ISO compliance dashboard
     
@@ -977,102 +843,7 @@ def main():
         else:
             st.info("Risk Register not found at docs/Clause6_Planning_new/AI_Risk_Register.csv")
 
-    # Traceability Section
-    st.markdown("## 🔗 Traceability (Controls ↔ Risks)")
-    try:
-        soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
-        risk_path = "docs/Clause6_Planning_new/AI_Risk_Register.csv"
-        soa_df = tolerant_read_csv(soa_path) if os.path.exists(soa_path) else None
-        risk_df = tolerant_read_csv(risk_path) if os.path.exists(risk_path) else None
-        if soa_df is None or risk_df is None:
-            st.info("Traceability requires both SoA and Risk Register")
-        else:
-            # Build control -> risk IDs map from Risk Register 'Control(s)'
-            control_to_risks = {}
-            ctrl_col = next((c for c in risk_df.columns if "control" in c.lower()), None)
-            rid_col = next((c for c in risk_df.columns if c.lower().startswith("risk id")), None)
-            if ctrl_col and rid_col:
-                for _, row in risk_df.iterrows():
-                    rid = str(row.get(rid_col, "")).strip()
-                    ctrls = str(row.get(ctrl_col, "")).strip()
-                    if not ctrls:
-                        continue
-                    # Split by '/' or ','
-                    parts = [p.strip() for p in re.split(r"[\\/,]", ctrls) if p.strip()]
-                    for cid in parts:
-                        control_to_risks.setdefault(cid, []).append(rid)
-
-            id_col = next((c for c in soa_df.columns if c.lower().startswith("control id")), None)
-            title_col = next((c for c in soa_df.columns if c.lower().startswith("control title")), None)
-            impl_col = next((c for c in soa_df.columns if c.lower().startswith("implemented")), None)
-            link_col = next((c for c in soa_df.columns if c.lower() in ("linked document", "evidence link")), None)
-
-            rows = []
-            if id_col and title_col and impl_col:
-                for _, row in soa_df.iterrows():
-                    cid = str(row.get(id_col, "")).strip()
-                    risks = control_to_risks.get(cid, [])
-                    rows.append({
-                        "Control ID": cid,
-                        "Control Title": row.get(title_col, ""),
-                        "Implemented": row.get(impl_col, ""),
-                        "Risk Count": len(risks),
-                        "Risk IDs": ", ".join(risks[:6]) + ("…" if len(risks) > 6 else ""),
-                        "Linked Document": row.get(link_col, "") if link_col else "",
-                    })
-                trace_df = pd.DataFrame(rows)
-                # KPIs
-                c1, c2, c3 = st.columns(3)
-                c1.metric("Controls", len(trace_df))
-                c2.metric("Controls with Risks", int((trace_df["Risk Count"] > 0).sum()))
-                c3.metric("Total Risk Links", int(trace_df["Risk Count"].sum()))
-                st.dataframe(trace_df, use_container_width=True)
-
-                # Drill-down pickers
-                st.markdown("---")
-                st.markdown("### Drill-down")
-                col_a, col_b = st.columns(2)
-
-                with col_a:
-                    control_options = sorted([r["Control ID"] for r in rows if r["Control ID"]])
-                    sel_ctrl = st.selectbox("Select Control ID", options=[""] + control_options)
-                    if sel_ctrl:
-                        related = control_to_risks.get(sel_ctrl, [])
-                        st.caption(f"Related Risks: {', '.join(related) if related else 'None'}")
-                        if related and rid_col:
-                            idc = rid_col
-                            desc_col = next((c for c in risk_df.columns if c.lower().startswith("risk description")), None)
-                            owner_col = next((c for c in risk_df.columns if "owner" in c.lower()), None)
-                            status_col = next((c for c in risk_df.columns if c.lower() == "status"), None)
-                            like_col = next((c for c in risk_df.columns if c.lower().startswith("likelihood")), None)
-                            imp_col = next((c for c in risk_df.columns if c.lower().startswith("impact")), None)
-                            rc = next((c for c in risk_df.columns if "risk level" in c.lower()), None)
-                            tmp = risk_df[risk_df[idc].isin(related)].copy()
-                            if like_col and imp_col:
-                                tmp["Score"] = pd.to_numeric(tmp[like_col], errors="coerce").fillna(0) * pd.to_numeric(tmp[imp_col], errors="coerce").fillna(0)
-                            elif rc:
-                                tmp["Score"] = pd.to_numeric(tmp[rc], errors="coerce").fillna(0)
-                            show_cols = [c for c in [idc, desc_col, owner_col, status_col, "Score"] if c and c in tmp.columns]
-                            st.dataframe(tmp[show_cols].sort_values(by="Score", ascending=False) if "Score" in show_cols else tmp[show_cols], use_container_width=True)
-
-                with col_b:
-                    risk_options = sorted([str(v).strip() for v in risk_df[rid_col].dropna().unique()]) if rid_col else []
-                    sel_risk = st.selectbox("Select Risk ID", options=[""] + risk_options)
-                    if sel_risk and rid_col:
-                        row = risk_df[risk_df[rid_col] == sel_risk].head(1)
-                        if not row.empty:
-                            st.json(row.iloc[0].to_dict())
-                            ctrls = str(row.iloc[0].get(ctrl_col, "")).strip() if ctrl_col else ""
-                            if ctrls:
-                                st.caption(f"Controls: {ctrls}")
-                            ev = next((c for c in risk_df.columns if "evidence" in c.lower()), None)
-                            if ev and str(row.iloc[0].get(ev, "")).strip():
-                                doc = str(row.iloc[0][ev]).strip()
-                                st.markdown(f"[Open Evidence]({GITHUB_BASE}/{doc})")
-            else:
-                st.caption("Traceability table requires Control ID/Title/Implemented columns in SoA")
-    except Exception as e:
-        st.warning(f"Unable to compute traceability: {e}")
+    # Traceability section removed for simplicity
 
     # Audit Preparation Summary
     st.markdown("## 🛠️ Audit Preparation")
@@ -1227,106 +998,23 @@ def main():
     except Exception as e:
         st.warning(f"Unable to display management review: {e}")
 
-    # Portfolio Pack (ZIP)
-    st.markdown("## 📦 Portfolio Pack")
-    try:
-        files_to_include = [
-            "README.md",
-            "docs/ISO_Compliance_Summary.md",
-            "docs/Evidence_Index.md",
-            "docs/Clause6_Planning_new/Statement_of_Applicability.csv",
-            "docs/Clause6_Planning_new/AI_Risk_Register.csv",
-            "docs/evidence/internal_audit_log.csv",
-            "docs/evidence/change_log.csv",
-            "docs/evidence/incident_log.csv",
-            "docs/evidence/capa_log.csv",
-            "docs/evidence/supplier_assessment.csv",
-            "docs/evidence/dpia_register.csv",
-            "docs/evidence/monitoring_snapshot_2025-03-05.csv",
-            "docs/evidence/monitoring_snapshot_2025-03-12.csv",
-            "docs/evidence/monitoring_snapshot_2025-03-19.csv",
-            "project_hours_log.csv",
-        ]
-        buf = BytesIO()
-        with zipfile.ZipFile(buf, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
-            for p in files_to_include:
-                if os.path.exists(p):
-                    try:
-                        zf.write(p)
-                    except Exception:
-                        pass
-        st.download_button("⬇️ Download Portfolio Pack (ZIP)", data=buf.getvalue(), file_name="portfolio_pack.zip", mime="application/zip")
-    except Exception as e:
-        st.warning(f"Unable to build portfolio pack: {e}")
+    # Portfolio pack removed
 
     # Print-friendly view hint
     st.markdown("---")
     st.markdown("### 🖨️ Print-Friendly View & Report")
     st.caption("Use your browser's print dialog to save key sections as PDF, or open the consolidated Audit Report.")
     st.link_button("Open Audit Report (MD)", f"{GITHUB_BASE}/docs/Audit_Report.md")
-    # Document Control Compliance
-    st.markdown("## 🧾 Document Control Compliance")
-    try:
-        docs_root = Path("docs")
-        if not docs_root.exists():
-            st.info("Docs folder not found")
-        else:
-            required_keys = ["owner", "version", "approved_by", "approved_on", "next_review"]
-            non_compliant = []
-            total = 0
-            for md_path in docs_root.rglob("*.md"):
-                total += 1
-                try:
-                    with open(md_path, "r", encoding="utf-8") as f:
-                        text = f.read()
-                    meta, _ = parse_front_matter_text(text)
-                    missing = [k for k in required_keys if k not in {m.lower(): v for m, v in meta.items()}]
-                    if missing:
-                        non_compliant.append({
-                            "File": str(md_path),
-                            "Missing": ", ".join(missing)
-                        })
-                except Exception:
-                    non_compliant.append({"File": str(md_path), "Missing": "read error"})
+    # Document Control Compliance scanner removed
 
-            compliant = total - len(non_compliant)
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Total Docs", total)
-            c2.metric("Compliant", compliant)
-            c3.metric("Missing/Errors", len(non_compliant))
-
-            if non_compliant:
-                st.markdown("### Non-compliant Documents")
-                nc_df = pd.DataFrame(non_compliant)
-                # Add GitHub link column
-                def to_link(file_str: str) -> str:
-                    rel = Path(file_str)
-                    # ensure path after repo root
-                    try:
-                        rel = rel.relative_to(Path.cwd())
-                    except Exception:
-                        pass
-                    return f"{GITHUB_BASE}/{rel.as_posix()}"
-                nc_df["GitHub"] = nc_df["File"].apply(lambda x: to_link(x))
-                st.dataframe(nc_df, use_container_width=True)
-                # Export CSV
-                csv_bytes = nc_df.to_csv(index=False).encode("utf-8")
-                st.download_button("⬇️ Download CSV", data=csv_bytes, file_name="non_compliant_docs.csv", mime="text/csv")
-    except Exception as e:
-        st.warning(f"Unable to compute document control compliance: {e}")
-
-    # Records Section
+    # Records Section (trimmed to essentials)
     st.markdown("## 📚 Records (Evidence)")
-    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5, rec_tab6, rec_tab7, rec_tab8, rec_tab9 = st.tabs([
+    rec_tab1, rec_tab2, rec_tab3, rec_tab4, rec_tab5 = st.tabs([
         "Training",
         "Changes",
         "Incidents",
         "Internal Audits",
         "CAPA",
-        "Supplier Assessments",
-        "Training Matrix",
-        "Privacy (DPIA)",
-        "Monitoring Snapshots",
     ])
 
     def read_csv_optional(path: str) -> Optional[pd.DataFrame]:
@@ -1442,84 +1130,8 @@ def main():
         else:
             st.info("CAPA log not found")
 
-    with rec_tab6:
-        path = "docs/evidence/supplier_assessment.csv"
-        df = read_csv_optional(path)
-        if df is not None:
-            st.markdown("### Supplier Due Diligence")
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Suppliers", len(df))
-            if "RiskRating" in df.columns:
-                high = (df["RiskRating"].astype(str).str.lower() == "high").sum()
-                c2.metric("High Risk", int(high))
-            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
-            q = st.text_input("Search (supplier/service)", "", key="f_sup")
-            fdf = df
-            if q:
-                ql = q.lower()
-                fdf = df[[ql in str(v).lower() for v in df.astype(str).agg(" ".join, axis=1)]]
-            st.dataframe(fdf, use_container_width=True)
-        else:
-            st.info("Supplier assessment log not found")
-
-    with rec_tab7:
-        path = "docs/evidence/training_matrix.csv"
-        df = read_csv_optional(path)
-        if df is not None:
-            st.markdown("### Training Matrix (Roles vs Trainings)")
-            st.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
-            st.dataframe(df, use_container_width=True)
-        else:
-            st.info("Training matrix not found")
-
-    with rec_tab8:
-        path = "docs/evidence/dpia_register.csv"
-        df = read_csv_optional(path)
-        if df is not None:
-            st.markdown("### DPIA Register")
-            c1, c2, c3 = st.columns(3)
-            c1.metric("DPIAs", len(df))
-            medium = (df["ResidualRisk"].astype(str).str.lower() == "medium").sum() if "ResidualRisk" in df.columns else 0
-            c2.metric("Residual Medium+", int(medium))
-            c3.link_button("Open CSV", f"{GITHUB_BASE}/{path}")
-            st.dataframe(df, use_container_width=True)
-            # Evidence links preview
-            if "EvidenceLink" in df.columns:
-                st.markdown("#### Evidence Links")
-                for _, row in df.head(5).iterrows():
-                    link = str(row.get("EvidenceLink", "")).strip()
-                    if link:
-                        st.markdown(f"- [{row.get('DPIAID','')}]({GITHUB_BASE}/{link})")
-        else:
-            st.info("DPIA register not found")
-
-    with rec_tab9:
-        st.markdown("### Monitoring Snapshots")
-        # Load available snapshots
-        try:
-            import glob
-            files = sorted(glob.glob("docs/evidence/monitoring_snapshot_*.csv"))
-            if files:
-                combined = []
-                for p in files:
-                    df = read_csv_optional(p)
-                    if df is not None:
-                        df["_file"] = p
-                        combined.append(df)
-                if combined:
-                    mdf = pd.concat(combined, ignore_index=True)
-                    st.dataframe(mdf, use_container_width=True)
-                    c1, c2, c3 = st.columns(3)
-                    c1.metric("Snapshots", len(files))
-                    c2.metric("Avg Success Rate", f"{mdf['SuccessRate'].mean()*100:.1f}%" if 'SuccessRate' in mdf.columns else "-")
-                    c3.metric("Avg Error Rate", f"{mdf['ErrorRate'].mean()*100:.1f}%" if 'ErrorRate' in mdf.columns else "-")
-                else:
-                    st.info("No readable snapshots")
-            else:
-                st.info("No monitoring snapshots found")
-        except Exception as e:
-            st.warning(f"Unable to load snapshots: {e}")
-
+    # Supplier, Training Matrix, DPIA, Monitoring tabs removed
+    
     # ISO Clauses Section
     st.markdown("## 📁 ISO/IEC 42001:2023 Clauses")
     st.markdown("Click on each clause to view its documentation and implementation details.")
@@ -1621,369 +1233,11 @@ def main():
     
     st.markdown("---")
     
-    # Project Hours Log Preview
-    st.markdown("## 📊 Project Hours Log Preview")
-    
-    # Real-time data monitoring
-    st.markdown("### 🔍 Live Data Monitoring")
-    
-    # Check for recent changes
-    if os.path.exists("project_hours_log.csv"):
-        file_time = os.path.getmtime("project_hours_log.csv")
-        file_age = time.time() - file_time
-        
-        # Monitor for very recent changes (last 2 minutes)
-        if file_age < 120:
-            st.success("🆕 **NEW DATA DETECTED!** The hours log was updated recently!")
-            st.balloons()
-        
-        # Show monitoring status
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("📊 File Age", f"{file_age/60:.1f} minutes")
-        with col2:
-            st.metric("🔄 Refresh Cycle", "30 seconds")
-        with col3:
-            st.metric("📈 Data Status", "Live Monitoring")
-    
-    # Try to load and display the hours log
-    try:
-        if os.path.exists("project_hours_log.csv"):
-            df = pd.read_csv("project_hours_log.csv")
-            
-            # Calculate summary statistics
-            total_hours = df['Time (h)'].sum()
-            total_entries = len(df)
-            clause_breakdown = df.groupby('Clause')['Time (h)'].sum().sort_values(ascending=False)
-            
-            # Check for recent additions (last 24 hours)
-            df['Date'] = pd.to_datetime(df['Date'])
-            today = pd.Timestamp.now().date()
-            recent_entries = df[df['Date'].dt.date == today]
-            recent_hours = recent_entries['Time (h)'].sum()
-            
-            if not recent_entries.empty:
-                st.success(f"📅 **Today's Progress:** {len(recent_entries)} new entries, {recent_hours:.1f}h added")
-            
-            # Create a more visually appealing layout
-            st.markdown("### 🎯 Project Hours Overview")
-            
-            # Main metrics in a professional grid
-            col1, col2, col3, col4 = st.columns(4)
-            
-            with col1:
-                st.metric(
-                    label="⏱️ Total Hours",
-                    value=f"{total_hours:.1f}h",
-                    delta="+53.5h above requirement" if total_hours >= 300 else f"{-300 + total_hours:.1f}h to go"
-                )
-            
-            with col2:
-                st.metric(
-                    label="📝 Total Entries",
-                    value=total_entries,
-                    delta="Comprehensive tracking"
-                )
-            
-            with col3:
-                st.metric(
-                    label="🎯 ISO Requirement",
-                    value="300h",
-                    delta="✅ Exceeds Requirement" if total_hours >= 300 else "⚠️ Needs More Hours"
-                )
-            
-            with col4:
-                status_color = "🟢" if total_hours >= 300 else "🟡"
-                st.metric(
-                    label="📊 Status",
-                    value=f"{status_color} {'Certified' if total_hours >= 300 else 'In Progress'}",
-                    delta="Lead Implementer Eligible" if total_hours >= 300 else "Working towards certification"
-                )
-            
-            st.markdown("---")
-            
-            # Hours breakdown with visual elements
-            col1, col2 = st.columns([2, 1])
-            
-            with col1:
-                st.markdown("### 📈 Hours Distribution by ISO Clause")
-                
-                # Create a horizontal bar chart for better visualization
-                if not clause_breakdown.empty:
-                    # Sort by hours for better visual hierarchy
-                    sorted_clauses = clause_breakdown.sort_values(ascending=True)
-                    
-                    # Create a custom bar chart using markdown for better control
-                    max_hours = sorted_clauses.max()
-                    
-                    for clause, hours in sorted_clauses.items():
-                        # Calculate percentage and bar width
-                        percentage = (hours / max_hours) * 100
-                        bar_width = int(percentage / 2)  # Scale down for better display
-                        
-                        # Create visual bar
-                        bar = "█" * bar_width
-                        remaining = 20 - bar_width  # 20 chars max width
-                        empty_bar = "░" * remaining
-                        
-                        # Color coding based on hours
-                        if hours >= 50:
-                            emoji = "🔴"
-                        elif hours >= 30:
-                            emoji = "🟠"
-                        elif hours >= 20:
-                            emoji = "🟡"
-                        else:
-                            emoji = "🟢"
-                        
-                        st.markdown(f"""
-                        **{emoji} {clause}**  
-                        {bar}{empty_bar} **{hours:.1f}h** ({percentage:.1f}%)
-                        """)
-                        
-                        # Add spacing between bars
-                        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
-            
-            with col2:
-                st.markdown("### 📊 Quick Stats")
-                
-                # Top performers
-                st.markdown("**🏆 Top Clauses:**")
-                top_3 = clause_breakdown.head(3)
-                for i, (clause, hours) in enumerate(top_3.items(), 1):
-                    medal = "🥇" if i == 1 else "🥈" if i == 2 else "🥉"
-                    st.markdown(f"{medal} {clause}: **{hours:.1f}h**")
-                
-                st.markdown("---")
-                
-                # Progress indicators
-                st.markdown("**📈 Progress:**")
-                progress = min(100, (total_hours / 300) * 100)
-                st.progress(progress / 100)
-                st.caption(f"{progress:.1f}% of certification requirement")
-                
-                # Certification status
-                if total_hours >= 300:
-                    st.success("🎉 **Lead Implementer Certified!**")
-                else:
-                    remaining = 300 - total_hours
-                    st.info(f"📚 **{remaining:.1f}h remaining** for certification")
-            
-            st.markdown("---")
-            
-            # Recent activity with better formatting
-            st.markdown("### 📋 Recent Activity")
-            
-            # Show last 5 entries with better formatting
-            recent_df = df.tail(5)[['Date', 'Task Description', 'Clause', 'Time (h)']].copy()
-            
-            # Format the display
-            for _, row in recent_df.iterrows():
-                with st.container():
-                    col1, col2, col3, col4 = st.columns([1, 3, 1, 1])
-                    with col1:
-                        st.markdown(f"**{row['Date']}**")
-                    with col2:
-                        st.markdown(f"_{row['Task Description'][:60]}{'...' if len(row['Task Description']) > 60 else ''}_")
-                    with col3:
-                        st.markdown(f"**{row['Clause']}**")
-                    with col4:
-                        st.markdown(f"**{row['Time (h)']:.1f}h**")
-                    st.markdown("---")
-            
-            # Action buttons
-            col1, col2 = st.columns(2)
-            with col1:
-                st.link_button("📊 View Full Hours Log", f"{GITHUB_BASE}/project_hours_log.md", use_container_width=True)
-            with col2:
-                st.link_button("📥 Download CSV", f"{GITHUB_BASE}/project_hours_log.csv", use_container_width=True)
-            
-            # Change history and monitoring
-            st.markdown("---")
-            st.markdown("### 📈 Change History & Monitoring")
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown("**🕒 File Modification History:**")
-                if os.path.exists("project_hours_log.csv"):
-                    file_time = os.path.getmtime("project_hours_log.csv")
-                    file_date = datetime.datetime.fromtimestamp(file_time)
-                    st.markdown(f"- **Last Modified:** {file_date.strftime('%Y-%m-%d %H:%M:%S')}")
-                    st.markdown(f"- **File Age:** {file_age/60:.1f} minutes")
-                    st.markdown(f"- **Total Entries:** {total_entries}")
-                    st.markdown(f"- **Total Hours:** {total_hours:.1f}h")
-                
-                # Show recent activity summary
-                if not recent_entries.empty:
-                    st.markdown("**📅 Recent Activity (Today):**")
-                    st.markdown(f"- **New Entries:** {len(recent_entries)}")
-                    st.markdown(f"- **Hours Added:** {recent_hours:.1f}h")
-                    st.markdown(f"- **Progress:** {recent_hours/total_hours*100:.1f}% of total")
-            
-            with col2:
-                st.markdown("**🔍 Monitoring Status:**")
-                st.markdown("- **Auto-refresh:** ✅ Every 30 seconds")
-                st.markdown("- **File Watch:** ✅ Active")
-                st.markdown("- **Data Freshness:** ✅ Real-time")
-                st.markdown("- **Change Detection:** ✅ Active")
-                
-                # Add a live indicator
-                st.markdown("**🟢 Live Status:** Dashboard is actively monitoring for changes")
-                
-                # Show next refresh countdown
-                st.markdown("**⏱️ Next Refresh:** In 30 seconds")
-                
-        else:
-            st.warning("Hours log file not found. Please run the hours tracking system first.")
-    except Exception as e:
-        st.error(f"Error loading hours log: {e}")
-        st.info("💡 **Tip:** Run `python log_hours.py` to generate the hours tracking data.")
-    
-    st.markdown("---")
-    
-    # Real System Metrics (based on actual system data)
-    st.markdown("## 📊 Real System Metrics")
-    
-    try:
-        # Collect real metrics from the system
-        metrics = {}
-        
-        # 1. File System Health (real)
-        if os.path.exists("project_hours_log.csv"):
-            file_size = os.path.getsize("project_hours_log.csv")
-            file_age = time.time() - os.path.getmtime("project_hours_log.csv")
-            metrics["File Size"] = f"{file_size/1024:.1f} KB"
-            metrics["Data Age"] = f"{file_age/60:.1f} min"
-        else:
-            metrics["File Size"] = "Missing"
-            metrics["Data Age"] = "N/A"
-        
-        # 2. Documentation Coverage (real)
-        docs_path = Path("docs")
-        if docs_path.exists():
-            total_files = sum(1 for _ in docs_path.rglob("*.md"))
-            total_csv = sum(1 for _ in docs_path.rglob("*.csv"))
-            metrics["Markdown Files"] = total_files
-            metrics["CSV Files"] = total_csv
-        else:
-            metrics["Markdown Files"] = 0
-            metrics["CSV Files"] = 0
-        
-        # 3. Repository Health (real)
-        try:
-            import subprocess
-            result = subprocess.run(["git", "rev-parse", "--short", "HEAD"], 
-                                  capture_output=True, text=True, timeout=5)
-            if result.returncode == 0:
-                metrics["Git Commit"] = result.stdout.strip()
-            else:
-                metrics["Git Commit"] = "Unknown"
-        except:
-            metrics["Git Commit"] = "N/A"
-        
-        # 4. System Uptime (real)
-        import psutil
-        uptime_seconds = time.time() - psutil.boot_time()
-        uptime_hours = uptime_seconds / 3600
-        metrics["System Uptime"] = f"{uptime_hours:.1f}h"
-        
-        # 5. Memory Usage (real)
-        memory = psutil.virtual_memory()
-        metrics["Memory Usage"] = f"{memory.percent:.1f}%"
-        
-        # Display real metrics in columns
-        cols = st.columns(5)
-        metric_items = list(metrics.items())
-        
-        for i, (label, value) in enumerate(metric_items):
-            with cols[i]:
-                st.metric(label, value)
-        
-        # Add explanation
-        st.info("📊 **These are REAL system metrics collected live from your system**")
-        
-    except Exception as e:
-        st.warning(f"Could not collect real metrics: {e}")
-        st.info("💡 **Tip:** Install psutil with 'pip install psutil' for system metrics")
+    # Hours preview and live monitoring removed for simplicity
 
-    # Real Audit Information (based on actual data)
-    st.markdown("## 🔍 Real Audit Status")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("### 📋 Actual Compliance Status")
-        
-        # Check real compliance based on actual files
-        compliance_checks = []
-        
-        # Check if hours requirement is met
-        if os.path.exists("project_hours_log.csv"):
-            try:
-                df = pd.read_csv("project_hours_log.csv")
-                total_hours = df['Time (h)'].sum()
-                if total_hours >= 300:
-                    compliance_checks.append(("✅ Hours Requirement", "Met (300h+)", "success"))
-                else:
-                    compliance_checks.append(("⚠️ Hours Requirement", f"Need {300-total_hours:.1f}h more", "warning"))
-            except:
-                compliance_checks.append(("❌ Hours Data", "Cannot read", "error"))
-        else:
-            compliance_checks.append(("❌ Hours Data", "File missing", "error"))
-        
-        # Check documentation completeness
-        docs_path = Path("docs")
-        if docs_path.exists():
-            clause_folders = [f for f in docs_path.iterdir() if f.is_dir() and "Clause" in f.name]
-            if len(clause_folders) >= 7:  # Clauses 4-10
-                compliance_checks.append(("✅ Documentation", f"{len(clause_folders)} clauses", "success"))
-            else:
-                compliance_checks.append(("⚠️ Documentation", f"{len(clause_folders)}/7 clauses", "warning"))
-        else:
-            compliance_checks.append(("❌ Documentation", "Missing", "error"))
-        
-        # Display real compliance status
-        for label, status, level in compliance_checks:
-            if level == "success":
-                st.success(f"{label}: {status}")
-            elif level == "warning":
-                st.warning(f"{label}: {status}")
-            else:
-                st.error(f"{label}: {status}")
-    
-    with col2:
-        st.markdown("### 🎯 Real Implementation Status")
-        
-        # Check actual implementation files
-        implementation_checks = []
-        
-        # Check for key procedures
-        key_files = [
-            "docs/Clause8_Operation/AI_Incident_Response_Procedure.md",
-            "docs/Clause6_Planning_new/AI_Risk_Management_Procedure.md",
-            "docs/Clause5_Leadership_new/AI_Management_Policy.md"
-        ]
-        
-        for file_path in key_files:
-            if os.path.exists(file_path):
-                implementation_checks.append(("✅", os.path.basename(file_path).replace(".md", "")))
-            else:
-                implementation_checks.append(("❌", os.path.basename(file_path).replace(".md", "")))
-        
-        # Display implementation status
-        for status, name in implementation_checks:
-            st.markdown(f"{status} **{name}**")
-        
-        # Overall assessment
-        existing_files = sum(1 for _, name in implementation_checks if name.startswith("✅"))
-        total_files = len(implementation_checks)
-        
-        if existing_files == total_files:
-            st.success(f"🎉 **Complete Implementation** ({existing_files}/{total_files})")
-        elif existing_files > total_files / 2:
-            st.warning(f"📚 **Good Progress** ({existing_files}/{total_files})")
-        else:
-            st.error(f"⚠️ **Needs Work** ({existing_files}/{total_files})")
+    # Real System Metrics removed
+
+    # Real Audit Status removed
 
     # Footer
     st.markdown("""
