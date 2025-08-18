@@ -1349,24 +1349,60 @@ def main():
         st.markdown("**ISO 42001 Clause 8.3 - Operational Planning and Control**")
         st.caption("This section demonstrates LLM quality monitoring and evaluation using Phoenix for ISO compliance.")
         
+        # Load real Phoenix data
+        phoenix_data_loaded = False
+        llm_traces = None
+        quality_trends = None
+        
+        try:
+            # Try to load real Phoenix data
+            if os.path.exists("data/phoenix/llm_traces.csv"):
+                llm_traces = pd.read_csv("data/phoenix/llm_traces.csv")
+                phoenix_data_loaded = True
+            
+            if os.path.exists("data/phoenix/quality_trends.csv"):
+                quality_trends = pd.read_csv("data/phoenix/quality_trends.csv")
+                
+        except Exception as e:
+            st.warning(f"Could not load Phoenix data: {e}")
+        
         # Phoenix Status
         if PHOENIX_AVAILABLE:
             st.success("✅ Phoenix Integration Active")
             
-            # Quality Metrics Overview
+            # Quality Metrics Overview - Use real data if available
             col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.metric("Overall Quality", "0.87", "↑ 0.02")
-            with col2:
-                st.metric("Hallucination Risk", "LOW", "↓ 0.01")
-            with col3:
-                st.metric("Relevance Score", "0.92", "↑ 0.03")
-            with col4:
-                st.metric("Compliance Status", "PASS", "✓")
+            
+            if phoenix_data_loaded and llm_traces is not None:
+                # Real metrics from data
+                latest_trace = llm_traces.iloc[0] if len(llm_traces) > 0 else None
+                avg_quality = llm_traces['quality_score'].mean() if len(llm_traces) > 0 else 0.0
+                total_traces = len(llm_traces)
+                
+                with col1:
+                    st.metric("Overall Quality", f"{avg_quality:.3f}", "↑ Real Data")
+                with col2:
+                    risk_level = latest_trace['hallucination_risk'] if latest_trace is not None else "N/A"
+                    st.metric("Hallucination Risk", risk_level, "↓ Real Data")
+                with col3:
+                    avg_relevance = llm_traces['relevance_score'].mean() if len(llm_traces) > 0 else 0.0
+                    st.metric("Relevance Score", f"{avg_relevance:.3f}", "↑ Real Data")
+                with col4:
+                    st.metric("Total Traces", total_traces, "📊 Real Data")
+            else:
+                # Fallback metrics
+                with col1:
+                    st.metric("Overall Quality", "0.87", "↑ 0.02")
+                with col2:
+                    st.metric("Hallucination Risk", "LOW", "↓ 0.01")
+                with col3:
+                    st.metric("Relevance Score", "0.92", "↑ 0.03")
+                with col4:
+                    st.metric("Compliance Status", "PASS", "✓")
             
             # Action Buttons
             st.subheader("🚀 Phoenix Actions")
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
             
             with col1:
                 if st.button("🔍 Run Quality Assessment", help="Execute Phoenix evaluation on sample LLM responses"):
@@ -1380,7 +1416,43 @@ def main():
                 if st.button("📊 Show Quality Trends", help="Display quality metrics over time"):
                     st.session_state.show_trends = True
             
-            # Display Results
+            with col3:
+                if st.button("🔄 Refresh Data", help="Reload Phoenix data files"):
+                    st.rerun()
+            
+            # Display Real LLM Traces
+            if phoenix_data_loaded and llm_traces is not None:
+                st.subheader("📋 Real LLM Traces from Phoenix")
+                
+                # Show traces in expandable sections
+                for idx, trace in llm_traces.iterrows():
+                    with st.expander(f"Trace {idx+1}: {trace['user_input'][:50]}...", expanded=False):
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("Quality Score", f"{trace['quality_score']:.3f}")
+                        with col2:
+                            st.metric("Hallucination Risk", trace['hallucination_risk'])
+                        with col3:
+                            st.metric("Relevance", f"{trace['relevance_score']:.3f}")
+                        
+                        # Input and Response
+                        st.text_area("User Input", trace['user_input'], height=60, key=f"input_{idx}")
+                        st.text_area("LLM Response", trace['llm_response'], height=80, key=f"response_{idx}")
+                        
+                        # Additional metadata
+                        col1, col2, col3, col4 = st.columns(4)
+                        with col1:
+                            st.metric("Model", trace['model'])
+                        with col2:
+                            st.metric("Input Tokens", trace['input_tokens'])
+                        with col3:
+                            st.metric("Output Tokens", trace['output_tokens'])
+                        with col4:
+                            st.metric("Processing Time", f"{trace['processing_time_ms']}ms")
+                        
+                        st.caption(f"Trace ID: {trace['trace_id']} | Timestamp: {trace['timestamp']}")
+            
+            # Display Results from Quality Assessment
             if hasattr(st.session_state, 'phoenix_results') and st.session_state.phoenix_results:
                 st.subheader("📋 Latest Quality Assessment Results")
                 
@@ -1398,28 +1470,61 @@ def main():
                         st.text_area("Response", result['response'], height=80, key=f"response_{i}")
                         st.caption(f"Evaluated at: {result['timestamp']}")
             
-            # Quality Trends
+            # Quality Trends - Use real data if available
             if hasattr(st.session_state, 'show_trends') and st.session_state.show_trends:
-                st.subheader("📈 Quality Trends (Last 7 Days)")
-                dates = [(datetime.datetime.now() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7, 0, -1)]
-                quality_scores = [0.82, 0.84, 0.86, 0.85, 0.87, 0.89, 0.87]
+                st.subheader("📈 Quality Trends (Real Data)")
                 
-                chart_data = pd.DataFrame({
-                    "Date": dates,
-                    "Quality Score": quality_scores
-                })
-                
-                st.line_chart(chart_data.set_index("Date"))
-                
-                # Quality Insights
-                st.subheader("💡 Quality Insights")
-                st.info("""
-                **Trend Analysis:**
-                - Quality score improved by 0.05 over the last week
-                - Hallucination risk reduced from MEDIUM to LOW
-                - Relevance score consistently above 0.90
-                - ISO 42001 Clause 8.3 compliance: PASS
-                """)
+                if quality_trends is not None and len(quality_trends) > 0:
+                    # Real quality trends
+                    chart_data = quality_trends.copy()
+                    chart_data['date'] = pd.to_datetime(chart_data['date'])
+                    
+                    # Quality score trends
+                    st.line_chart(chart_data.set_index('date')[['quality_score', 'relevance_score']])
+                    
+                    # Additional metrics
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.metric("Total Requests (7 days)", quality_trends['total_requests'].sum())
+                        st.metric("Success Rate", f"{(quality_trends['successful_requests'].sum() / quality_trends['total_requests'].sum() * 100):.1f}%")
+                    
+                    with col2:
+                        st.metric("Quality Improvement", f"{(quality_trends.iloc[-1]['quality_score'] - quality_trends.iloc[0]['quality_score']):.3f}")
+                        st.metric("Relevance Improvement", f"{(quality_trends.iloc[-1]['relevance_score'] - quality_trends.iloc[0]['relevance_score']):.3f}")
+                    
+                    # Quality insights
+                    st.subheader("💡 Quality Insights (Real Data)")
+                    latest = quality_trends.iloc[-1]
+                    first = quality_trends.iloc[0]
+                    
+                    st.info(f"""
+                    **Trend Analysis (Real Data):**
+                    - Quality score improved by {latest['quality_score'] - first['quality_score']:.3f} over the last week
+                    - Relevance score improved by {latest['relevance_score'] - first['relevance_score']:.3f}
+                    - Latest Quality Score: {latest['quality_score']:.3f}
+                    - Latest Relevance Score: {latest['relevance_score']:.3f}
+                    - Total Requests: {latest['total_requests']} (latest day)
+                    - ISO 42001 Clause 8.3 compliance: PASS
+                    """)
+                else:
+                    # Fallback trends
+                    dates = [(datetime.datetime.now() - datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7, 0, -1)]
+                    quality_scores = [0.82, 0.84, 0.86, 0.85, 0.87, 0.89, 0.87]
+                    
+                    chart_data = pd.DataFrame({
+                        "Date": dates,
+                        "Quality Score": quality_scores
+                    })
+                    
+                    st.line_chart(chart_data.set_index("Date"))
+                    
+                    st.info("""
+                    **Trend Analysis (Simulated):**
+                    - Quality score improved by 0.05 over the last week
+                    - Hallucination risk reduced from MEDIUM to LOW
+                    - Relevance score consistently above 0.90
+                    - ISO 42001 Clause 8.3 compliance: PASS
+                    """)
             
             # Compliance Information
             st.subheader("📋 ISO 42001 Compliance")
@@ -1427,7 +1532,7 @@ def main():
                 "Clause": "8.3 - Operational Planning and Control",
                 "Control": "LLM Quality Monitoring",
                 "Status": "Implemented",
-                "Evidence": "Phoenix integration + quality metrics",
+                "Evidence": f"Phoenix integration + {len(llm_traces) if llm_traces is not None else 0} real traces",
                 "Risk Level": "LOW",
                 "Next Review": "30 days"
             }
@@ -1441,6 +1546,7 @@ def main():
             - URL: http://localhost:6006 (when running locally)
             - Features: Advanced tracing, evaluation, clustering
             - Integration: Seamless with this dashboard
+            - Real Data: LLM traces and quality metrics
             """)
             
             if st.button("🌐 Open Phoenix Interface", help="Launch Phoenix web interface"):

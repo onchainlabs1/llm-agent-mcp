@@ -35,7 +35,7 @@ def start_phoenix_server():
         # Start Phoenix server
         print("🚀 Starting Phoenix server...")
         process = subprocess.Popen(
-            ["phoenix", "start"],
+            ["phoenix", "serve"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )

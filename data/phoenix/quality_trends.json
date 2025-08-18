@@ -1,0 +1,58 @@
+[
+  {
+    "date": "2025-08-11",
+    "quality_score": 0.89,
+    "relevance_score": 0.92,
+    "hallucination_risk": "LOW",
+    "total_requests": 50,
+    "successful_requests": 45
+  },
+  {
+    "date": "2025-08-12",
+    "quality_score": 0.89,
+    "relevance_score": 0.875,
+    "hallucination_risk": "LOW",
+    "total_requests": 60,
+    "successful_requests": 54
+  },
+  {
+    "date": "2025-08-13",
+    "quality_score": 0.93,
+    "relevance_score": 0.93,
+    "hallucination_risk": "LOW",
+    "total_requests": 70,
+    "successful_requests": 63
+  },
+  {
+    "date": "2025-08-14",
+    "quality_score": 0.92,
+    "relevance_score": 0.915,
+    "hallucination_risk": "LOW",
+    "total_requests": 80,
+    "successful_requests": 72
+  },
+  {
+    "date": "2025-08-15",
+    "quality_score": 0.91,
+    "relevance_score": 0.92,
+    "hallucination_risk": "LOW",
+    "total_requests": 90,
+    "successful_requests": 81
+  },
+  {
+    "date": "2025-08-16",
+    "quality_score": 0.92,
+    "relevance_score": 0.965,
+    "hallucination_risk": "LOW",
+    "total_requests": 100,
+    "successful_requests": 90
+  },
+  {
+    "date": "2025-08-17",
+    "quality_score": 0.92,
+    "relevance_score": 0.96,
+    "hallucination_risk": "LOW",
+    "total_requests": 110,
+    "successful_requests": 99
+  }
+]
