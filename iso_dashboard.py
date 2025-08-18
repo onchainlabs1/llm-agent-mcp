@@ -530,13 +530,7 @@ ISO_CLAUSES = {
 }
 
 def main():
-    # Auto-refresh configuration
-    st.set_page_config(
-        page_title="ISO/IEC 42001:2023 Documentation Dashboard",
-        page_icon="📋",
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
+    # Auto-refresh configuration removed - already set at top of file
     
     # Header - Banner principal no topo
     st.markdown("""
