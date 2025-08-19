@@ -751,8 +751,8 @@ def main():
         st.success("✅ Implemented")
     
     # Segunda linha: Métricas do SoA
+    # Segunda linha: Métricas do SoA - CONSOLIDADO
     st.markdown("---")
-    st.markdown("### 📊 Statement of Applicability (SoA) Status")
     
     try:
         import pandas as pd  # ensure available
@@ -765,37 +765,45 @@ def main():
                 partial_count = (soa_df["Implemented (Yes/No)"].str.lower() == "partial").sum()
                 no_count = (soa_df["Implemented (Yes/No)"].str.lower() == "no").sum()
 
-                # Métricas em uma linha
-                c1, c2, c3, c4 = st.columns(4)
-                c1.metric("Total Controls", total_controls)
-                c2.metric("Implemented", yes_count)
-                c3.metric("Partial", partial_count)
-                c4.metric("Not Implemented", no_count)
-
-                # Status chips compactos
-                st.markdown("**Status Distribution:** ")
-                counts = soa_df["Implemented (Yes/No)"].astype(str).str.title().value_counts(dropna=False).to_dict()
-                color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
-                status_text = " | ".join([f"{color_map.get(status, '⚪')} {status}: {count}" for status, count in counts.items()])
-                st.markdown(status_text)
+                # Métricas e Status em uma linha compacta
+                col1, col2, col3, col4, col5 = st.columns(5)
+                with col1:
+                    st.metric("Total Controls", total_controls)
+                with col2:
+                    st.metric("Implemented", yes_count)
+                with col3:
+                    st.metric("Partial", partial_count)
+                with col4:
+                    st.metric("Not Implemented", no_count)
+                with col5:
+                    # Status chips compactos inline
+                    counts = soa_df["Implemented (Yes/No)"].astype(str).str.title().value_counts(dropna=False).to_dict()
+                    color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
+                    status_text = " | ".join([f"{color_map.get(status, '⚪')} {status}: {count}" for status, count in counts.items()])
+                    st.markdown(f"**Status:** {status_text}")
                 
-                # SoA completeness checks
-                st.markdown("---")
-                st.markdown("### Completeness Checks")
-                missing_evidence = 0
-                missing_owner = 0
-                if "Linked Document" in soa_df.columns:
-                    missing_evidence = int(soa_df["Linked Document"].astype(str).str.strip().eq("").sum())
-                if "Owner" in soa_df.columns:
-                    missing_owner = int(soa_df["Owner"].astype(str).str.strip().eq("").sum())
-                cc1, cc2 = st.columns(2)
-                cc1.metric("Controls missing Evidence link", missing_evidence)
-                cc2.metric("Controls missing Owner", missing_owner)
-                if (missing_evidence + missing_owner) > 0:
-                    st.warning("SoA completeness: add missing Owner/Evidence links before external audit.")
-
-                # Download current SoA view
-                st.markdown("#### Export SoA (current)")
+                # Completeness Checks e Export em uma linha
+                col1, col2, col3 = st.columns([2, 1, 1])
+                with col1:
+                    # Completeness checks compactos
+                    missing_evidence = 0
+                    missing_owner = 0
+                    if "Linked Document" in soa_df.columns:
+                        missing_evidence = int(soa_df["Linked Document"].astype(str).str.strip().eq("").sum())
+                    if "Owner" in soa_df.columns:
+                        missing_owner = int(soa_df["Owner"].astype(str).str.strip().eq("").sum())
+                    
+                    if (missing_evidence + missing_owner) > 0:
+                        st.warning(f"⚠️ Missing: {missing_evidence} Evidence, {missing_owner} Owner")
+                    else:
+                        st.success("✅ All controls have Evidence & Owner")
+                
+                with col2:
+                    st.metric("Missing Evidence", missing_evidence)
+                with col3:
+                    st.metric("Missing Owner", missing_owner)
+                
+                # Export button compacto
                 try:
                     csv_bytes = soa_df.to_csv(index=False).encode("utf-8")
                     st.download_button("⬇️ Download SoA CSV", data=csv_bytes, file_name="Statement_of_Applicability.csv", mime="text/csv")
@@ -830,7 +838,7 @@ def main():
                 # Status chips
                 st.markdown("---")
                 st.markdown("### Status Distribution")
-                counts = soa_df["Implemented (Yes/No)"].astype(str).str.title().value_counts(dropna=False).to_dict()
+                counts = soa_df["Implemented (Yes/No)"].str.title().value_counts(dropna=False).to_dict()
                 chips_cols = st.columns(max(1, len(counts)))
                 color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
                 for i, (status, count) in enumerate(counts.items()):
