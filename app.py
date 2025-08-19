@@ -1,11 +1,19 @@
 """
 AgentMCP Streamlit Frontend - Streamlit Cloud Compatible
 
-This version works on Streamlit Cloud without external dependencies.
+This version works on Streamlit Cloud with full functionality but simulated mode.
 """
 
-import streamlit as st
+import json
 import os
+import sys
+from datetime import datetime
+from pathlib import Path
+import streamlit as st
+
+# Configure for Streamlit Cloud deployment
+# Force simulated mode by default for cloud deployment
+os.environ.setdefault('LLM_PROVIDER', 'simulated')
 
 # Configure Streamlit page
 st.set_page_config(
@@ -20,6 +28,23 @@ st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    
+    /* Main background and text colors */
+    .main .block-container {
+        background-color: #0e1117;
+        color: #ffffff;
+    }
+    
+    .stApp {
+        background-color: #0e1117;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background-color: #1a1f2b;
+    }
+    
+    /* Custom component styling */
     .prompt-chips { display: flex; gap: 1.1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
     .chip-btn {
         background: #1a1f2b; color: #6fffb0; border: 1px solid #2b3345; border-radius: 16px;
@@ -35,6 +60,50 @@ st.markdown(
     .response-params { color: #e5e7eb; font-size: 0.98rem; margin-bottom: 0.6rem; }
     .response-result { color: #e5e7eb; font-size: 1rem; }
     .history-expander .stExpanderHeader { font-size: 1.03rem; font-weight: 700; }
+    
+    /* Override Streamlit default colors for dark theme */
+    .stTextInput > div > div > input {
+        background-color: #1a1f2b !important;
+        color: #ffffff !important;
+        border-color: #2b3345 !important;
+    }
+    
+    .stTextArea > div > div > textarea {
+        background-color: #1a1f2b !important;
+        color: #ffffff !important;
+        border-color: #2b3345 !important;
+    }
+    
+    .stSelectbox > div > div > div {
+        background-color: #1a1f2b !important;
+        color: #ffffff !important;
+        border-color: #2b3345 !important;
+    }
+    
+    .stButton > button {
+        background-color: #3b82f6 !important;
+        color: #ffffff !important;
+        border-color: #3b82f6 !important;
+    }
+    
+    .stButton > button:hover {
+        background-color: #2563eb !important;
+        border-color: #2563eb !important;
+    }
+    
+    /* Data display styling */
+    .stJson {
+        background-color: #1a1f2b !important;
+        border: 1px solid #2b3345 !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background-color: #1a1f2b !important;
+        color: #6fffb0 !important;
+        border-color: #2b3345 !important;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -57,58 +126,105 @@ with nav2:
 with nav3:
     st.link_button("📚 GitHub", REPO_BASE, use_container_width=True)
 
-# --- Main Content ---
-st.markdown("---")
-
-# Welcome message
-st.markdown("## 🚀 Welcome to AgentMCP!")
-
-st.markdown("""
-This is the Streamlit Cloud compatible version of the AgentMCP system.
-
-### 🎯 **What is AgentMCP?**
-
-AgentMCP is an AI-powered business automation system that combines:
-- **Large Language Models (LLMs)** for natural language understanding
-- **Model Context Protocol (MCP)** for tool integration
-- **Business System APIs** for CRM, ERP, and HR automation
-
-### 🔧 **Key Features**
-
-✅ **Natural Language Interface** - Talk to your business systems in plain English  
-✅ **Multi-System Integration** - Connect CRM, ERP, and HR systems  
-✅ **Automated Workflows** - Streamline repetitive business processes  
-✅ **Audit Trail** - Complete logging of all actions for compliance  
-✅ **ISO 42001 Compliance** - Built-in governance and risk management  
-
-### 📊 **Current Status**
-
-🟢 **Dashboard**: ISO Compliance Dashboard fully functional  
-🟢 **Documentation**: Complete ISO 42001 documentation available  
-🟡 **Agent Core**: Available in local development mode  
-🟡 **MCP Integration**: Available in local development mode  
-
-### 🚀 **Getting Started**
-
-1. **View ISO Dashboard** - Click the "ISO Dashboard" button above
-2. **Review Documentation** - Click the "ISO Docs" button above
-3. **Local Development** - Clone the repo for full agent functionality
-
-### 🔗 **Quick Links**
-
-- **ISO Dashboard**: Complete compliance overview and metrics
-- **ISO Documentation**: Full governance framework documentation
-- **GitHub Repository**: Source code and development resources
-""")
-
 # --- Configuration Sidebar ---
 with st.sidebar:
     st.header("🔧 Configuration")
     
+    # API Key Configuration
+    st.subheader("🔑 API Keys")
+    
+    # Current LLM provider
+    current_provider = "simulated"  # Default for Streamlit Cloud
+    st.info(f"Current LLM Provider: **{current_provider}**")
+    
+    # Groq API Key input
+    groq_api_key = st.text_input(
+        "Groq API Key",
+        value="",
+        type="password",
+        help="Enter your Groq API key for better LLM performance",
+    )
+    
+    # OpenAI API Key input
+    openai_api_key = st.text_input(
+        "OpenAI API Key",
+        value="",
+        type="password",
+        help="Enter your OpenAI API key (optional)",
+    )
+    
+    # Provider selection
+    selected_provider = st.selectbox(
+        "LLM Provider",
+        ["simulated", "groq", "openai", "anthropic"],
+        index=0,  # Default to simulated
+        help="Select your preferred LLM provider",
+    )
+    
+    # Update configuration button
+    if st.button("💾 Update Configuration"):
+        # Store in session state
+        st.session_state["llm_provider"] = selected_provider
+        st.session_state["groq_api_key"] = groq_api_key
+        st.session_state["openai_api_key"] = openai_api_key
+        
+        st.success("✅ Configuration updated! (Note: Full functionality requires local deployment)")
+    
+    # Status indicators
+    st.subheader("📊 System Status")
+    
+    # Check API key status
+    if groq_api_key and groq_api_key != "your-groq-api-key-here":
+        st.success("✅ Groq API Key configured")
+    else:
+        st.warning("⚠️ No Groq API Key (using simulated mode)")
+    
+    # Check data files
+    data_files = [
+        ("data/clients.json", "CRM Data"),
+        ("mcp_server/crm_mcp.json", "MCP Schema"),
+        ("logs/actions.log", "Action Logs"),
+    ]
+    
+    for file_path, description in data_files:
+        if os.path.exists(file_path):
+            st.success(f"✅ {description}")
+        else:
+            st.error(f"❌ {description}")
+    
+    # Available tools information
+    st.subheader("🔧 Available Tools")
+    st.markdown(
+        """
+    **CRM Tools:**
+    - **get_client_by_id** - Retrieve client information
+    - **create_client** - Create new client records
+    - **update_client_balance** - Update client account balance
+    - **list_all_clients** - List all registered clients
+    
+    **ERP Tools:**
+    - **get_order_by_id** - Retrieve order information
+    - **create_order** - Create new order records
+    - **update_order_status** - Update order status
+    - **list_all_orders** - List all orders
+    """
+    )
+    
+    st.subheader("💡 Example Commands")
+    st.markdown(
+        """
+    - "List all clients"
+    - "Create a new client named John Doe with email john@example.com"
+    - "Update client balance to 5000"
+    - "Show all orders"
+    - "Create order for client with 2 laptops"
+    """
+    )
+    
     st.info("""
     **Streamlit Cloud Mode**
     
-    This version runs on Streamlit Cloud without external dependencies.
+    This version runs on Streamlit Cloud with simulated functionality.
     
     For full functionality with LLM agents and MCP integration, run locally:
     ```bash
@@ -118,19 +234,178 @@ with st.sidebar:
     streamlit run app_full.py
     ```
     """)
+
+# --- Main prompt input ---
+user_input = st.text_area(
+    "Enter your request:",
+    placeholder="Ex: Create a new client named John Doe with email john@example.com and balance 1000",
+    height=80,
+    help="Describe what you want to do in natural language",
+)
+
+col1, col2 = st.columns([1, 2])
+with col1:
+    send_button = st.button("🚀 Execute", type="primary", use_container_width=True)
+with col2:
+    clear_button = st.button("🗑️ Clear", use_container_width=True)
+
+# --- Simulated agent functionality ---
+def simulate_agent_response(user_input):
+    """Simulate agent response for Streamlit Cloud compatibility."""
     
-    st.markdown("---")
+    # Simple keyword-based responses for demo
+    input_lower = user_input.lower()
     
-    st.header("📚 Resources")
-    st.link_button("📖 Project README", f"{REPO_BASE}/blob/main/README.md")
-    st.link_button("🔧 Development Guide", f"{REPO_BASE}/blob/main/DEVELOPMENT.md")
-    st.link_button("📋 Project Rules", f"{REPO_BASE}/blob/main/PROJECT_RULES.md")
+    if "client" in input_lower and "create" in input_lower:
+        return {
+            "success": True,
+            "reasoning": "Creating new client based on user request",
+            "parameters": {"action": "create_client", "input": user_input},
+            "result": {
+                "client_id": "CLI_001",
+                "name": "John Doe",
+                "email": "john@example.com",
+                "balance": 1000,
+                "status": "created"
+            }
+        }
+    elif "client" in input_lower and "list" in input_lower:
+        return {
+            "success": True,
+            "reasoning": "Listing all clients from CRM system",
+            "parameters": {"action": "list_clients"},
+            "result": [
+                {"id": "CLI_001", "name": "John Doe", "email": "john@example.com", "balance": 1000},
+                {"id": "CLI_002", "name": "Jane Smith", "email": "jane@example.com", "balance": 2500}
+            ]
+        }
+    elif "order" in input_lower and "create" in input_lower:
+        return {
+            "success": True,
+            "reasoning": "Creating new order based on user request",
+            "parameters": {"action": "create_order", "input": user_input},
+            "result": {
+                "order_id": "ORD_001",
+                "client_id": "CLI_001",
+                "items": ["2 laptops"],
+                "status": "pending",
+                "total": 2400
+            }
+        }
+    elif "order" in input_lower and "list" in input_lower:
+        return {
+            "success": True,
+            "reasoning": "Listing all orders from ERP system",
+            "parameters": {"action": "list_orders"},
+            "result": [
+                {"id": "ORD_001", "client": "John Doe", "items": ["2 laptops"], "total": 2400, "status": "pending"}
+            ]
+        }
+    else:
+        return {
+            "success": False,
+            "reasoning": "Request not recognized in simulated mode",
+            "error_message": "This is a simulated response. For full functionality, run locally with app_full.py",
+            "parameters": {"input": user_input}
+        }
+
+# --- Session state for history ---
+if "history" not in st.session_state:
+    st.session_state["history"] = []
+
+# --- Process request ---
+if send_button and user_input.strip():
+    with st.spinner("Processing your request..."):
+        response = simulate_agent_response(user_input)
+        st.session_state["history"].append(
+            {
+                "input": user_input,
+                "response": response,
+                "timestamp": datetime.now().isoformat(),
+            }
+        )
+        user_input = ""
+        st.rerun()
+
+if clear_button:
+    st.session_state["history"] = []
+    st.rerun()
+
+# --- Show last response in a card ---
+if st.session_state["history"]:
+    last = st.session_state["history"][-1]
+    resp = last["response"]
+    st.markdown('<div class="response-card">', unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="response-title">Result for: <span style="color:#6f47eb;">{last["input"]}</span></div>',
+        unsafe_allow_html=True,
+    )
+    if resp.get("success"):
+        st.markdown(
+            '<div class="response-status response-success">✅ Success</div>',
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            '<div class="response-status response-error">❌ Error</div>',
+            unsafe_allow_html=True,
+        )
+    if resp.get("reasoning"):
+        st.markdown(
+            f'<div class="response-reason"><b>Agent Reasoning:</b> {resp["reasoning"]}</div>',
+            unsafe_allow_html=True,
+        )
+    if resp.get("parameters"):
+        st.markdown(
+            '<div class="response-params"><b>Parameters:</b></div>',
+            unsafe_allow_html=True,
+        )
+        st.json(resp["parameters"])
+    if resp.get("result"):
+        st.markdown(
+            '<div class="response-result"><b>Result:</b></div>', unsafe_allow_html=True
+        )
+        st.json(resp["result"])
+    if resp.get("error_message"):
+        st.markdown(
+            f'<div class="response-result response-error"><b>Error:</b> {resp["error_message"]}</div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# --- History expander ---
+with st.expander("🕑 Interaction History", expanded=False):
+    for h in reversed(st.session_state["history"]):
+        st.markdown(
+            f'<div style="color:#b0b8c9; font-size:1.05rem; margin-bottom:0.2rem;"><b>{h["timestamp"][:19]}</b> — <span style="color:#6fffb0;">{h["input"]}</span></div>',
+            unsafe_allow_html=True,
+        )
+        resp = h["response"]
+        if resp.get("success"):
+            st.markdown(
+                '<span style="color:#22c55e;">✅ Success</span>', unsafe_allow_html=True
+            )
+        else:
+            st.markdown(
+                '<span style="color:#ef4444;">❌ Error</span>', unsafe_allow_html=True
+            )
+        if resp.get("result"):
+            st.json(resp["result"])
+        st.markdown(
+            '<hr style="border:0;border-top:1px solid #23283a;">',
+            unsafe_allow_html=True,
+        )
+
+# --- Help/Examples section ---
+st.markdown('<div style="margin-top:2.5rem;"></div>', unsafe_allow_html=True)
+
+st.markdown('<div style="margin-bottom:2.5rem;"></div>', unsafe_allow_html=True)
 
 # --- Footer ---
-st.markdown("---")
-st.markdown("""
-<div style="text-align: center; color: #9ca3af; font-size: 0.9rem;">
-    <p>AgentMCP - AI Business Copilot | Built with Streamlit | ISO 42001 Compliant</p>
-    <p>For full functionality, run locally with complete dependencies</p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown('<div style="margin-top:3rem;"></div>', unsafe_allow_html=True)
+st.markdown(
+    "<div style='text-align: center; color: #666;'>"
+    "AgentMCP - AI Business Assistant | Powered by Model Context Protocol"
+    "</div>",
+    unsafe_allow_html=True,
+)
