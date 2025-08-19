@@ -1,46 +1,11 @@
 """
-AgentMCP Streamlit Frontend
+AgentMCP Streamlit Frontend - Streamlit Cloud Compatible
 
-This file implements the user interface for the AgentMCP system using Streamlit.
-It allows end users to interact with the LLM agent via natural language, view
-results, and monitor actions performed in the simulated business systems.
-
-Key features:
-- Natural language input for user requests
-- Display of agent responses and tool actions
-- Visualization of CRM, ERP, and HR data
-- Action log viewer for audit and debugging
-- Configuration management for API keys
-
-All UI elements and comments must be in English.
+This version works on Streamlit Cloud without external dependencies.
 """
 
-import json
-import os
-import sys
-from datetime import datetime
-from pathlib import Path
-
 import streamlit as st
-
-# Configure for Streamlit Cloud deployment
-# Force simulated mode by default for cloud deployment
-os.environ.setdefault('LLM_PROVIDER', 'simulated')
-
-# Add current directory to Python path for imports
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-# Import agent modules using package imports
-try:
-    from agent.agent_core import AgentConfig, AgentCore
-    from config import config
-except ImportError:
-    import sys
-    from pathlib import Path
-    sys.path.append(str(Path(__file__).parent / "agent"))
-    sys.path.append(str(Path(__file__).parent))
-    from agent_core import AgentConfig, AgentCore
-    from config import config
+import os
 
 # Configure Streamlit page
 st.set_page_config(
@@ -75,10 +40,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Quick navigation links (configurable via env)
+# Quick navigation links
 REPO_BASE = "https://github.com/onchainlabs1/llm-agent-mcp"
-ISO_DOCS_URL = os.getenv("ISO_DOCS_URL", "/iso_docs")
-ISO_DASHBOARD_URL = os.getenv("ISO_DASHBOARD_URL", "/iso_dashboard")
 
 # --- Header / Title ---
 st.markdown('<div style="height: 6px"></div>', unsafe_allow_html=True)
@@ -88,267 +51,86 @@ st.caption("Automate CRM & ERP actions with natural language. Powered by LLM + M
 # Top navigation buttons
 nav1, nav2, nav3 = st.columns(3)
 with nav1:
-    st.link_button("📘 ISO Docs", ISO_DOCS_URL, use_container_width=True)
+    st.link_button("📘 ISO Docs", "/iso_docs", use_container_width=True)
 with nav2:
-    st.link_button("📋 ISO Dashboard", ISO_DASHBOARD_URL, use_container_width=True)
+    st.link_button("📋 ISO Dashboard", "/iso_dashboard", use_container_width=True)
 with nav3:
     st.link_button("📚 GitHub", REPO_BASE, use_container_width=True)
+
+# --- Main Content ---
+st.markdown("---")
+
+# Welcome message
+st.markdown("## 🚀 Welcome to AgentMCP!")
+
+st.markdown("""
+This is the Streamlit Cloud compatible version of the AgentMCP system.
+
+### 🎯 **What is AgentMCP?**
+
+AgentMCP is an AI-powered business automation system that combines:
+- **Large Language Models (LLMs)** for natural language understanding
+- **Model Context Protocol (MCP)** for tool integration
+- **Business System APIs** for CRM, ERP, and HR automation
+
+### 🔧 **Key Features**
+
+✅ **Natural Language Interface** - Talk to your business systems in plain English  
+✅ **Multi-System Integration** - Connect CRM, ERP, and HR systems  
+✅ **Automated Workflows** - Streamline repetitive business processes  
+✅ **Audit Trail** - Complete logging of all actions for compliance  
+✅ **ISO 42001 Compliance** - Built-in governance and risk management  
+
+### 📊 **Current Status**
+
+🟢 **Dashboard**: ISO Compliance Dashboard fully functional  
+🟢 **Documentation**: Complete ISO 42001 documentation available  
+🟡 **Agent Core**: Available in local development mode  
+🟡 **MCP Integration**: Available in local development mode  
+
+### 🚀 **Getting Started**
+
+1. **View ISO Dashboard** - Click the "ISO Dashboard" button above
+2. **Review Documentation** - Click the "ISO Docs" button above
+3. **Local Development** - Clone the repo for full agent functionality
+
+### 🔗 **Quick Links**
+
+- **ISO Dashboard**: Complete compliance overview and metrics
+- **ISO Documentation**: Full governance framework documentation
+- **GitHub Repository**: Source code and development resources
+""")
 
 # --- Configuration Sidebar ---
 with st.sidebar:
     st.header("🔧 Configuration")
-
-    # API Key Configuration
-    st.subheader("🔑 API Keys")
-
-    # Current LLM provider
-    current_provider = config.llm.provider
-    st.info(f"Current LLM Provider: **{current_provider}**")
-
-    # Groq API Key input
-    groq_api_key = st.text_input(
-        "Groq API Key",
-        value=config.llm.groq_api_key or "",
-        type="password",
-        help="Enter your Groq API key for better LLM performance",
-    )
-
-    # OpenAI API Key input
-    openai_api_key = st.text_input(
-        "OpenAI API Key",
-        value=config.llm.openai_api_key or "",
-        type="password",
-        help="Enter your OpenAI API key (optional)",
-    )
-
-    # Provider selection
-    selected_provider = st.selectbox(
-        "LLM Provider",
-        ["groq", "openai", "anthropic", "simulated"],
-        index=["groq", "openai", "anthropic", "simulated"].index(current_provider),
-        help="Select your preferred LLM provider",
-    )
-
-    # Update configuration button
-    if st.button("💾 Update Configuration"):
-        # Update environment variables
-        if groq_api_key:
-            os.environ["GROQ_API_KEY"] = groq_api_key
-        if openai_api_key:
-            os.environ["OPENAI_API_KEY"] = openai_api_key
-        if selected_provider:
-            os.environ["LLM_PROVIDER"] = selected_provider
-
-        # Write to .env file
-        env_content = f"""# AgentMCP Configuration
-GROQ_API_KEY={groq_api_key}
-OPENAI_API_KEY={openai_api_key}
-LLM_PROVIDER={selected_provider}
-LLM_MODEL=llama3-70b-8192
-LOG_LEVEL=INFO
-LOG_FILE=logs/actions.log
-"""
-
-        with open(".env", "w") as f:
-            f.write(env_content)
-
-        # Store in session state
-        st.session_state["llm_provider"] = selected_provider
-        st.session_state["groq_api_key"] = groq_api_key
-        st.session_state["openai_api_key"] = openai_api_key
-
-        # Clear agent cache to force reinitialization
-        st.cache_resource.clear()
-
-        st.success("✅ Configuration updated! Agent will use new settings.")
-
-    # Status indicators
-    st.subheader("📊 System Status")
-
-    # Check API key status
-    if groq_api_key and groq_api_key != "your-groq-api-key-here":
-        st.success("✅ Groq API Key configured")
-    else:
-        st.warning("⚠️ No Groq API Key (using simulated mode)")
-
-    # Check data files
-    data_files = [
-        ("data/clients.json", "CRM Data"),
-        ("mcp_server/crm_mcp.json", "MCP Schema"),
-        ("logs/actions.log", "Action Logs"),
-    ]
-
-    for file_path, description in data_files:
-        if os.path.exists(file_path):
-            st.success(f"✅ {description}")
-        else:
-            st.error(f"❌ {description}")
-
-    # Available tools information
-    st.subheader("🔧 Available Tools")
-    st.markdown(
-        """
-    **CRM Tools:**
-    - **get_client_by_id** - Retrieve client information
-    - **create_client** - Create new client records
-    - **update_client_balance** - Update client account balance
-    - **list_all_clients** - List all registered clients
     
-    **ERP Tools:**
-    - **get_order_by_id** - Retrieve order information
-    - **create_order** - Create new order records
-    - **update_order_status** - Update order status
-    - **list_all_orders** - List all orders
-    """
-    )
-
-    st.subheader("💡 Example Commands")
-    st.markdown(
-        """
-    - "List all clients"
-    - "Create a new client named John Doe with email john@example.com"
-    - "Update client balance to 5000"
-    - "Show all orders"
-    - "Create order for client with 2 laptops"
-    """
-    )
-
-# --- Main prompt input ---
-user_input = st.text_area(
-    "Enter your request:",
-    placeholder="Ex: Create a new client named John Doe with email john@example.com and balance 1000",
-    height=80,
-    help="Describe what you want to do in natural language",
-)
-
-col1, col2 = st.columns([1, 2])
-with col1:
-    send_button = st.button("🚀 Execute", type="primary", use_container_width=True)
-with col2:
-    clear_button = st.button("🗑️ Clear", use_container_width=True)
-
-
-# --- Initialize agent ---
-@st.cache_resource(show_spinner=False)
-def get_agent():
-    """Initialize the agent with current configuration."""
-    # Get current configuration
-    current_config = config
-
-    # Override with session state values if available
-    provider = st.session_state.get("llm_provider", current_config.llm.provider)
-
-    agent_config = AgentConfig(
-        llm_provider=provider,
-        llm_model=current_config.llm.model,
-        log_level=current_config.logging.level,
-    )
-
-    agent = AgentCore(agent_config)
-    agent.load_all_mcp_schemas()
-    return agent
-
-
-# Initialize agent
-agent = get_agent()
-
-# --- Session state for history ---
-if "history" not in st.session_state:
-    st.session_state["history"] = []
-
-# --- Process request ---
-if send_button and user_input.strip():
-    with st.spinner("Processing your request..."):
-        response = agent.process_user_request(user_input)
-        st.session_state["history"].append(
-            {
-                "input": user_input,
-                "response": response,
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-        user_input = ""
-        st.rerun()
-
-if clear_button:
-    st.session_state["history"] = []
-    st.rerun()
-
-# --- Show last response in a card ---
-if st.session_state["history"]:
-    last = st.session_state["history"][-1]
-    resp = last["response"]
-    st.markdown('<div class="response-card">', unsafe_allow_html=True)
-    st.markdown(
-        f'<div class="response-title">Result for: <span style="color:#6f47eb;">{last["input"]}</span></div>',
-        unsafe_allow_html=True,
-    )
-    if resp.get("success"):
-        st.markdown(
-            '<div class="response-status response-success">✅ Success</div>',
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            '<div class="response-status response-error">❌ Error</div>',
-            unsafe_allow_html=True,
-        )
-    if resp.get("reasoning"):
-        st.markdown(
-            f'<div class="response-reason"><b>Agent Reasoning:</b> {resp["reasoning"]}</div>',
-            unsafe_allow_html=True,
-        )
-    if resp.get("parameters"):
-        st.markdown(
-            '<div class="response-params"><b>Parameters:</b></div>',
-            unsafe_allow_html=True,
-        )
-        st.json(resp["parameters"])
-    if resp.get("result"):
-        st.markdown(
-            '<div class="response-result"><b>Result:</b></div>', unsafe_allow_html=True
-        )
-        st.json(resp["result"])
-    if resp.get("error_message"):
-        st.markdown(
-            f'<div class="response-result response-error"><b>Error:</b> {resp["error_message"]}</div>',
-            unsafe_allow_html=True,
-        )
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# --- History expander ---
-with st.expander("🕑 Interaction History", expanded=False):
-    for h in reversed(st.session_state["history"]):
-        st.markdown(
-            f'<div style="color:#b0b8c9; font-size:1.05rem; margin-bottom:0.2rem;"><b>{h["timestamp"][:19]}</b> — <span style="color:#6fffb0;">{h["input"]}</span></div>',
-            unsafe_allow_html=True,
-        )
-        resp = h["response"]
-        if resp.get("success"):
-            st.markdown(
-                '<span style="color:#22c55e;">✅ Success</span>', unsafe_allow_html=True
-            )
-        else:
-            st.markdown(
-                '<span style="color:#ef4444;">❌ Error</span>', unsafe_allow_html=True
-            )
-        if resp.get("result"):
-            st.json(resp["result"])
-        st.markdown(
-            '<hr style="border:0;border-top:1px solid #23283a;">',
-            unsafe_allow_html=True,
-        )
-
-# --- Help/Examples section ---
-st.markdown('<div style="margin-top:2.5rem;"></div>', unsafe_allow_html=True)
-
-st.markdown('<div style="margin-bottom:2.5rem;"></div>', unsafe_allow_html=True)
+    st.info("""
+    **Streamlit Cloud Mode**
+    
+    This version runs on Streamlit Cloud without external dependencies.
+    
+    For full functionality with LLM agents and MCP integration, run locally:
+    ```bash
+    git clone https://github.com/onchainlabs1/llm-agent-mcp
+    cd llm-agent-mcp
+    pip install -r requirements.txt
+    streamlit run app_full.py
+    ```
+    """)
+    
+    st.markdown("---")
+    
+    st.header("📚 Resources")
+    st.link_button("📖 Project README", f"{REPO_BASE}/blob/main/README.md")
+    st.link_button("🔧 Development Guide", f"{REPO_BASE}/blob/main/DEVELOPMENT.md")
+    st.link_button("📋 Project Rules", f"{REPO_BASE}/blob/main/PROJECT_RULES.md")
 
 # --- Footer ---
-st.markdown('<div style="margin-top:3rem;"></div>', unsafe_allow_html=True)
-st.markdown(
-    "<div style='text-align: center; color: #666;'>"
-    "AgentMCP - AI Business Assistant | Powered by Model Context Protocol"
-    "</div>",
-    unsafe_allow_html=True,
-)
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; color: #9ca3af; font-size: 0.9rem;">
+    <p>AgentMCP - AI Business Copilot | Built with Streamlit | ISO 42001 Compliant</p>
+    <p>For full functionality, run locally with complete dependencies</p>
+</div>
+""", unsafe_allow_html=True)
