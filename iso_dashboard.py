@@ -772,12 +772,36 @@ def main():
                 c3.metric("Partial", partial_count)
                 c4.metric("Not Implemented", no_count)
 
-                                # Status chips compactos
+                # Status chips compactos
                 st.markdown("**Status Distribution:** ")
                 counts = soa_df["Implemented (Yes/No)"].astype(str).str.title().value_counts(dropna=False).to_dict()
                 color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
                 status_text = " | ".join([f"{color_map.get(status, '⚪')} {status}: {count}" for status, count in counts.items()])
                 st.markdown(status_text)
+                
+                # SoA completeness checks
+                st.markdown("---")
+                st.markdown("### Completeness Checks")
+                missing_evidence = 0
+                missing_owner = 0
+                if "Linked Document" in soa_df.columns:
+                    missing_evidence = int(soa_df["Linked Document"].astype(str).str.strip().eq("").sum())
+                if "Owner" in soa_df.columns:
+                    missing_owner = int(soa_df["Owner"].astype(str).str.strip().eq("").sum())
+                cc1, cc2 = st.columns(2)
+                cc1.metric("Controls missing Evidence link", missing_evidence)
+                cc2.metric("Controls missing Owner", missing_owner)
+                if (missing_evidence + missing_owner) > 0:
+                    st.warning("SoA completeness: add missing Owner/Evidence links before external audit.")
+
+                # Download current SoA view
+                st.markdown("#### Export SoA (current)")
+                try:
+                    csv_bytes = soa_df.to_csv(index=False).encode("utf-8")
+                    st.download_button("⬇️ Download SoA CSV", data=csv_bytes, file_name="Statement_of_Applicability.csv", mime="text/csv")
+                except Exception:
+                    st.caption("Unable to export SoA")
+                    
             except Exception as e:
                 st.error(f"Error reading SoA data: {e}")
         else:
