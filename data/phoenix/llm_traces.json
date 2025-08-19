@@ -1,6 +1,6 @@
 [
   {
-    "timestamp": "2025-08-18T19:37:06.727616",
+    "timestamp": "2025-08-18T19:40:14.286822",
     "user_input": "What is the capital of France and explain its history?",
     "llm_response": "The capital of France is Paris. Paris has a rich history dating back to the 3rd century BC when it was founded by the Parisii tribe. It became the capital of France in 987 AD under Hugh Capet and has remained the political and cultural center of the country ever since.",
     "model": "gpt-4",
@@ -12,10 +12,10 @@
     "relevance_score": 0.92,
     "hallucination_risk": "LOW",
     "toxicity_score": 0.01,
-    "trace_id": "trace_1755538626_001"
+    "trace_id": "trace_1755538814_001"
   },
   {
-    "timestamp": "2025-08-18T19:32:06.727639",
+    "timestamp": "2025-08-18T19:35:14.286831",
     "user_input": "Explain quantum computing in simple terms",
     "llm_response": "Quantum computing is like having a computer that can be in multiple states at once, unlike regular computers that are either 0 or 1. It uses quantum mechanics principles to process information much faster for certain types of problems.",
     "model": "gpt-4",
@@ -27,10 +27,10 @@
     "relevance_score": 0.89,
     "hallucination_risk": "MEDIUM",
     "toxicity_score": 0.02,
-    "trace_id": "trace_1755538626_002"
+    "trace_id": "trace_1755538814_002"
   },
   {
-    "timestamp": "2025-08-18T19:27:06.727645",
+    "timestamp": "2025-08-18T19:30:14.286835",
     "user_input": "What is machine learning and how does it work?",
     "llm_response": "Machine learning is a subset of artificial intelligence where computers learn patterns from data without being explicitly programmed. It works by training algorithms on large datasets to recognize patterns and make predictions or decisions.",
     "model": "gpt-4",
@@ -42,6 +42,6 @@
     "relevance_score": 0.94,
     "hallucination_risk": "LOW",
     "toxicity_score": 0.01,
-    "trace_id": "trace_1755538626_003"
+    "trace_id": "trace_1755538814_003"
   }
 ]
