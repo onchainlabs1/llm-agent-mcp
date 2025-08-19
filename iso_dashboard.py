@@ -724,16 +724,32 @@ def main():
     
     st.markdown("---")
 
-    # Compact Compliance Status
+    # Compact Compliance Status - Otimizado para menos espaço
     st.markdown("## 🔍 Compliance Status")
-    col1, col2 = st.columns(2)
+    
+    # Usar columns para layout mais compacto
+    col1, col2, col3, col4, col5 = st.columns(5)
+    
     with col1:
-        st.metric("Structured Logging", "Implemented")
-        st.metric("Prompt Sanitization", "Implemented")
-        st.metric("Bias Detection", "Implemented")
+        st.markdown("**Structured Logging**")
+        st.success("✅ Implemented")
+    
     with col2:
-        st.metric("Fact-checking", "Implemented")
-        st.metric("Data Encryption", "Implemented")
+        st.markdown("**Prompt Sanitization**")
+        st.success("✅ Implemented")
+    
+    with col3:
+        st.markdown("**Bias Detection**")
+        st.success("✅ Implemented")
+    
+    with col4:
+        st.markdown("**Fact-checking**")
+        st.success("✅ Implemented")
+    
+    with col5:
+        st.markdown("**Data Encryption**")
+        st.success("✅ Implemented")
+    
     st.markdown("---")
     
     # Logs section removed for simplicity
