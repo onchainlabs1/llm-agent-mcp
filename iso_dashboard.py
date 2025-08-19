@@ -724,10 +724,10 @@ def main():
     
     st.markdown("---")
 
-    # Compact Compliance Status - Otimizado para menos espaço
-    st.markdown("## 🔍 Compliance Status")
+    # Consolidated Compliance Status & Docs & SoA
+    st.markdown("## 🔍 Compliance Status & 📘 Docs & SoA")
     
-    # Usar columns para layout mais compacto
+    # Primeira linha: Status dos controles técnicos
     col1, col2, col3, col4, col5 = st.columns(5)
     
     with col1:
@@ -750,21 +750,46 @@ def main():
         st.markdown("**Data Encryption**")
         st.success("✅ Implemented")
     
+    # Segunda linha: Métricas do SoA
     st.markdown("---")
+    st.markdown("### 📊 Statement of Applicability (SoA) Status")
     
-    # Logs section removed for simplicity
+    try:
+        import pandas as pd  # ensure available
+        soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
+        if os.path.exists(soa_path):
+            try:
+                soa_df = pd.read_csv(soa_path)
+                total_controls = len(soa_df)
+                yes_count = (soa_df["Implemented (Yes/No)"].str.lower() == "yes").sum()
+                partial_count = (soa_df["Implemented (Yes/No)"].str.lower() == "partial").sum()
+                no_count = (soa_df["Implemented (Yes/No)"].str.lower() == "no").sum()
+
+                # Métricas em uma linha
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Total Controls", total_controls)
+                c2.metric("Implemented", yes_count)
+                c3.metric("Partial", partial_count)
+                c4.metric("Not Implemented", no_count)
+
+                                # Status chips compactos
+                st.markdown("**Status Distribution:** ")
+                counts = soa_df["Implemented (Yes/No)"].astype(str).str.title().value_counts(dropna=False).to_dict()
+                color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
+                status_text = " | ".join([f"{color_map.get(status, '⚪')} {status}: {count}" for status, count in counts.items()])
+                st.markdown(status_text)
+            except Exception as e:
+                st.error(f"Error reading SoA data: {e}")
+        else:
+            st.info("SoA file not found")
+    except Exception as e:
+        st.error(f"Error processing SoA: {e}")
     
-    # Git Operations Section removed - not needed for ISO compliance dashboard
-    
-    # Docs & SoA Tab
-    st.markdown("## 📘 Docs & SoA")
-    docs_tab, = st.tabs(["✅ Compliance Checklist (SoA)"])
-    with docs_tab:
-        st.markdown("### ✅ Compliance Checklist (from SoA)")
-        try:
-            import pandas as pd  # ensure available
-            soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
-            if os.path.exists(soa_path):
+    # Continuar com o resto do conteúdo...
+    try:
+        import pandas as pd  # ensure available
+        soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
+        if os.path.exists(soa_path):
                 try:
                     soa_df = pd.read_csv(soa_path)
                     total_controls = len(soa_df)
