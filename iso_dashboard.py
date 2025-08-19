@@ -31,7 +31,7 @@ try:
     PHOENIX_AVAILABLE = True
 except ImportError:
     PHOENIX_AVAILABLE = False
-    st.warning("Phoenix not available. Install with: pip install arize-phoenix")
+    # Warning will be shown in the main function instead
 
 # Page configuration
 st.set_page_config(
