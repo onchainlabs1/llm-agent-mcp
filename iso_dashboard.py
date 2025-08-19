@@ -790,63 +790,63 @@ def main():
         import pandas as pd  # ensure available
         soa_path = "docs/Clause6_Planning_new/Statement_of_Applicability.csv"
         if os.path.exists(soa_path):
-                try:
-                    soa_df = pd.read_csv(soa_path)
-                    total_controls = len(soa_df)
-                    yes_count = (soa_df["Implemented (Yes/No)"].str.lower() == "yes").sum()
-                    partial_count = (soa_df["Implemented (Yes/No)"].str.lower() == "partial").sum()
-                    no_count = (soa_df["Implemented (Yes/No)"].str.lower() == "no").sum()
+            try:
+                soa_df = pd.read_csv(soa_path)
+                total_controls = len(soa_df)
+                yes_count = (soa_df["Implemented (Yes/No)"].str.lower() == "yes").sum()
+                partial_count = (soa_df["Implemented (Yes/No)"].str.lower() == "partial").sum()
+                no_count = (soa_df["Implemented (Yes/No)"].str.lower() == "no").sum()
 
-                    c1, c2, c3, c4 = st.columns(4)
-                    c1.metric("Total Controls", total_controls)
-                    c2.metric("Implemented", yes_count)
-                    c3.metric("Partial", partial_count)
-                    c4.metric("Not Implemented", no_count)
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Total Controls", total_controls)
+                c2.metric("Implemented", yes_count)
+                c3.metric("Partial", partial_count)
+                c4.metric("Not Implemented", no_count)
 
-                    # Status chips
-                    st.markdown("---")
-                    st.markdown("### Status Distribution")
-                    counts = soa_df["Implemented (Yes/No)"].astype(str).str.title().value_counts(dropna=False).to_dict()
-                    chips_cols = st.columns(max(1, len(counts)))
-                    color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
-                    for i, (status, count) in enumerate(counts.items()):
-                        with chips_cols[i]:
-                            emoji = color_map.get(status, "⚪")
-                            st.markdown(f"{emoji} **{status}**: {count}")
+                # Status chips
+                st.markdown("---")
+                st.markdown("### Status Distribution")
+                counts = soa_df["Implemented (Yes/No)"].astype(str).str.title().value_counts(dropna=False).to_dict()
+                chips_cols = st.columns(max(1, len(counts)))
+                color_map = {"Yes": "🟢", "Partial": "🟡", "No": "🔴"}
+                for i, (status, count) in enumerate(counts.items()):
+                    with chips_cols[i]:
+                        emoji = color_map.get(status, "⚪")
+                        st.markdown(f"{emoji} **{status}**: {count}")
 
-                    # Upcoming reviews table (if Review Date present)
-                    st.markdown("---")
-                    st.markdown("### Upcoming Reviews")
-                    review_col = next((c for c in soa_df.columns if c.lower().startswith("review date")), None)
-                    id_col = next((c for c in soa_df.columns if c.lower().startswith("control id")), None)
-                    title_col = next((c for c in soa_df.columns if c.lower().startswith("control title")), None)
-                    owner_col = next((c for c in soa_df.columns if "owner" in c.lower()), None)
-                    if review_col:
-                        try:
-                            tmp = soa_df[[c for c in [id_col, title_col, owner_col, review_col] if c]]
-                            tmp = tmp.copy()
-                            tmp["_review_dt"] = pd.to_datetime(tmp[review_col], errors="coerce")
-                            tmp = tmp.dropna(subset=["_review_dt"]).sort_values("_review_dt").head(10)
-                            tmp = tmp.drop(columns=["_review_dt"]).rename(columns={review_col: "Review Date"})
-                            st.dataframe(tmp, use_container_width=True)
-                        except Exception:
-                            st.caption("Unable to compute upcoming reviews table")
+                # Upcoming reviews table (if Review Date present)
+                st.markdown("---")
+                st.markdown("### Upcoming Reviews")
+                review_col = next((c for c in soa_df.columns if c.lower().startswith("review date")), None)
+                id_col = next((c for c in soa_df.columns if c.lower().startswith("control id")), None)
+                title_col = next((c for c in soa_df.columns if c.lower().startswith("control title")), None)
+                owner_col = next((c for c in soa_df.columns if "owner" in c.lower()), None)
+                if review_col:
+                    try:
+                        tmp = soa_df[[c for c in [id_col, title_col, owner_col, review_col] if c]]
+                        tmp = tmp.copy()
+                        tmp["_review_dt"] = pd.to_datetime(tmp[review_col], errors="coerce")
+                        tmp = tmp.dropna(subset=["_review_dt"]).sort_values("_review_dt").head(10)
+                        tmp = tmp.drop(columns=["_review_dt"]).rename(columns={review_col: "Review Date"})
+                        st.dataframe(tmp, use_container_width=True)
+                    except Exception:
+                        st.caption("Unable to compute upcoming reviews table")
 
-                    # Evidence links list (if Linked Document / Evidence Link present)
-                    st.markdown("---")
-                    st.markdown("### Evidence Links")
-                    evidence_cols = [c for c in soa_df.columns if c.lower() in ("linked document", "evidence link")]
-                    if evidence_cols:
-                        ev_col = evidence_cols[0]
-                        sample = soa_df[[id_col, ev_col]].head(8) if id_col else soa_df[[ev_col]].head(8)
-                        for _, row in sample.iterrows():
-                            doc = str(row.get(ev_col, "")).strip()
-                            cid = str(row.get(id_col, "")).strip() if id_col else ""
-                            if doc:
-                                label = f"{cid} – {os.path.basename(doc)}" if cid else os.path.basename(doc)
-                                st.markdown(f"- [{label}]({GITHUB_BASE}/{doc})")
+                # Evidence links list (if Linked Document / Evidence Link present)
+                st.markdown("---")
+                st.markdown("### Evidence Links")
+                evidence_cols = [c for c in soa_df.columns if c.lower() in ("linked document", "evidence link")]
+                if evidence_cols:
+                    ev_col = evidence_cols[0]
+                    sample = soa_df[[id_col, ev_col]].head(8) if id_col else soa_df[[ev_col]].head(8)
+                    for _, row in sample.iterrows():
+                        doc = str(row.get(ev_col, "")).strip()
+                        cid = str(row.get(id_col, "")).strip() if id_col else ""
+                        if doc:
+                            label = f"{cid} – {os.path.basename(doc)}" if cid else os.path.basename(doc)
+                            st.markdown(f"- [{label}]({GITHUB_BASE}/{doc})")
 
-                    if partial_count + no_count > 0:
+                if partial_count + no_count > 0:
                         st.markdown("### 🔧 Open Items")
                         # Dynamically include extra fields if present
                         base_cols = [
