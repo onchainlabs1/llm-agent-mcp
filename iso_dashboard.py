@@ -871,84 +871,84 @@ def main():
                             st.markdown(f"- [{label}]({GITHUB_BASE}/{doc})")
 
                 if partial_count + no_count > 0:
-                        st.markdown("### 🔧 Open Items")
-                        # Dynamically include extra fields if present
-                        base_cols = [
-                            "Control ID",
-                            "Control Title",
-                            "Implemented (Yes/No)",
-                            "Justification",
-                            "Linked Document",
-                        ]
-                        optional_cols = [
-                            c for c in [
-                                next((c for c in soa_df.columns if c.lower().startswith("implementation date")), None),
-                                next((c for c in soa_df.columns if c.lower().startswith("review date")), None),
-                                next((c for c in soa_df.columns if c.lower().startswith("status date")), None),
-                                next((c for c in soa_df.columns if c.lower() == "owner"), None),
-                                next((c for c in soa_df.columns if c.lower() == "notes"), None),
-                            ] if c
-                        ]
-                        cols_to_show = [c for c in base_cols + optional_cols if c in soa_df.columns]
+                    st.markdown("### 🔧 Open Items")
+                    # Dynamically include extra fields if present
+                    base_cols = [
+                        "Control ID",
+                        "Control Title",
+                        "Implemented (Yes/No)",
+                        "Justification",
+                        "Linked Document",
+                    ]
+                    optional_cols = [
+                        c for c in [
+                            next((c for c in soa_df.columns if c.lower().startswith("implementation date")), None),
+                            next((c for c in soa_df.columns if c.lower().startswith("review date")), None),
+                            next((c for c in soa_df.columns if c.lower().startswith("status date")), None),
+                            next((c for c in soa_df.columns if c.lower() == "owner"), None),
+                            next((c for c in soa_df.columns if c.lower() == "notes"), None),
+                        ] if c
+                    ]
+                    cols_to_show = [c for c in base_cols + optional_cols if c in soa_df.columns]
+                    try:
+                        open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][cols_to_show]
+                        st.dataframe(open_df, use_container_width=True)
+                    except Exception:
+                        st.caption("Unable to render open items table with enriched columns; showing base columns")
                         try:
-                            open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][cols_to_show]
+                            open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][base_cols]
                             st.dataframe(open_df, use_container_width=True)
                         except Exception:
-                            st.caption("Unable to render open items table with enriched columns; showing base columns")
-                            try:
-                                open_df = soa_df[soa_df["Implemented (Yes/No)"].str.lower().isin(["partial", "no"])][base_cols]
-                                st.dataframe(open_df, use_container_width=True)
-                            except Exception:
-                                st.caption("Open items not available")
+                            st.caption("Open items not available")
 
-                    # SoA completeness checks
-                    st.markdown("---")
-                    st.markdown("### Completeness Checks")
-                    missing_evidence = 0
-                    missing_owner = 0
-                    if "Linked Document" in soa_df.columns:
-                        missing_evidence = int(soa_df["Linked Document"].astype(str).str.strip().eq("").sum())
-                    if "Owner" in soa_df.columns:
-                        missing_owner = int(soa_df["Owner"].astype(str).str.strip().eq("").sum())
-                    cc1, cc2 = st.columns(2)
-                    cc1.metric("Controls missing Evidence link", missing_evidence)
-                    cc2.metric("Controls missing Owner", missing_owner)
-                    if (missing_evidence + missing_owner) > 0:
-                        st.warning("SoA completeness: add missing Owner/Evidence links before external audit.")
+                # SoA completeness checks
+                st.markdown("---")
+                st.markdown("### Completeness Checks")
+                missing_evidence = 0
+                missing_owner = 0
+                if "Linked Document" in soa_df.columns:
+                    missing_evidence = int(soa_df["Linked Document"].astype(str).str.strip().eq("").sum())
+                if "Owner" in soa_df.columns:
+                    missing_owner = int(soa_df["Owner"].astype(str).str.strip().eq("").sum())
+                cc1, cc2 = st.columns(2)
+                cc1.metric("Controls missing Evidence link", missing_evidence)
+                cc2.metric("Controls missing Owner", missing_owner)
+                if (missing_evidence + missing_owner) > 0:
+                    st.warning("SoA completeness: add missing Owner/Evidence links before external audit.")
 
-                    # Download current SoA view
-                    st.markdown("#### Export SoA (current)")
-                    try:
-                        csv_bytes = soa_df.to_csv(index=False).encode("utf-8")
-                        st.download_button("⬇️ Download SoA CSV", data=csv_bytes, file_name="Statement_of_Applicability.csv", mime="text/csv")
-                    except Exception:
-                        st.caption("Unable to export SoA")
-                except Exception as parse_err:
-                    # Fallback: tolerant parsing just to compute counts
-                    with open(soa_path, "r", encoding="utf-8") as f:
-                        lines = [ln.strip() for ln in f.readlines() if ln.strip()]
-                    # Skip header
-                    statuses = []
-                    for ln in lines[1:]:
-                        parts = ln.split(",")
-                        if len(parts) >= 3:
-                            statuses.append(parts[2].strip().lower())
-                    total_controls = len(statuses)
-                    yes_count = sum(1 for s in statuses if s == "yes")
-                    partial_count = sum(1 for s in statuses if s == "partial")
-                    no_count = sum(1 for s in statuses if s == "no")
+                # Download current SoA view
+                st.markdown("#### Export SoA (current)")
+                try:
+                    csv_bytes = soa_df.to_csv(index=False).encode("utf-8")
+                    st.download_button("⬇️ Download SoA CSV", data=csv_bytes, file_name="Statement_of_Applicability.csv", mime="text/csv")
+                except Exception:
+                    st.caption("Unable to export SoA")
+            except Exception as parse_err:
+                # Fallback: tolerant parsing just to compute counts
+                with open(soa_path, "r", encoding="utf-8") as f:
+                    lines = [ln.strip() for ln in f.readlines() if ln.strip()]
+                # Skip header
+                statuses = []
+                for ln in lines[1:]:
+                    parts = ln.split(",")
+                    if len(parts) >= 3:
+                        statuses.append(parts[2].strip().lower())
+                total_controls = len(statuses)
+                yes_count = sum(1 for s in statuses if s == "yes")
+                partial_count = sum(1 for s in statuses if s == "partial")
+                no_count = sum(1 for s in statuses if s == "no")
 
-                    c1, c2, c3, c4 = st.columns(4)
-                    c1.metric("Total Controls", total_controls)
-                    c2.metric("Implemented", yes_count)
-                    c3.metric("Partial", partial_count)
-                    c4.metric("Not Implemented", no_count)
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Total Controls", total_controls)
+                c2.metric("Implemented", yes_count)
+                c3.metric("Partial", partial_count)
+                c4.metric("Not Implemented", no_count)
 
-                    st.info("Displayed counts using tolerant parser; open items table hidden due to CSV formatting (commas in text).")
-            else:
-                st.info("SoA not found. Add it at docs/Clause6_Planning_new/Statement_of_Applicability.csv")
-        except Exception as e:
-            st.warning(f"Unable to load SoA summary: {e}")
+                st.info("Displayed counts using tolerant parser; open items table hidden due to CSV formatting (commas in text).")
+        else:
+            st.info("SoA not found. Add it at docs/Clause6_Planning_new/Statement_of_Applicability.csv")
+    except Exception as e:
+        st.warning(f"Unable to load SoA summary: {e}")
 
     # (Compliance Overview moved above)
     
