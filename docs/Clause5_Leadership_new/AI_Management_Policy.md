@@ -13,7 +13,7 @@ next_review: 2025-06-20
 - **Document ID:** AIMS-AMP-001
 - **Version:** 1.0
 - **Date:** 2024-12-19
-- **Status:** Draft
+- **Status:** Approved
 - **Owner:** Dr. Sarah Chen, Chief AI Officer
 
 ---

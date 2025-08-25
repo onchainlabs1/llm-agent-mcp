@@ -5,7 +5,7 @@
 - **Document ID:** AIMS-RMP-002
 - **Version:** 1.0
 - **Date:** 2024-12-19
-- **Status:** Draft
+- **Status:** Approved
 - **Owner:** Dr. Sarah Chen, Chief AI Officer
 
 ---
