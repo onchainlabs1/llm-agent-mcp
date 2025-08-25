@@ -59,6 +59,17 @@ def call_llm(prompt, model=None):
         # ISO 42001 Control: Bias Detection (R001)
         bias_score, bias_indicators = iso_controls.detect_bias(sanitized_prompt)
         
+        # OPERATIONAL INTEGRATION: Apply bias thresholds
+        bias_threshold = 0.7
+        if bias_score > bias_threshold:
+            # Log high bias for audit
+            import logging
+            logger = logging.getLogger("agentmcp.bias_alert")
+            logger.warning(f"High bias detected (score: {bias_score}) in prompt: {prompt[:100]}...")
+            
+            # Modify prompt to reduce bias
+            sanitized_prompt = f"[BIAS_DETECTED: {bias_score:.2f}] {sanitized_prompt}"
+        
     except ImportError:
         # Fallback if ISO controls not available
         sanitized_prompt = prompt
@@ -83,6 +94,18 @@ def call_llm(prompt, model=None):
             from .iso_controls import iso_controls
             fact_check_result = iso_controls.fact_check_response(response, sanitized_prompt)
             confidence_score = iso_controls.calculate_confidence_score(response, fact_check_result)
+            
+            # OPERATIONAL INTEGRATION: Apply confidence thresholds
+            confidence_threshold = 0.8
+            if confidence_score < confidence_threshold:
+                # Log low confidence for audit
+                import logging
+                logger = logging.getLogger("agentmcp.confidence_alert")
+                logger.warning(f"Low confidence response (score: {confidence_score}) for prompt: {prompt[:100]}...")
+                
+                # Add confidence warning to response
+                response = f"[LOW_CONFIDENCE: {confidence_score:.2f}] {response}"
+                
         except ImportError:
             fact_check_result = {"verified": True, "confidence": 0.9}
             confidence_score = 0.9
@@ -94,7 +117,12 @@ def call_llm(prompt, model=None):
             "fact_check_result": fact_check_result,
             "bias_score": bias_score,
             "bias_indicators": bias_indicators,
-            "iso_controls_applied": True
+            "iso_controls_applied": True,
+            "operational_controls": {
+                "bias_threshold_exceeded": bias_score > 0.7,
+                "confidence_threshold_exceeded": confidence_score < 0.8,
+                "requires_human_review": bias_score > 0.7 or confidence_score < 0.8
+            }
         }
         
     except Exception as e:

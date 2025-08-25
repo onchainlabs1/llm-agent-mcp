@@ -102,7 +102,7 @@ class CRMService:
     
     def _load_data(self) -> Dict[str, Any]:
         """
-        Load data from the JSON file.
+        Load data from the JSON file with ISO 42001 Control R008: Data Encryption.
         
         Returns:
             Dictionary containing the loaded data
@@ -113,7 +113,25 @@ class CRMService:
         """
         try:
             with open(self.data_file, "r") as f:
-                return json.load(f)
+                data = json.load(f)
+                
+            # ISO 42001 Control R008: Decrypt sensitive data
+            if ISO_CONTROLS_AVAILABLE:
+                try:
+                    from agent.iso_controls import iso_controls
+                    # Decrypt sensitive fields if they exist
+                    if "clients" in data:
+                        for client in data["clients"]:
+                            if "email" in client and client["email"].startswith("ENCRYPTED:"):
+                                encrypted_email = client["email"].replace("ENCRYPTED:", "")
+                                client["email"] = iso_controls.decrypt_data(encrypted_email)
+                            if "phone" in client and client["phone"] and client["phone"].startswith("ENCRYPTED:"):
+                                encrypted_phone = client["phone"].replace("ENCRYPTED:", "")
+                                client["phone"] = iso_controls.decrypt_data(encrypted_phone)
+                except Exception as e:
+                    self.logger.warning(f"Decryption failed, using encrypted data: {e}")
+                
+            return data
         except FileNotFoundError:
             raise FileNotFoundError(f"Data file not found: {self.data_file}")
         except json.JSONDecodeError as e:
@@ -123,7 +141,7 @@ class CRMService:
     
     def _save_data(self, data: Dict[str, Any]) -> None:
         """
-        Save data to the JSON file.
+        Save data to the JSON file with ISO 42001 Control R008: Data Encryption.
         
         Args:
             data: Dictionary containing the data to save
@@ -132,8 +150,37 @@ class CRMService:
             IOError: If there's an error writing to the file
         """
         try:
-            with open(self.data_file, "w") as f:
-                json.dump(data, f, indent=2, default=str)
+            # ISO 42001 Control R008: Encrypt sensitive data before saving
+            if ISO_CONTROLS_AVAILABLE:
+                try:
+                    from agent.iso_controls import iso_controls
+                    # Create a copy to avoid modifying original data
+                    encrypted_data = json.loads(json.dumps(data))
+                    
+                    # Encrypt sensitive fields if they exist
+                    if "clients" in encrypted_data:
+                        for client in encrypted_data["clients"]:
+                            if "email" in client and client["email"]:
+                                encrypted_email = iso_controls.encrypt_data(client["email"])
+                                client["email"] = f"ENCRYPTED:{encrypted_email}"
+                            if "phone" in client and client["phone"]:
+                                encrypted_phone = iso_controls.encrypt_data(client["phone"])
+                                client["phone"] = f"ENCRYPTED:{encrypted_phone}"
+                    
+                    # Save encrypted data
+                    with open(self.data_file, "w") as f:
+                        json.dump(encrypted_data, f, indent=2, default=str)
+                        
+                except Exception as e:
+                    self.logger.warning(f"Encryption failed, saving unencrypted data: {e}")
+                    # Fallback to unencrypted save
+                    with open(self.data_file, "w") as f:
+                        json.dump(data, f, indent=2, default=str)
+            else:
+                # Save unencrypted data if ISO controls not available
+                with open(self.data_file, "w") as f:
+                    json.dump(data, f, indent=2, default=str)
+                    
         except IOError as e:
             raise IOError(f"Error saving data to file: {str(e)}")
     
