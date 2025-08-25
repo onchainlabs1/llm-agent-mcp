@@ -6,7 +6,7 @@
 - **Version:** 1.0
 - **Date:** 2024-12-19
 - **Status:** Draft
-- **Owner:** AI Management Team
+- **Owner:** Dr. Sarah Chen, Chief AI Officer
 
 ---
 
@@ -417,9 +417,9 @@ This document defines measurable AI management system objectives for the `llm-ag
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
-- **Reviewed by:** Project Leadership
-- **Approved by:** AI Management Team Lead
+- **Prepared by:** Dr. Sarah Chen, Chief AI Officer
+- **Reviewed by:** Marcus Rodriguez, Director of Engineering
+- **Approved by:** Dr. Sarah Chen, Chief AI Officer
 - **Next Review:** 2025-03-19
 
 **References:**

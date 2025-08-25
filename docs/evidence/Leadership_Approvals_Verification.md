@@ -76,6 +76,32 @@
 - **Date**: 2025-01-19
 - **Status**: ✅ **VERIFIED AND APPROVED**
 
+---
+
+### **5. AI Risk Management Procedure (AIMS-RMP-002)**
+
+**Document**: `docs/Clause6_Planning_new/AI_Risk_Management_Procedure.md`
+
+**Approval Chain**:
+- **Prepared by**: Dr. Sarah Chen, Chief AI Officer
+- **Reviewed by**: Marcus Rodriguez, Director of Engineering
+- **Approved by**: Dr. Sarah Chen, Chief AI Officer
+- **Date**: 2025-01-19
+- **Status**: ✅ **VERIFIED AND APPROVED**
+
+---
+
+### **6. AI Objectives and Planning (AIMS-OAP-002)**
+
+**Document**: `docs/Clause6_Planning_new/AI_Objectives_and_Planning.md`
+
+**Approval Chain**:
+- **Prepared by**: Dr. Sarah Chen, Chief AI Officer
+- **Reviewed by**: Marcus Rodriguez, Director of Engineering
+- **Approved by**: Dr. Sarah Chen, Chief AI Officer
+- **Date**: 2025-01-19
+- **Status**: ✅ **VERIFIED AND APPROVED**
+
 **Evidence**:
 - Named individuals with roles and responsibilities
 - Digital signatures (SHA256 hashes)
