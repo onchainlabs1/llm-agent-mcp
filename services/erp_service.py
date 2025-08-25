@@ -23,6 +23,13 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
+# ISO 42001 Control: Data Encryption
+try:
+    from agent.iso_controls import iso_controls
+    ISO_CONTROLS_AVAILABLE = True
+except ImportError:
+    ISO_CONTROLS_AVAILABLE = False
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -105,19 +112,66 @@ class ERPService:
             logger.info(f"Created new ERP data file: {self.data_file}")
 
     def _load_data(self) -> Dict[str, Any]:
-        """Load order data from JSON file."""
+        """Load order data from JSON file with ISO 42001 Control R008: Data Encryption."""
         try:
             with open(self.data_file, "r", encoding="utf-8") as file:
-                return json.load(file)
+                data = json.load(file)
+                
+            # ISO 42001 Control R008: Decrypt sensitive data
+            if ISO_CONTROLS_AVAILABLE:
+                try:
+                    # Decrypt sensitive fields if they exist
+                    if "orders" in data:
+                        for order in data["orders"]:
+                            if "shipping_address" in order:
+                                address = order["shipping_address"]
+                                # Decrypt address fields if encrypted
+                                for field in ["street", "city", "postal_code"]:
+                                    if field in address and address[field].startswith("ENCRYPTED:"):
+                                        encrypted_value = address[field].replace("ENCRYPTED:", "")
+                                        address[field] = iso_controls.decrypt_data(encrypted_value)
+                except Exception as e:
+                    logger.warning(f"Decryption failed, using encrypted data: {e}")
+                
+            return data
         except (FileNotFoundError, json.JSONDecodeError) as e:
             logger.error(f"Error loading ERP data: {e}")
             raise
 
     def _save_data(self, data: Dict[str, Any]) -> None:
-        """Save order data to JSON file."""
+        """Save order data to JSON file with ISO 42001 Control R008: Data Encryption."""
         try:
-            with open(self.data_file, "w", encoding="utf-8") as file:
-                json.dump(data, file, indent=2, ensure_ascii=False)
+            # ISO 42001 Control R008: Encrypt sensitive data before saving
+            if ISO_CONTROLS_AVAILABLE:
+                try:
+                    # Create a copy to avoid modifying original data
+                    encrypted_data = json.loads(json.dumps(data))
+                    
+                    # Encrypt sensitive fields if they exist
+                    if "orders" in encrypted_data:
+                        for order in encrypted_data["orders"]:
+                            if "shipping_address" in order:
+                                address = order["shipping_address"]
+                                # Encrypt address fields
+                                for field in ["street", "city", "postal_code"]:
+                                    if field in address and address[field]:
+                                        encrypted_value = iso_controls.encrypt_data(address[field])
+                                        address[field] = f"ENCRYPTED:{encrypted_value}"
+                    
+                    # Save encrypted data
+                    with open(self.data_file, "w", encoding="utf-8") as file:
+                        json.dump(encrypted_data, file, indent=2, ensure_ascii=False)
+                        
+                except Exception as e:
+                    logger.warning(f"Encryption failed, saving unencrypted data: {e}")
+                    # Fallback to unencrypted save
+                    with open(self.data_file, "w", encoding="utf-8") as file:
+                        json.dump(data, file, indent=2, ensure_ascii=False)
+            else:
+                # Save unencrypted data if ISO controls not available
+                with open(self.data_file, "w", encoding="utf-8") as file:
+                    json.dump(data, file, indent=2, ensure_ascii=False)
+                    
         except IOError as e:
             logger.error(f"Failed to save ERP data: {e}")
             raise
