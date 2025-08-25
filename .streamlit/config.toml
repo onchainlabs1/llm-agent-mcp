@@ -1,8 +1,10 @@
+[global]
+developmentMode = false
+
 [server]
-port = 8501
-enableCORS = true
-enableXsrfProtection = true
-enableStaticServing = true
+headless = true
+enableCORS = false
+enableXsrfProtection = false
 
 [browser]
 gatherUsageStats = false
@@ -12,4 +14,7 @@ base = "dark"
 primaryColor = "#6fffb0"
 backgroundColor = "#0e1117"
 secondaryBackgroundColor = "#1a1f2b"
-textColor = "#ffffff" 
+textColor = "#ffffff"
+
+[client]
+showErrorDetails = false 
