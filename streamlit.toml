@@ -1,5 +1,4 @@
 [server]
-# Streamlit Cloud Configuration
 headless = true
 enableCORS = false
 enableXsrfProtection = false
@@ -16,6 +15,5 @@ textColor = "#ffffff"
 developmentMode = false
 showErrorDetails = false
 
-# Force requirements.txt usage
 [deployment]
-requirementsFile = "requirements.txt" 
+requirementsFile = "requirements.txt"
