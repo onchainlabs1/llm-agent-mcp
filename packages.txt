@@ -1,13 +1,5 @@
-# System packages required for Streamlit Cloud
-# These are installed at the system level
+# System packages for Streamlit Cloud - Minimal version
+# Only essential packages
 
-# For cryptography and security
-libffi-dev
-libssl-dev
-
-# For data processing
+# For basic functionality
 build-essential
-
-# For visualization libraries
-libgl1-mesa-glx
-libglib2.0-0
