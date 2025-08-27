@@ -183,7 +183,7 @@ The `llm-agent-mcp` project demonstrates **exceptional compliance** with ISO/IEC
 - ✅ **Professional tools** for documentation and tracking
 - ✅ **Audit-ready** structure and evidence
 
-**The project is ELIGIBLE for ISO/IEC 42001:2023 Lead Implementer certification.**
+**The project is IN PROGRESS towards ISO/IEC 42001:2023 Lead Implementer certification (35.5 hours remaining).**
 
 ---
 
