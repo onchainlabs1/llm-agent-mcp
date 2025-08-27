@@ -1,0 +1,26 @@
+# Agent Mode Environment Variables
+# Copy this file to .env and fill in your actual values
+
+# LLM Configuration
+LLM_PROVIDER=simulated
+LLM_MODEL=llama3-70b-8192
+
+# API Keys (optional for Streamlit Cloud)
+GROQ_API_KEY=your-groq-api-key-here
+OPENAI_API_KEY=your-openai-api-key-here
+ANTHROPIC_API_KEY=your-anthropic-api-key-here
+
+# MCP Configuration
+MCP_SERVER_URL=http://localhost:8000
+MCP_SCHEMAS_PATH=mcp_server/
+
+# Data Configuration
+DATA_PATH=data/
+
+# Logging Configuration
+LOG_LEVEL=INFO
+LOG_FILE=logs/agent_actions.log
+
+# Security Configuration
+MAX_REQUESTS_PER_MINUTE=60
+SESSION_TIMEOUT=3600

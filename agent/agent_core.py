@@ -23,20 +23,29 @@ from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
 # --- LLM integration ---
-import openai
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
 
 # Import config and services using package imports
 try:
     from config import config
     from services.crm_service import CRMService
     from services.erp_service import ERPService
+    SERVICES_AVAILABLE = True
 except ImportError:
-    import sys
-    from pathlib import Path
-    sys.path.append(str(Path(__file__).parent.parent))
-    from config import config
-    from services.crm_service import CRMService
-    from services.erp_service import ERPService
+    # Fallback for Streamlit Cloud environment
+    try:
+        from agent_config import agent_config as config
+        SERVICES_AVAILABLE = True
+    except ImportError:
+        SERVICES_AVAILABLE = False
+        config = None
+    
+    CRMService = None
+    ERPService = None
 
 
 def call_llm(prompt, model=None):
@@ -45,6 +54,10 @@ def call_llm(prompt, model=None):
     Implements ISO 42001 controls: prompt sanitization, bias detection, fact-checking.
     Falls back to simulated mode if API key is missing or API call fails.
     """
+    # Check if config is available
+    if not SERVICES_AVAILABLE or config is None:
+        return _simulate_llm_response(prompt, 0.0, [])
+    
     if model is None:
         model = config.llm.model
 
@@ -132,6 +145,9 @@ def call_llm(prompt, model=None):
 
 def _call_groq_llm(prompt, model, api_key):
     """Call Groq LLM API."""
+    if not OPENAI_AVAILABLE:
+        raise ImportError("OpenAI library not available")
+    
     openai.api_key = api_key
     openai.api_base = "https://api.groq.com/openai/v1"
     response = openai.ChatCompletion.create(
@@ -142,6 +158,9 @@ def _call_groq_llm(prompt, model, api_key):
 
 def _call_openai_llm(prompt, model, api_key):
     """Call OpenAI LLM API."""
+    if not OPENAI_AVAILABLE:
+        raise ImportError("OpenAI library not available")
+    
     openai.api_key = api_key
     openai.api_base = "https://api.openai.com/v1"
     response = openai.ChatCompletion.create(

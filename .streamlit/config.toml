@@ -16,6 +16,6 @@ textColor = "#ffffff"
 developmentMode = false
 showErrorDetails = false
 
-# Force requirements.txt usage
+# Force requirements-streamlit.txt usage
 [deployment]
-requirementsFile = "requirements.txt" 
+requirementsFile = "requirements-streamlit.txt" 

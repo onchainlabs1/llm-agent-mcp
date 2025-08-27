@@ -1,5 +1,4 @@
-# System packages for Streamlit Cloud - Minimal version
-# Only essential packages
-
-# For basic functionality
 build-essential
+python3-dev
+libffi-dev
+libssl-dev

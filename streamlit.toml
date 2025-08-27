@@ -16,4 +16,4 @@ developmentMode = false
 showErrorDetails = false
 
 [deployment]
-requirementsFile = "requirements.txt"
+requirementsFile = "requirements-streamlit.txt"

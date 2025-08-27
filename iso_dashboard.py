@@ -22,7 +22,6 @@ import re
 import io
 import zipfile
 from io import BytesIO
-import pandas as pd
 
 # Phoenix imports for LLM quality evaluation
 try:
@@ -31,7 +30,8 @@ try:
     PHOENIX_AVAILABLE = True
 except ImportError:
     PHOENIX_AVAILABLE = False
-    st.warning("Phoenix not available. Install with: pip install arize-phoenix")
+    # Don't show warning during import to avoid Streamlit Cloud issues
+    pass
 
 # Page configuration
 st.set_page_config(

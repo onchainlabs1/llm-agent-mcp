@@ -1,15 +1,24 @@
 # Ultra-Simplified Requirements for Streamlit Cloud
 # This file is used by Streamlit Cloud for deployment
 
-# Core Streamlit - Fixed versions for compatibility
-streamlit==1.28.2
+# Core Streamlit - Compatible versions
+streamlit>=1.28.0
 
 # Data Processing - Minimal dependencies
-pandas==2.0.3
-numpy==1.24.3
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualization
+plotly>=5.15.0
 
 # File Processing - Basic Excel support
-openpyxl==3.1.2
+openpyxl>=3.1.0
 
 # Date and Time - Essential utilities
-python-dateutil==2.8.2
+python-dateutil>=2.8.0
+
+# Agent Mode Dependencies
+python-dotenv>=1.0.0
+requests>=2.31.0
+jsonschema>=4.19.0
+structlog>=23.2.0

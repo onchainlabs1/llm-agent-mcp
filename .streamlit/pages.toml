@@ -16,4 +16,9 @@ icon = "📘"
 [[pages]]
 path = "landing.py"
 name = "🌐 Landing Page"
-icon = "🌐" 
+icon = "🌐"
+
+[[pages]]
+path = "test_agent_mode.py"
+name = "🤖 Agent Mode Test"
+icon = "🤖" 
