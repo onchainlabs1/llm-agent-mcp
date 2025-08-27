@@ -352,7 +352,7 @@ This log demonstrates compliance with ISO/IEC 42001:2023 Lead Implementer certif
 
 - **Minimum Hours Required:** 300 hours
 - **Current Total:** {sum(float(entry['Time (h)']) for entry in entries):.1f} hours
-- **Status:** {'✅ ELIGIBLE' if sum(float(entry['Time (h)']) for entry in entries) >= 300 else '⚠️ NEEDS MORE HOURS'}
+- **Status:** {'✅ ELIGIBLE' if sum(float(entry['Time (h)']) for entry in entries) >= 300 else '⚠️ IN PROGRESS'}
 
 ## Notes
 
@@ -393,7 +393,7 @@ This log demonstrates compliance with ISO/IEC 42001:2023 Lead Implementer certif
         total_hours = sum(float(entry['Time (h)']) for entry in self.existing_entries)
         print(f"\n📈 Total Hours Logged: {total_hours:.1f}")
         print(f"🎯 ISO Requirement: 300 hours")
-        print(f"📊 Status: {'✅ ELIGIBLE' if total_hours >= 300 else '⚠️ NEEDS MORE HOURS'}")
+        print(f"📊 Status: {'✅ ELIGIBLE' if total_hours >= 300 else '⚠️ IN PROGRESS'}")
 
 def main():
     parser = argparse.ArgumentParser(description='ISO/IEC 42001:2023 Project Hours Tracker')
