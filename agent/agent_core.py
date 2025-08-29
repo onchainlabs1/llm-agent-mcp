@@ -225,6 +225,15 @@ def _simulate_llm_response(prompt, bias_score=None, bias_indicators=None):
         return '{"tool_name": "get_client_by_id", "parameters": {"client_id": "test-client-id"}}'
     elif "update" in prompt_lower and "balance" in prompt_lower:
         return '{"tool_name": "update_client_balance", "parameters": {"client_id": "test-client-id", "new_balance": 2000}}'
+    # ORDER OPERATIONS - FIXED TO INCLUDE STATUS FILTERING!
+    elif ("show" in prompt_lower or "list" in prompt_lower) and "order" in prompt_lower and "status" in prompt_lower:
+        # Extract status from command
+        status_match = re.search(r"status\s+(pending|processing|shipped|delivered|cancelled)", prompt_lower)
+        if status_match:
+            status = status_match.group(1)
+            return f'{{"tool_name": "filter_orders_by_status", "parameters": {{"status": "{status}"}}}}'
+        else:
+            return '{"tool_name": "list_all_orders", "parameters": {}}'
     elif "create" in prompt_lower and "order" in prompt_lower:
         return '{"tool_name": "create_order", "parameters": {"client_id": "test-client-id", "total_amount": 500, "items": [{"name": "Product", "quantity": 1, "price": 500}]}}'
     elif "list" in prompt_lower and "order" in prompt_lower:
@@ -233,8 +242,21 @@ def _simulate_llm_response(prompt, bias_score=None, bias_indicators=None):
         return '{"tool_name": "get_order_by_id", "parameters": {"order_id": "test-order-id"}}'
     elif "update" in prompt_lower and "order" in prompt_lower:
         return '{"tool_name": "update_order_status", "parameters": {"order_id": "test-order-id", "new_status": "shipped"}}'
+    
+    # HR OPERATIONS - ADDED!
+    elif ("find" in prompt_lower or "list" in prompt_lower) and ("employee" in prompt_lower or "staff" in prompt_lower):
+        # Extract department if mentioned
+        dept_match = re.search(r"(engineering|sales|marketing|hr|finance|operations)", prompt_lower)
+        if dept_match:
+            department = dept_match.group(1).title()
+            return f'{{"tool_name": "filter_employees_by_department", "parameters": {{"department": "{department}"}}}}'
+        else:
+            return '{"tool_name": "list_all_employees", "parameters": {}}'
+    elif ("manager" in prompt_lower or "lead" in prompt_lower) and ("list" in prompt_lower or "show" in prompt_lower):
+        return '{"tool_name": "list_managers", "parameters": {}}'
+    
     else:
-        default_response = '{"tool_name": "list_all_clients", "parameters": {}}'
+        return '{"tool_name": "list_all_clients", "parameters": {}}'
     
     # Return response with ISO control metadata for simulated mode
     return {
