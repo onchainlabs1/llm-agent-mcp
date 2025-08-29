@@ -1,0 +1,52 @@
+[
+  {
+    "sku": "SKU-001",
+    "name": "Laptop",
+    "price": 1296.88
+  },
+  {
+    "sku": "SKU-002",
+    "name": "Smartphone",
+    "price": 98.77
+  },
+  {
+    "sku": "SKU-003",
+    "name": "Tablet",
+    "price": 586.31
+  },
+  {
+    "sku": "SKU-004",
+    "name": "Monitor",
+    "price": 485.26
+  },
+  {
+    "sku": "SKU-005",
+    "name": "Keyboard",
+    "price": 1486.12
+  },
+  {
+    "sku": "SKU-006",
+    "name": "Mouse",
+    "price": 1369.56
+  },
+  {
+    "sku": "SKU-007",
+    "name": "Headphones",
+    "price": 1789.75
+  },
+  {
+    "sku": "SKU-008",
+    "name": "Webcam",
+    "price": 219.53
+  },
+  {
+    "sku": "SKU-009",
+    "name": "Printer",
+    "price": 872.75
+  },
+  {
+    "sku": "SKU-010",
+    "name": "Router",
+    "price": 108.1
+  }
+]

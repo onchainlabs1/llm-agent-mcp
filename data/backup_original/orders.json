@@ -1,0 +1,63 @@
+{
+  "orders": [
+    {
+      "id": "660e8400-e29b-41d4-a716-446655440000",
+      "client_id": "550e8400-e29b-41d4-a716-446655440000",
+      "order_number": "ORD-2024-001",
+      "status": "delivered",
+      "items": [
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 5,
+          "price": "1299.99",
+          "total": "6499.95"
+        },
+        {
+          "sku": "MON002",
+          "name": "27\" Monitor",
+          "quantity": 5,
+          "price": "299.99",
+          "total": "1499.95"
+        }
+      ],
+      "total_amount": "7999.90",
+      "shipping_address": {
+        "street": "123 Tech Street",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105",
+        "country": "USA"
+      },
+      "created_at": "2024-01-20T11:00:00",
+      "updated_at": "2024-01-25T15:30:00",
+      "notes": "Priority shipping requested"
+    },
+    {
+      "id": "660e8400-e29b-41d4-a716-446655440001",
+      "client_id": "550e8400-e29b-41d4-a716-446655440001",
+      "order_number": "ORD-2024-002",
+      "status": "shipped",
+      "items": [
+        {
+          "sku": "TAB003",
+          "name": "Industrial Tablet",
+          "quantity": 10,
+          "price": "599.99",
+          "total": "5999.90"
+        }
+      ],
+      "total_amount": "5999.90",
+      "shipping_address": {
+        "street": "456 Innovation Ave",
+        "city": "Detroit",
+        "state": "MI",
+        "zip": "48201",
+        "country": "USA"
+      },
+      "created_at": "2024-02-01T09:15:00",
+      "updated_at": "2024-02-03T14:20:00",
+      "notes": "For factory automation project"
+    }
+  ]
+} 

@@ -58,6 +58,642 @@
       "created_at": "2024-02-01T09:15:00",
       "updated_at": "2024-02-03T14:20:00",
       "notes": "For factory automation project"
+    },
+    {
+      "id": "ord003",
+      "client_id": "cli001",
+      "order_number": "ORD-20241129-003",
+      "status": "shipped",
+      "items": [
+        {
+          "sku": "PRINT008",
+          "name": "Laser Printer",
+          "quantity": 5,
+          "price": "399.99",
+          "total": "1999.95"
+        },
+        {
+          "sku": "MON002",
+          "name": "27\" Monitor",
+          "quantity": 4,
+          "price": "299.99",
+          "total": "1199.96"
+        },
+        {
+          "sku": "MON002",
+          "name": "27\" Monitor",
+          "quantity": 5,
+          "price": "299.99",
+          "total": "1499.95"
+        }
+      ],
+      "total_amount": "4699.86",
+      "shipping_address": {
+        "street": "88356 Stacy Isle Suite 148",
+        "city": "Elizabethmouth",
+        "state": "MO",
+        "zip": "91885",
+        "country": "USA"
+      },
+      "created_at": "2024-11-29",
+      "updated_at": "2025-02-17",
+      "notes": "Inside wait quality total past. Image street fight decision size."
+    },
+    {
+      "id": "ord004",
+      "client_id": "cli014",
+      "order_number": "ORD-20250210-004",
+      "status": "shipped",
+      "items": [
+        {
+          "sku": "HEAD006",
+          "name": "Noise-Canceling Headphones",
+          "quantity": 5,
+          "price": "199.99",
+          "total": "999.95"
+        },
+        {
+          "sku": "KEY004",
+          "name": "Wireless Keyboard",
+          "quantity": 1,
+          "price": "79.99",
+          "total": "79.99"
+        },
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 2,
+          "price": "1299.99",
+          "total": "2599.98"
+        }
+      ],
+      "total_amount": "3679.92",
+      "shipping_address": {
+        "street": "676 Dylan Spurs",
+        "city": "Port Michelleville",
+        "state": "WI",
+        "zip": "56225",
+        "country": "USA"
+      },
+      "created_at": "2025-02-10",
+      "updated_at": "2025-03-25",
+      "notes": "Machine dream key require doctor from throw. Catch discuss really relationship."
+    },
+    {
+      "id": "ord005",
+      "client_id": "cli002",
+      "order_number": "ORD-20250720-005",
+      "status": "shipped",
+      "items": [
+        {
+          "sku": "MON002",
+          "name": "27\" Monitor",
+          "quantity": 4,
+          "price": "299.99",
+          "total": "1199.96"
+        }
+      ],
+      "total_amount": "1199.96",
+      "shipping_address": {
+        "street": "893 Robinson Mews Suite 065",
+        "city": "Ramseymouth",
+        "state": "PW",
+        "zip": "17229",
+        "country": "USA"
+      },
+      "created_at": "2025-07-20",
+      "updated_at": "2025-08-28",
+      "notes": "Trade option production. Poor career left anyone. Force lawyer front they everything week."
+    },
+    {
+      "id": "ord006",
+      "client_id": "cli008",
+      "order_number": "ORD-20250809-006",
+      "status": "pending",
+      "items": [
+        {
+          "sku": "HEAD006",
+          "name": "Noise-Canceling Headphones",
+          "quantity": 2,
+          "price": "199.99",
+          "total": "399.98"
+        },
+        {
+          "sku": "HEAD006",
+          "name": "Noise-Canceling Headphones",
+          "quantity": 3,
+          "price": "199.99",
+          "total": "599.97"
+        },
+        {
+          "sku": "KEY004",
+          "name": "Wireless Keyboard",
+          "quantity": 3,
+          "price": "79.99",
+          "total": "239.97"
+        }
+      ],
+      "total_amount": "1239.92",
+      "shipping_address": {
+        "street": "452 Kimberly Estates Suite 190",
+        "city": "Barbarafurt",
+        "state": "MO",
+        "zip": "94219",
+        "country": "USA"
+      },
+      "created_at": "2025-08-09",
+      "updated_at": "2025-08-12",
+      "notes": "Right with modern executive beyond. Fast guess few remain call. Window network recently."
+    },
+    {
+      "id": "ord007",
+      "client_id": "cli010",
+      "order_number": "ORD-20250810-007",
+      "status": "shipped",
+      "items": [
+        {
+          "sku": "TAB003",
+          "name": "Industrial Tablet",
+          "quantity": 5,
+          "price": "599.99",
+          "total": "2999.95"
+        },
+        {
+          "sku": "KEY004",
+          "name": "Wireless Keyboard",
+          "quantity": 2,
+          "price": "79.99",
+          "total": "159.98"
+        },
+        {
+          "sku": "PRINT008",
+          "name": "Laser Printer",
+          "quantity": 4,
+          "price": "399.99",
+          "total": "1599.96"
+        }
+      ],
+      "total_amount": "4759.89",
+      "shipping_address": {
+        "street": "18699 Kimberly Light",
+        "city": "Kerrport",
+        "state": "VI",
+        "zip": "77640",
+        "country": "USA"
+      },
+      "created_at": "2025-08-10",
+      "updated_at": "2025-08-28",
+      "notes": "Perform participant science way debate decision produce. Dream necessary choose impact."
+    },
+    {
+      "id": "ord008",
+      "client_id": "cli015",
+      "order_number": "ORD-20250313-008",
+      "status": "delivered",
+      "items": [
+        {
+          "sku": "KEY004",
+          "name": "Wireless Keyboard",
+          "quantity": 3,
+          "price": "79.99",
+          "total": "239.97"
+        },
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 2,
+          "price": "1299.99",
+          "total": "2599.98"
+        },
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 3,
+          "price": "1299.99",
+          "total": "3899.97"
+        }
+      ],
+      "total_amount": "6739.92",
+      "shipping_address": {
+        "street": "90659 Johnson Forks Apt. 490",
+        "city": "South April",
+        "state": "NV",
+        "zip": "36959",
+        "country": "USA"
+      },
+      "created_at": "2025-03-13",
+      "updated_at": "2025-04-12",
+      "notes": "Gun series personal service data near until. Thing machine ahead picture son report."
+    },
+    {
+      "id": "ord009",
+      "client_id": "cli005",
+      "order_number": "ORD-20250629-009",
+      "status": "shipped",
+      "items": [
+        {
+          "sku": "KEY004",
+          "name": "Wireless Keyboard",
+          "quantity": 5,
+          "price": "79.99",
+          "total": "399.95"
+        }
+      ],
+      "total_amount": "399.95",
+      "shipping_address": {
+        "street": "78263 Michelle Harbor Suite 584",
+        "city": "West Jessicashire",
+        "state": "OR",
+        "zip": "87000",
+        "country": "USA"
+      },
+      "created_at": "2025-06-29",
+      "updated_at": "2025-07-28",
+      "notes": "Mrs generation necessary myself lay focus country. Occur do simply analysis seat."
+    },
+    {
+      "id": "ord010",
+      "client_id": "cli004",
+      "order_number": "ORD-20250120-010",
+      "status": "processing",
+      "items": [
+        {
+          "sku": "PRINT008",
+          "name": "Laser Printer",
+          "quantity": 4,
+          "price": "399.99",
+          "total": "1599.96"
+        },
+        {
+          "sku": "PRINT008",
+          "name": "Laser Printer",
+          "quantity": 2,
+          "price": "399.99",
+          "total": "799.98"
+        },
+        {
+          "sku": "MOU005",
+          "name": "Ergonomic Mouse",
+          "quantity": 2,
+          "price": "49.99",
+          "total": "99.98"
+        }
+      ],
+      "total_amount": "2499.92",
+      "shipping_address": {
+        "street": "8657 Christina Freeway",
+        "city": "Wendyland",
+        "state": "NE",
+        "zip": "13404",
+        "country": "USA"
+      },
+      "created_at": "2025-01-20",
+      "updated_at": "2025-07-07",
+      "notes": "Coach federal ahead food argue grow. Certainly most not society color bad."
+    },
+    {
+      "id": "ord011",
+      "client_id": "cli012",
+      "order_number": "ORD-20250114-011",
+      "status": "processing",
+      "items": [
+        {
+          "sku": "MOU005",
+          "name": "Ergonomic Mouse",
+          "quantity": 5,
+          "price": "49.99",
+          "total": "249.95"
+        },
+        {
+          "sku": "WEB007",
+          "name": "4K Webcam",
+          "quantity": 5,
+          "price": "149.99",
+          "total": "749.95"
+        },
+        {
+          "sku": "WEB007",
+          "name": "4K Webcam",
+          "quantity": 3,
+          "price": "149.99",
+          "total": "449.97"
+        }
+      ],
+      "total_amount": "1449.87",
+      "shipping_address": {
+        "street": "440 Hill Port Apt. 974",
+        "city": "New Laurie",
+        "state": "IN",
+        "zip": "83943",
+        "country": "USA"
+      },
+      "created_at": "2025-01-14",
+      "updated_at": "2025-02-26",
+      "notes": "Pick tough position final. Almost half capital travel force indeed."
+    },
+    {
+      "id": "ord012",
+      "client_id": "cli003",
+      "order_number": "ORD-20250528-012",
+      "status": "delivered",
+      "items": [
+        {
+          "sku": "PRINT008",
+          "name": "Laser Printer",
+          "quantity": 1,
+          "price": "399.99",
+          "total": "399.99"
+        },
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 1,
+          "price": "1299.99",
+          "total": "1299.99"
+        },
+        {
+          "sku": "TAB003",
+          "name": "Industrial Tablet",
+          "quantity": 2,
+          "price": "599.99",
+          "total": "1199.98"
+        }
+      ],
+      "total_amount": "2899.96",
+      "shipping_address": {
+        "street": "71236 Davis Locks Apt. 481",
+        "city": "Richardsonview",
+        "state": "OR",
+        "zip": "50442",
+        "country": "USA"
+      },
+      "created_at": "2025-05-28",
+      "updated_at": "2025-08-12",
+      "notes": "Name within grow huge couple business. Begin deep police wife anything four writer."
+    },
+    {
+      "id": "ord013",
+      "client_id": "cli010",
+      "order_number": "ORD-20241224-013",
+      "status": "cancelled",
+      "items": [
+        {
+          "sku": "WEB007",
+          "name": "4K Webcam",
+          "quantity": 4,
+          "price": "149.99",
+          "total": "599.96"
+        }
+      ],
+      "total_amount": "599.96",
+      "shipping_address": {
+        "street": "0268 Julie Mountains",
+        "city": "Stricklandhaven",
+        "state": "OR",
+        "zip": "14794",
+        "country": "USA"
+      },
+      "created_at": "2024-12-24",
+      "updated_at": "2025-04-15",
+      "notes": "Call person one Republican. Yes most law painting between reduce."
+    },
+    {
+      "id": "ord014",
+      "client_id": "cli008",
+      "order_number": "ORD-20250330-014",
+      "status": "pending",
+      "items": [
+        {
+          "sku": "MOU005",
+          "name": "Ergonomic Mouse",
+          "quantity": 5,
+          "price": "49.99",
+          "total": "249.95"
+        },
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 1,
+          "price": "1299.99",
+          "total": "1299.99"
+        },
+        {
+          "sku": "MOU005",
+          "name": "Ergonomic Mouse",
+          "quantity": 3,
+          "price": "49.99",
+          "total": "149.97"
+        }
+      ],
+      "total_amount": "1699.91",
+      "shipping_address": {
+        "street": "165 Parrish Stravenue Apt. 494",
+        "city": "Dalehaven",
+        "state": "IL",
+        "zip": "20781",
+        "country": "USA"
+      },
+      "created_at": "2025-03-30",
+      "updated_at": "2025-07-07",
+      "notes": "Glass news boy everything. Southern suddenly window stand party."
+    },
+    {
+      "id": "ord015",
+      "client_id": "cli005",
+      "order_number": "ORD-20250818-015",
+      "status": "cancelled",
+      "items": [
+        {
+          "sku": "TAB003",
+          "name": "Industrial Tablet",
+          "quantity": 4,
+          "price": "599.99",
+          "total": "2399.96"
+        },
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 3,
+          "price": "1299.99",
+          "total": "3899.97"
+        }
+      ],
+      "total_amount": "6299.93",
+      "shipping_address": {
+        "street": "836 Chavez Estate",
+        "city": "Larrymouth",
+        "state": "WI",
+        "zip": "74896",
+        "country": "USA"
+      },
+      "created_at": "2025-08-18",
+      "updated_at": "2025-08-24",
+      "notes": "Church pay purpose evening."
+    },
+    {
+      "id": "ord016",
+      "client_id": "cli013",
+      "order_number": "ORD-20250201-016",
+      "status": "cancelled",
+      "items": [
+        {
+          "sku": "MON002",
+          "name": "27\" Monitor",
+          "quantity": 3,
+          "price": "299.99",
+          "total": "899.97"
+        }
+      ],
+      "total_amount": "899.97",
+      "shipping_address": {
+        "street": "8388 Jones Wall",
+        "city": "South Andrewland",
+        "state": "VI",
+        "zip": "41534",
+        "country": "USA"
+      },
+      "created_at": "2025-02-01",
+      "updated_at": "2025-06-01",
+      "notes": "Behind question exist rich prevent trade. Four old center glass."
+    },
+    {
+      "id": "ord017",
+      "client_id": "cli010",
+      "order_number": "ORD-20241106-017",
+      "status": "processing",
+      "items": [
+        {
+          "sku": "TAB003",
+          "name": "Industrial Tablet",
+          "quantity": 3,
+          "price": "599.99",
+          "total": "1799.97"
+        }
+      ],
+      "total_amount": "1799.97",
+      "shipping_address": {
+        "street": "14188 Ebony Wells",
+        "city": "New Nicholas",
+        "state": "GA",
+        "zip": "24204",
+        "country": "USA"
+      },
+      "created_at": "2024-11-06",
+      "updated_at": "2025-07-10",
+      "notes": "Different five between research friend certainly. Expert stop receive."
+    },
+    {
+      "id": "ord018",
+      "client_id": "cli009",
+      "order_number": "ORD-20240919-018",
+      "status": "shipped",
+      "items": [
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 5,
+          "price": "1299.99",
+          "total": "6499.95"
+        },
+        {
+          "sku": "HEAD006",
+          "name": "Noise-Canceling Headphones",
+          "quantity": 4,
+          "price": "199.99",
+          "total": "799.96"
+        },
+        {
+          "sku": "LAP001",
+          "name": "Premium Laptop",
+          "quantity": 1,
+          "price": "1299.99",
+          "total": "1299.99"
+        }
+      ],
+      "total_amount": "8599.90",
+      "shipping_address": {
+        "street": "808 Jennifer Highway Suite 095",
+        "city": "New Robert",
+        "state": "TN",
+        "zip": "88085",
+        "country": "USA"
+      },
+      "created_at": "2024-09-19",
+      "updated_at": "2024-10-18",
+      "notes": "Well name skill medical. Hospital like player. Effect administration small general run pick."
+    },
+    {
+      "id": "ord019",
+      "client_id": "cli015",
+      "order_number": "ORD-20241012-019",
+      "status": "pending",
+      "items": [
+        {
+          "sku": "KEY004",
+          "name": "Wireless Keyboard",
+          "quantity": 1,
+          "price": "79.99",
+          "total": "79.99"
+        },
+        {
+          "sku": "KEY004",
+          "name": "Wireless Keyboard",
+          "quantity": 5,
+          "price": "79.99",
+          "total": "399.95"
+        }
+      ],
+      "total_amount": "479.94",
+      "shipping_address": {
+        "street": "6765 Tyler Parks Suite 841",
+        "city": "Millerburgh",
+        "state": "ND",
+        "zip": "39005",
+        "country": "USA"
+      },
+      "created_at": "2024-10-12",
+      "updated_at": "2025-01-23",
+      "notes": "Produce fill owner international ready goal. Risk treatment past."
+    },
+    {
+      "id": "ord020",
+      "client_id": "cli002",
+      "order_number": "ORD-20240908-020",
+      "status": "processing",
+      "items": [
+        {
+          "sku": "PRINT008",
+          "name": "Laser Printer",
+          "quantity": 1,
+          "price": "399.99",
+          "total": "399.99"
+        },
+        {
+          "sku": "TAB003",
+          "name": "Industrial Tablet",
+          "quantity": 2,
+          "price": "599.99",
+          "total": "1199.98"
+        },
+        {
+          "sku": "PRINT008",
+          "name": "Laser Printer",
+          "quantity": 5,
+          "price": "399.99",
+          "total": "1999.95"
+        }
+      ],
+      "total_amount": "3599.92",
+      "shipping_address": {
+        "street": "755 Hines Ports",
+        "city": "New Michael",
+        "state": "MD",
+        "zip": "85640",
+        "country": "USA"
+      },
+      "created_at": "2024-09-08",
+      "updated_at": "2024-12-15",
+      "notes": "Save material hit. Brother simple region Democrat partner really your."
     }
   ]
-} 
+}
