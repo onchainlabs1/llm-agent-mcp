@@ -1,8 +1,8 @@
 # Management Review Minutes — MR-2025-001
 
 - Date: 2025-08-06
-- Chair: AIMS Manager
-- Participants: Technical Lead, Security Officer, QA Lead, DevOps Engineer
+- Chair: Fábio Silva (AIMS Manager)
+- Participants: Fábio Silva (Technical Lead), Fábio Silva (Security Officer), Fábio Silva (QA Lead), Fábio Silva (DevOps Engineer)
 
 ## Inputs (Clause 9.3)
 - KPI dashboard review (see KPI_Snapshot.json)

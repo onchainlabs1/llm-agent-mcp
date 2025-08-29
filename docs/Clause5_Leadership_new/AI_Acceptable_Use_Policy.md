@@ -3,10 +3,11 @@
 
 **Document Control:**
 - **Document ID:** AIMS-AUP-001
-- **Version:** 1.0
-- **Date:** 2024-12-19
-- **Status:** Draft
-- **Owner:** AI Management Team
+- **Version:** 1.1
+- **Date:** 2024-12-28
+- **Status:** Approved
+- **Owner:** Fábio Silva (Security Lead)
+- **Approved by:** Fábio Silva (AI System Lead)
 
 ---
 

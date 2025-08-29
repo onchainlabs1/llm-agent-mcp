@@ -3,10 +3,11 @@
 
 **Document Control:**
 - **Document ID:** AIMS-RR-001
-- **Version:** 1.0
-- **Date:** 2024-12-19
-- **Status:** Draft
-- **Owner:** AI Management Team
+- **Version:** 1.1
+- **Date:** 2024-12-28
+- **Status:** Approved
+- **Owner:** Fábio Silva (AIMS Manager)
+- **Approved by:** Fábio Silva (AI System Lead)
 
 ---
 
@@ -361,10 +362,11 @@ The RACI matrix defines the roles and responsibilities for key AI management act
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
-- **Reviewed by:** Project Leadership
-- **Approved by:** AI Management Team Lead
-- **Next Review:** 2025-03-19
+- **Prepared by:** Fábio Silva (AIMS Manager)
+- **Reviewed by:** Fábio Silva (Technical Lead)
+- **Approved by:** Fábio Silva (AI System Lead)
+- **Approval Date:** 2024-12-28
+- **Next Review:** 2025-06-28
 
 **References:**
 - ISO/IEC 42001:2023 - Clause 5.3
