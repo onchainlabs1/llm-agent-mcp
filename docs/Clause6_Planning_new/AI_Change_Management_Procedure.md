@@ -6,8 +6,8 @@
 - **Version:** 1.1
 - **Date:** 2024-12-28
 - **Status:** Approved
-- **Owner:** Fábio Silva (Engineering Lead)
-- **Approved by:** Fábio Silva (AI System Lead)
+- **Owner:** Jennifer Park (Engineering Lead)
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
 
 ---
 

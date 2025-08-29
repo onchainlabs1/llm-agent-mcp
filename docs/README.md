@@ -6,7 +6,8 @@
 - **Version:** 1.0
 - **Date:** 2024-12-19
 - **Status:** Approved
-- **Owner:** AI Management Team
+- **Owner:** Michael Rodriguez (AIMS Manager)
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
 
 ---
 

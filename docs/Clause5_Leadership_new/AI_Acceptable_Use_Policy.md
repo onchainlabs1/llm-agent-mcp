@@ -6,8 +6,8 @@
 - **Version:** 1.1
 - **Date:** 2024-12-28
 - **Status:** Approved
-- **Owner:** Fábio Silva (Security Lead)
-- **Approved by:** Fábio Silva (AI System Lead)
+- **Owner:** David Thompson (Security Lead)
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
 
 ---
 

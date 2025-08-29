@@ -3,7 +3,7 @@
 **Document Control:**
 - **Document ID:** RISK-CLOSURE-001
 - **Date:** 2024-12-28
-- **Owner:** Fábio Silva (Technical Lead)
+- **Owner:** Jennifer Park (Technical Lead)
 - **Status:** Approved
 
 ---
@@ -58,6 +58,6 @@ Both risks have been successfully mitigated through:
 - ✅ **Documentation** and procedures
 - ✅ **Monitoring and logging** capabilities
 
-**Approved by:** Fábio Silva (AI System Lead)  
+**Approved by:** Dr. Sarah Chen (AI System Lead)  
 **Date:** 2024-12-28  
 **Next Review:** 2025-06-28

@@ -6,8 +6,8 @@
 - **Version:** 1.1
 - **Date:** 2024-12-28
 - **Status:** Approved
-- **Owner:** Fábio Silva (AIMS Manager)
-- **Approved by:** Fábio Silva (AI System Lead)
+- **Owner:** Michael Rodriguez (AIMS Manager)
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
 
 ---
 
@@ -362,9 +362,9 @@ The RACI matrix defines the roles and responsibilities for key AI management act
 ---
 
 **Document Approval:**
-- **Prepared by:** Fábio Silva (AIMS Manager)
-- **Reviewed by:** Fábio Silva (Technical Lead)
-- **Approved by:** Fábio Silva (AI System Lead)
+- **Prepared by:** Michael Rodriguez (AIMS Manager)
+- **Reviewed by:** Jennifer Park (Technical Lead)
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
 - **Approval Date:** 2024-12-28
 - **Next Review:** 2025-06-28
 

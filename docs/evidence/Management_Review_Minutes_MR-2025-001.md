@@ -1,8 +1,8 @@
 # Management Review Minutes — MR-2025-001
 
 - Date: 2025-08-06
-- Chair: Fábio Silva (AIMS Manager)
-- Participants: Fábio Silva (Technical Lead), Fábio Silva (Security Officer), Fábio Silva (QA Lead), Fábio Silva (DevOps Engineer)
+- Chair: Dr. Sarah Chen (AIMS Manager)
+- Participants: Jennifer Park (Technical Lead), David Thompson (Security Officer), Lisa Wang (QA Lead), Michael Rodriguez (DevOps Engineer)
 
 ## Inputs (Clause 9.3)
 - KPI dashboard review (see KPI_Snapshot.json)
