@@ -1,7 +1,7 @@
 ---
 owner: Compliance Officer
-version: 1.0
-approved_by: AIMS Manager
+version: 1.1
+approved_by: Dr. Sarah Chen (AI System Lead)
 approved_on: 2025-01-18
 next_review: 2025-07-18
 ---

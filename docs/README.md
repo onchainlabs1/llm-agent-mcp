@@ -3,8 +3,8 @@
 
 **Document Control:**
 - **Document ID:** AIMS-MAIN-INDEX-001
-- **Version:** 1.0
-- **Date:** 2024-12-19
+- **Version:** 1.1
+- **Date:** 2024-12-28
 - **Status:** Approved
 - **Owner:** Michael Rodriguez (AIMS Manager)
 - **Approved by:** Dr. Sarah Chen (AI System Lead)
@@ -206,7 +206,7 @@ All 7 clauses of ISO/IEC 42001:2023 have been fully implemented and documented.
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
+- **Prepared by:** Michael Rodriguez (AIMS Manager)
 - **Reviewed by:** Project Leadership
-- **Approved by:** AI Management Team Lead
-- **Next Review:** 2025-03-19 
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
+- **Next Review:** 2025-06-28 

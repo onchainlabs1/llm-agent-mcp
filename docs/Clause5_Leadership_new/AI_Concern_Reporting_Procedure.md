@@ -3,10 +3,10 @@
 
 **Document Control:**
 - **Document ID:** AIMS-CRP-001
-- **Version:** 1.0
-- **Date:** 2024-12-19
-- **Status:** Draft
-- **Owner:** AI Management Team
+- **Version:** 1.1
+- **Date:** 2024-12-28
+- **Status:** Approved
+- **Owner:** Michael Rodriguez (AIMS Manager)
 
 ---
 
@@ -283,10 +283,10 @@ This procedure applies to all individuals who interact with AI systems within th
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
+- **Prepared by:** Michael Rodriguez (AIMS Manager)
 - **Reviewed by:** Compliance Officer
-- **Approved by:** AI Management Team Lead
-- **Next Review:** 2025-03-19
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
+- **Next Review:** 2025-06-28
 
 **References:**
 - ISO/IEC 42001:2023 - Annex A.3.3

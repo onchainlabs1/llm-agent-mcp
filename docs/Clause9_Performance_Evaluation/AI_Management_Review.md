@@ -1,9 +1,9 @@
 ---
-owner: AIMS Manager
-version: 1.0
-approved_by: AIMS Manager
-approved_on: 2024-12-20
-next_review: 2025-06-20
+owner: Michael Rodriguez (AIMS Manager)
+version: 1.1
+approved_by: Dr. Sarah Chen (AI System Lead)
+approved_on: 2024-12-28
+next_review: 2025-06-28
 ---
 
 # AI Management Review
@@ -11,10 +11,10 @@ next_review: 2025-06-20
 
 **Document Control:**
 - **Document ID:** AIMS-MR-001
-- **Version:** 1.0
-- **Date:** 2024-12-19
-- **Status:** Draft
-- **Owner:** AI Management Team
+- **Version:** 1.1
+- **Date:** 2024-12-28
+- **Status:** Approved
+- **Owner:** Michael Rodriguez (AIMS Manager)
 
 ---
 
@@ -1036,10 +1036,10 @@ class ActionItemTracker:
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
+- **Prepared by:** Michael Rodriguez (AIMS Manager)
 - **Reviewed by:** Technical Lead
-- **Approved by:** AI Management Team Lead
-- **Next Review:** 2025-03-19
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
+- **Next Review:** 2025-06-28
 
 **References:**
 - ISO/IEC 42001:2023 - Clause 9.3

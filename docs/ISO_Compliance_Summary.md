@@ -3,10 +3,10 @@
 
 **Document Control:**
 - **Document ID:** AIMS-COMPLIANCE-SUMMARY-001
-- **Version:** 1.0
+- **Version:** 1.1
 - **Date:** 2025-08-06
 - **Status:** Approved
-- **Owner:** AI Management Team
+- **Owner:** Michael Rodriguez (AIMS Manager)
 
 ---
 
@@ -188,7 +188,7 @@ The `llm-agent-mcp` project demonstrates **exceptional compliance** with ISO/IEC
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
+- **Prepared by:** Michael Rodriguez (AIMS Manager)
 - **Reviewed by:** Project Leadership
-- **Approved by:** AI Management Team Lead
-- **Next Review:** 2025-03-19 
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
+- **Next Review:** 2025-06-28 

@@ -1,9 +1,9 @@
 ---
 owner: Dr. Sarah Chen, Chief AI Officer
-version: 1.0
+version: 1.1
 approved_by: Dr. Sarah Chen, Chief AI Officer
 approved_on: 2025-01-19
-next_review: 2025-06-20
+next_review: 2025-06-28
 ---
 
 # AI Management Policy
@@ -11,8 +11,8 @@ next_review: 2025-06-20
 
 **Document Control:**
 - **Document ID:** AIMS-AMP-001
-- **Version:** 1.0
-- **Date:** 2024-12-19
+- **Version:** 1.1
+- **Date:** 2024-12-28
 - **Status:** Approved
 - **Owner:** Dr. Sarah Chen, Chief AI Officer
 
@@ -267,7 +267,7 @@ This policy applies to all AI systems, processes, and activities within the llm-
 - **Prepared by:** Dr. Sarah Chen, Chief AI Officer
 - **Reviewed by:** Marcus Rodriguez, Director of Engineering
 - **Approved by:** Dr. Sarah Chen, Chief AI Officer
-- **Next Review:** 2025-03-19
+- **Next Review:** 2025-06-28
 
 **References:**
 - ISO/IEC 42001:2023 - Clause 5.2

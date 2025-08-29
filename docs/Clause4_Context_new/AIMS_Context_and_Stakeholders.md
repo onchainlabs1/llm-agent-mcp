@@ -3,8 +3,8 @@
 
 **Document Control:**
 - **Document ID:** AIMS-CS-002
-- **Version:** 1.0
-- **Date:** 2024-12-19
+- **Version:** 1.1
+- **Date:** 2024-12-28
 - **Status:** Approved
 - **Owner:** Dr. Sarah Chen, Chief AI Officer
 
@@ -319,7 +319,7 @@ The organization shall determine the interested parties that are relevant to the
 - **Prepared by:** Dr. Sarah Chen, Chief AI Officer
 - **Reviewed by:** Marcus Rodriguez, Director of Engineering
 - **Approved by:** Dr. Sarah Chen, Chief AI Officer
-- **Next Review:** 2025-03-19
+- **Next Review:** 2025-06-28
 
 **References:**
 - ISO/IEC 42001:2023 - Clause 4.1, 4.2

@@ -321,10 +321,10 @@ This policy applies to all users, developers, and stakeholders who interact with
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
+- **Prepared by:** Michael Rodriguez (AIMS Manager)
 - **Reviewed by:** Security Officer
-- **Approved by:** AI Management Team Lead
-- **Next Review:** 2025-03-19
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
+- **Next Review:** 2025-06-28
 
 **References:**
 - ISO/IEC 42001:2023 - Annex A.9.2, A.9.4

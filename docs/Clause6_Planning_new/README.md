@@ -3,10 +3,10 @@
 
 **Document Control:**
 - **Document ID:** AIMS-C6-NEW-INDEX-001
-- **Version:** 1.0
-- **Date:** 2024-12-19
-- **Status:** Draft
-- **Owner:** AI Management Team
+- **Version:** 1.1
+- **Date:** 2024-12-28
+- **Status:** Approved
+- **Owner:** Michael Rodriguez (AIMS Manager)
 
 ---
 
@@ -147,7 +147,7 @@ This directory contains the **new structured documentation** for **Clause 6: Pla
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
+- **Prepared by:** Michael Rodriguez (AIMS Manager)
 - **Reviewed by:** Project Leadership
-- **Approved by:** AI Management Team Lead
-- **Next Review:** 2025-03-19 
+- **Approved by:** Dr. Sarah Chen (AI System Lead)
+- **Next Review:** 2025-06-28 

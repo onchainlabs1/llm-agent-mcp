@@ -301,10 +301,10 @@ This procedure applies to all changes to AI systems and the AI management system
 ---
 
 **Document Approval:**
-- **Prepared by:** AI Management Team
-- **Reviewed by:** AI Management Team Lead
+- **Prepared by:** Michael Rodriguez (AIMS Manager)
+- **Reviewed by:** Jennifer Park (Technical Lead) Lead
 - **Approved by:** Project Leadership
-- **Next Review:** 2025-03-19
+- **Next Review:** 2025-06-28
 
 **References:**
 - ISO/IEC 42001:2023 - Clause 6.3
