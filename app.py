@@ -19,7 +19,7 @@ st.set_page_config(
 
 # --- Modern Theme ---
 st.markdown("""
-<style>
+    <style>
     .main-header {
         text-align: center;
         padding: 2rem;
@@ -53,6 +53,14 @@ st.markdown("""
         padding: 1rem;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
+    
+    .response-container {
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        border: 1px solid #0ea5e9;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -67,10 +75,10 @@ st.markdown("""
 # --- Sidebar Configuration ---
 with st.sidebar:
     st.header("🔧 Configuration")
-    
+
     # API Key Configuration
     st.subheader("🔑 API Keys")
-    
+
     # Provider selection
     provider = st.selectbox(
         "LLM Provider",
@@ -99,8 +107,8 @@ with st.sidebar:
             type="password", 
             help="Enter your Anthropic API key for real LLM responses"
         )
-    
-    # Store in session state
+
+        # Store in session state
     if provider != "simulated" and api_key:
         st.session_state[f"{provider}_api_key"] = api_key
         st.success(f"✅ {provider.title()} API Key configured")
@@ -114,14 +122,14 @@ with st.sidebar:
     
     # System Status
     st.subheader("📊 System Status")
-    
+
     # Check data files
     data_files = [
         ("data/clients.json", "📋 CRM Data"),
         ("data/orders.json", "📦 ERP Data"), 
         ("data/employees.json", "👥 HR Data"),
     ]
-    
+
     for file_path, description in data_files:
         if os.path.exists(file_path):
             st.success(f"✅ {description}")
@@ -151,6 +159,10 @@ st.markdown("---")
 
 # --- Agent Demo Section ---
 st.header("🚀 AI Agent Demo")
+
+# Initialize session state for responses
+if "command_history" not in st.session_state:
+    st.session_state["command_history"] = []
 
 # Check if agent is available
 try:
@@ -218,46 +230,80 @@ if AGENT_AVAILABLE:
             if user_input.strip():
                 with st.spinner("🤖 Processing your command..."):
                     try:
-                        # Use simulated response (can be enhanced to use real LLM if API key provided)
+                        # Use simulated response
                         response = _simulate_llm_response(user_input)
                         
-                        st.success("✅ Command executed successfully!")
-                        st.markdown("**Agent Response:**")
+                        # Store response in session state
+                        result = {
+                            "timestamp": datetime.now().strftime("%H:%M:%S"),
+                            "command": user_input,
+                            "response": response,
+                            "success": True
+                        }
                         
-                        # Try to parse JSON response
-                        try:
-                            if isinstance(response, str):
-                                response_data = json.loads(response)
-                            else:
-                                response_data = response
-                                
-                            # Display structured response
-                            if isinstance(response_data, dict):
-                                if "tool_name" in response_data:
-                                    st.info(f"🔧 **Tool Used:** {response_data['tool_name']}")
-                                if "parameters" in response_data:
-                                    with st.expander("🔍 View Parameters", expanded=True):
-                                        st.json(response_data["parameters"])
-                            else:
-                                st.code(response, language="json")
-                                
-                        except:
-                            # Fallback for non-JSON responses
-                            st.code(response, language="text")
+                        st.session_state["command_history"].insert(0, result)
+                        
+                        # Keep only last 5 responses
+                        if len(st.session_state["command_history"]) > 5:
+                            st.session_state["command_history"] = st.session_state["command_history"][:5]
                             
                     except Exception as e:
-                        st.error(f"❌ Error: {e}")
+                        # Store error in session state
+                        result = {
+                            "timestamp": datetime.now().strftime("%H:%M:%S"),
+                            "command": user_input,
+                            "response": str(e),
+                            "success": False
+                        }
+                        st.session_state["command_history"].insert(0, result)
                 
                 # Clear the demo input
                 if "demo_input" in st.session_state:
                     del st.session_state["demo_input"]
-                    st.rerun()
-    
+        st.rerun()
+
     with col2:
-        if st.button("🗑️ Clear", use_container_width=True):
+        if st.button("🗑️ Clear History", use_container_width=True):
+            st.session_state["command_history"] = []
             if "demo_input" in st.session_state:
                 del st.session_state["demo_input"]
-            st.rerun()
+    st.rerun()
+
+    # Display command history
+    if st.session_state["command_history"]:
+        st.markdown("### 📋 Recent Commands & Responses")
+        
+        for i, result in enumerate(st.session_state["command_history"]):
+            with st.container():
+                st.markdown(f"**[{result['timestamp']}] Command:** {result['command']}")
+                
+                if result["success"]:
+                    st.success("✅ Success")
+                    
+                    # Try to parse and display response nicely
+                    try:
+                        if isinstance(result["response"], str):
+                            response_data = json.loads(result["response"])
+    else:
+                            response_data = result["response"]
+                            
+                        if isinstance(response_data, dict):
+                            if "tool_name" in response_data:
+                                st.info(f"🔧 Tool: {response_data['tool_name']}")
+                            if "parameters" in response_data:
+                                with st.expander(f"View Parameters #{i+1}", expanded=False):
+                                    st.json(response_data["parameters"])
+        else:
+                            st.code(result["response"], language="json")
+                            
+                    except:
+                        st.code(result["response"], language="text")
+                        
+                else:
+                    st.error(f"❌ Error: {result['response']}")
+                
+                if i < len(st.session_state["command_history"]) - 1:
+                    st.markdown("---")
 
 else:
     st.warning("⚠️ Agent Core not available in Streamlit Cloud mode")
