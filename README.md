@@ -8,7 +8,7 @@
 
 ## 🎯 ISO/IEC 42001:2023 Compliance Overview
 
-**AgentMCP** demonstrates comprehensive **AI Management System (AIMS)** compliance with **ISO/IEC 42001:2023** standards. Led by **Dr. Sarah Chen** and the AI Management Team, this project showcases professional-grade AI governance, risk management, and operational controls through a practical LLM-based business automation platform.
+**AgentMCP** demonstrates comprehensive **AI Management System (AIMS)** compliance with **ISO/IEC 42001:2023** standards. Led by **Dr. Sarah Chen** and her professional AI governance team, this project showcases professional-grade AI governance, risk management, and operational controls through a practical LLM-based business automation platform.
 
 ### 🏆 **Certification Status: ELIGIBLE**
 - ✅ **353.5 hours** of implementation (exceeds 300h requirement)
