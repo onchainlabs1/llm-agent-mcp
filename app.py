@@ -30,15 +30,6 @@ st.markdown("""
         box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     }
     
-    /* Beautiful Command Chips */
-    .chip-container {
-        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        border-radius: 15px;
-        padding: 20px;
-        margin: 20px 0;
-        border: 1px solid #e2e8f0;
-    }
-    
     .stButton > button {
         background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
         color: white !important;
@@ -56,7 +47,6 @@ st.markdown("""
         background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%) !important;
     }
     
-    /* Enhanced metrics */
     [data-testid="metric-container"] {
         background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
         border: 1px solid #e2e8f0;
@@ -100,21 +90,20 @@ st.markdown("---")
 st.header("🚀 AI Agent Demo")
 
 # Check if we can load agent
+AGENT_AVAILABLE = False
 try:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     from agent.agent_core import _simulate_llm_response
     AGENT_AVAILABLE = True
-except:
-    AGENT_AVAILABLE = False
+except Exception as e:
+    st.info(f"Agent core not available: {e}")
 
 if AGENT_AVAILABLE:
     st.success("✅ Agent Core Available - Demo Mode Active")
     
-    # Beautiful command chips
-    st.markdown('<div class="chip-container">', unsafe_allow_html=True)
-    st.markdown("#### 💡 Try These Business Commands:")
+    # Command examples organized by category
+    st.subheader("💡 Try These Business Commands:")
     
-    # Example commands organized by category
     st.markdown("**📋 CRM Operations:**")
     col1, col2 = st.columns(2)
     with col1:
@@ -142,8 +131,6 @@ if AGENT_AVAILABLE:
         if st.button("💼 List all managers", key="hr2", use_container_width=True):
             st.session_state["demo_input"] = "List all managers and their teams"
     
-    st.markdown('</div>', unsafe_allow_html=True)
-    
     # Input area
     user_input = st.text_area(
         "🎯 Enter your business command:",
@@ -163,10 +150,8 @@ if AGENT_AVAILABLE:
                         # Use simulated response for demo
                         response = _simulate_llm_response(user_input)
                         
-                        # Create nice response display
-                        st.markdown("### 📊 Command Result")
-                        
                         st.success("✅ Command executed successfully!")
+                        st.markdown("**Agent Response:**")
                         
                         # Try to parse JSON response
                         try:
@@ -182,10 +167,10 @@ if AGENT_AVAILABLE:
                                 if "parameters" in response_data:
                                     with st.expander("🔍 View Parameters", expanded=True):
                                         st.json(response_data["parameters"])
-    else:
+                            else:
                                 st.code(response, language="json")
                                 
-                        except:
+                        except Exception:
                             # Fallback for non-JSON responses
                             st.code(response, language="text")
                             
@@ -195,13 +180,13 @@ if AGENT_AVAILABLE:
                 # Clear the demo input
                 if "demo_input" in st.session_state:
                     del st.session_state["demo_input"]
-                    st.rerun()
-    
+        st.rerun()
+
     with col2:
         if st.button("🗑️ Clear", use_container_width=True):
             if "demo_input" in st.session_state:
                 del st.session_state["demo_input"]
-            st.rerun()
+    st.rerun()
 
 else:
     st.warning("⚠️ Agent Core not available in Streamlit Cloud mode")
@@ -223,7 +208,7 @@ with col1:
             st.metric("📋 CRM Clients", client_count, "Active records")
         else:
             st.metric("📋 CRM Clients", "N/A", "No data file")
-    except:
+    except Exception:
         st.metric("📋 CRM Clients", "Error", "Cannot load")
 
 with col2:
@@ -235,7 +220,7 @@ with col2:
             st.metric("📦 ERP Orders", order_count, "Total orders")
     else:
             st.metric("📦 ERP Orders", "N/A", "No data file")
-    except:
+    except Exception:
         st.metric("📦 ERP Orders", "Error", "Cannot load")
 
 with col3:
@@ -247,7 +232,7 @@ with col3:
             st.metric("👥 HR Employees", employee_count, "Team members")
         else:
             st.metric("👥 HR Employees", "N/A", "No data file")
-    except:
+    except Exception:
         st.metric("👥 HR Employees", "Error", "Cannot load")
 
 # --- ISO Compliance Status ---
