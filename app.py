@@ -31,6 +31,13 @@ st.markdown("""
         border-radius: 25px !important;
         font-weight: 600 !important;
     }
+    .result-card {
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        border: 1px solid #0ea5e9;
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -65,7 +72,7 @@ with st.sidebar:
         st.success(f"✅ {provider.title()} API Key configured")
         st.info("🤖 Agent will use real LLM responses")
     else:
-        st.info("🎭 Demo Mode: Using simulated responses")
+        st.info("🎭 Demo Mode: Using simulated responses with REAL data")
 
 # Navigation
 st.subheader("📋 Quick Navigation")
@@ -89,7 +96,7 @@ with col4:
 st.markdown("---")
 
 # Agent Demo
-st.header("🚀 AI Agent Demo")
+st.header("🚀 AI Agent Demo with Real Data")
 
 # Initialize session state
 if "responses" not in st.session_state:
@@ -101,7 +108,7 @@ try:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     from agent.agent_core import _simulate_llm_response
     agent_available = True
-    st.success("✅ Agent Core Available")
+    st.success("✅ Agent Core Available - Executing REAL searches in business data!")
 except Exception as e:
     st.warning(f"⚠️ Agent not available: {str(e)[:100]}")
 
@@ -109,29 +116,38 @@ if agent_available:
     # Command buttons
     st.subheader("💡 Try These Commands:")
     
-    st.markdown("**📋 CRM:**")
+    st.markdown("**📋 CRM Operations:**")
     col1, col2 = st.columns(2)
     with col1:
         if st.button("📋 List clients > $5000", key="crm1", use_container_width=True):
             st.session_state.selected_command = "List all clients with balance over 5000"
     with col2:
-        if st.button("➕ Create client Alice", key="crm2", use_container_width=True):
-            st.session_state.selected_command = "Create a new client named Alice Johnson"
+        if st.button("📋 List all clients", key="crm3", use_container_width=True):
+            st.session_state.selected_command = "List all clients"
     
-    st.markdown("**📦 ERP:**")
+    st.markdown("**📦 ERP Operations:**")
     col1, col2 = st.columns(2)
     with col1:
         if st.button("📦 Show shipped orders", key="erp1", use_container_width=True):
             st.session_state.selected_command = "Show all orders with status shipped"
     with col2:
-        if st.button("🔄 Update order", key="erp2", use_container_width=True):
-            st.session_state.selected_command = "Update order status to delivered"
+        if st.button("📦 List all orders", key="erp3", use_container_width=True):
+            st.session_state.selected_command = "List all orders"
+    
+    st.markdown("**👥 HR Operations:**")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("👥 Find Engineering employees", key="hr1", use_container_width=True):
+            st.session_state.selected_command = "Find employees in Engineering department"
+    with col2:
+        if st.button("👥 List all employees", key="hr3", use_container_width=True):
+            st.session_state.selected_command = "List all employees"
     
     # Input
     user_input = st.text_area(
         "🎯 Enter command:",
         value=getattr(st.session_state, 'selected_command', ''),
-        placeholder="Ex: List all clients with balance over 5000",
+        placeholder="Ex: Show all orders with status shipped",
         height=80
     )
     
@@ -166,37 +182,61 @@ if agent_available:
                 delattr(st.session_state, 'selected_command')
             st.rerun()
 
-    # Show responses
+    # Show responses with REAL DATA
     if st.session_state.responses:
-        st.markdown("### 📋 Recent Responses")
+        st.markdown("### 📋 Recent Results")
         
         for i, resp in enumerate(st.session_state.responses):
             with st.container():
-                st.markdown(f"**[{resp['timestamp']}]** {resp['command']}")
+                st.markdown(f"**[{resp['timestamp']}] Command:** {resp['command']}")
                 
-                try:
-                    if isinstance(resp['response'], str):
-                        data = json.loads(resp['response'])
-                    else:
-                        data = resp['response']
+                # Parse response
+                data = resp['response']
+                if isinstance(data, str):
+                    try:
+                        data = json.loads(data)
+                    except:
+                        st.code(data)
+                        continue
+                
+                if isinstance(data, dict):
+                    # Show tool info
+                    if "tool_name" in data:
+                        st.info(f"🔧 **Tool:** {data['tool_name']}")
                     
-                    if isinstance(data, dict):
-                        if "tool_name" in data:
-                            st.info(f"🔧 Tool: {data['tool_name']}")
-                        if "parameters" in data:
-                            st.json(data["parameters"])
-                    else:
-                        st.code(resp['response'])
+                    # Show parameters
+                    if "parameters" in data:
+                        st.markdown("**Parameters:**")
+                        st.json(data["parameters"])
+                    
+                    # Show REAL RESULTS
+                    if "results" in data:
+                        results = data["results"]
+                        count = data.get("count", len(results))
                         
-                except Exception:
-                    st.code(resp['response'])
+                        if results:
+                            st.success(f"✅ **Found {count} results:**")
+                            
+                            # Display results in a nice format
+                            for j, item in enumerate(results[:5]):  # Show first 5
+                                with st.expander(f"Result {j+1}: {item.get('name', item.get('id', 'Item'))}", expanded=(j==0)):
+                                    st.json(item)
+                            
+                            if len(results) > 5:
+                                st.info(f"... and {len(results) - 5} more results")
+                        else:
+                            st.warning("No results found")
+                    
+                    # Show errors
+                    if "error" in data:
+                        st.error(f"❌ Error: {data['error']}")
                 
                 if i < len(st.session_state.responses) - 1:
                     st.markdown("---")
 
 # Data Overview
 st.markdown("---")
-st.header("📊 Data Overview")
+st.header("📊 Business Data Overview")
 
 col1, col2, col3 = st.columns(3)
 
@@ -206,7 +246,7 @@ with col1:
             with open("data/clients.json", "r") as f:
                 data = json.load(f)
             count = len(data.get("clients", []))
-            st.metric("📋 Clients", count)
+            st.metric("📋 Clients", count, "Real business data")
         else:
             st.metric("📋 Clients", "N/A")
     except Exception:
@@ -218,7 +258,7 @@ with col2:
             with open("data/orders.json", "r") as f:
                 data = json.load(f)
             count = len(data.get("orders", []))
-            st.metric("📦 Orders", count)
+            st.metric("📦 Orders", count, "Real business data")
         else:
             st.metric("📦 Orders", "N/A")
     except Exception:
@@ -230,7 +270,7 @@ with col3:
             with open("data/employees.json", "r") as f:
                 data = json.load(f)
             count = len(data.get("employees", []))
-            st.metric("👥 Employees", count)
+            st.metric("👥 Employees", count, "Real business data")
         else:
             st.metric("👥 Employees", "N/A")
     except Exception:
@@ -253,5 +293,6 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #666;">
     <p><strong>AgentMCP</strong> - AI Business Automation with ISO/IEC 42001:2023 Compliance</p>
+    <p>🎯 Now with REAL data execution - searches actual business records!</p>
 </div>
 """, unsafe_allow_html=True)
