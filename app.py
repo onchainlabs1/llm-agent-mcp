@@ -1,6 +1,6 @@
 """
 AgentMCP - AI Business Copilot
-Clean and functional main application with modern chip design
+Clean and functional main application
 """
 
 import json
@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Modern Theme with Beautiful Chips ---
+# --- Modern Theme ---
 st.markdown("""
     <style>
     .main-header {
@@ -30,92 +30,8 @@ st.markdown("""
         box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     }
     
-    /* Modern Command Chips */
-    .command-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin: 20px 0;
-        justify-content: center;
-    }
-    
-    .command-chip {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        padding: 12px 20px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        text-align: center;
-        min-width: 200px;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .command-chip:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: left 0.5s;
-    }
-    
-    .command-chip:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
-    }
-    
-    .command-chip:hover:before {
-        left: 100%;
-    }
-    
-    .command-chip:active {
-        transform: translateY(0px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-    
-    /* Categories for different types */
-    .crm-chip {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
-    }
-    
-    .crm-chip:hover {
-        background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
-        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
-    }
-    
-    .erp-chip {
-        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
-    }
-    
-    .erp-chip:hover {
-        background: linear-gradient(135deg, #ec4899 0%, #fbbf24 100%);
-        box-shadow: 0 8px 25px rgba(250, 112, 154, 0.4);
-    }
-    
-    .hr-chip {
-        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-        color: #374151;
-        box-shadow: 0 4px 15px rgba(168, 237, 234, 0.3);
-    }
-    
-    .hr-chip:hover {
-        background: linear-gradient(135deg, #67e8f9 0%, #fce7f3 100%);
-        box-shadow: 0 8px 25px rgba(168, 237, 234, 0.4);
-    }
-    
-    /* Chip container */
-    .chips-container {
+    /* Beautiful Command Chips */
+    .chip-container {
         background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         border-radius: 15px;
         padding: 20px;
@@ -123,16 +39,30 @@ st.markdown("""
         border: 1px solid #e2e8f0;
     }
     
-    /* Enhanced buttons */
     .stButton > button {
-        border-radius: 10px !important;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 25px !important;
+        padding: 12px 20px !important;
         font-weight: 600 !important;
         transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3) !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-1px) !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4) !important;
+        background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%) !important;
+    }
+    
+    /* Enhanced metrics */
+    [data-testid="metric-container"] {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -180,66 +110,52 @@ except:
 if AGENT_AVAILABLE:
     st.success("✅ Agent Core Available - Demo Mode Active")
     
-    # Modern Command Chips
-    st.markdown("""
-    <div class="chips-container">
-        <h4 style="margin-bottom: 15px; color: #374151;">💡 Try These Business Commands:</h4>
-        <div class="command-chips">
-    """, unsafe_allow_html=True)
+    # Beautiful command chips
+    st.markdown('<div class="chip-container">', unsafe_allow_html=True)
+    st.markdown("#### 💡 Try These Business Commands:")
     
-    # CRM Commands
-    crm_commands = [
-        "📋 List all clients with balance over 5000",
-        "➕ Create a new client named Alice Johnson"
-    ]
+    # Example commands organized by category
+    st.markdown("**📋 CRM Operations:**")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("📋 List clients with balance > $5000", key="crm1", use_container_width=True):
+            st.session_state["demo_input"] = "List all clients with balance over 5000"
+    with col2:
+        if st.button("➕ Create client Alice Johnson", key="crm2", use_container_width=True):
+            st.session_state["demo_input"] = "Create a new client named Alice Johnson with email alice@techcorp.com"
     
-    # ERP Commands  
-    erp_commands = [
-        "📦 Show all orders with status shipped",
-        "🔄 Update order status to delivered"
-    ]
+    st.markdown("**📦 ERP Operations:**")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("📦 Show shipped orders", key="erp1", use_container_width=True):
+            st.session_state["demo_input"] = "Show all orders with status shipped"
+    with col2:
+        if st.button("🔄 Update order status", key="erp2", use_container_width=True):
+            st.session_state["demo_input"] = "Update order ORD-001 status to delivered"
     
-    # HR Commands
-    hr_commands = [
-        "👥 Find employees in Engineering department",
-        "💼 List all managers and their teams"
-    ]
+    st.markdown("**👥 HR Operations:**")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("👥 Find Engineering employees", key="hr1", use_container_width=True):
+            st.session_state["demo_input"] = "Find employees in Engineering department"
+    with col2:
+        if st.button("💼 List all managers", key="hr2", use_container_width=True):
+            st.session_state["demo_input"] = "List all managers and their teams"
     
-    # Create interactive chips with JavaScript
-    all_commands = [
-        ("📋 List all clients with balance over 5000", "crm-chip"),
-        ("➕ Create client Alice Johnson (alice@techcorp.com)", "crm-chip"),
-        ("📦 Show all orders with status shipped", "erp-chip"),
-        ("🔄 Update order ORD-001 to delivered", "erp-chip"),
-        ("👥 Find employees in Engineering department", "hr-chip"),
-        ("💼 List all managers and their teams", "hr-chip")
-    ]
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    # Create chips with click functionality
-    for i, (command, chip_class) in enumerate(all_commands):
-        st.markdown(f"""
-        <div class="command-chip {chip_class}" onclick="
-            document.querySelector('textarea[aria-label=\"🎯 Enter your business command:\"]').value = '{command.replace('📋 ', '').replace('➕ ', '').replace('📦 ', '').replace('🔄 ', '').replace('👥 ', '').replace('💼 ', '')}';
-            document.querySelector('textarea[aria-label=\"🎯 Enter your business command:\"]').dispatchEvent(new Event('input', {{ bubbles: true }}));
-        ">
-            {command}
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("</div></div>", unsafe_allow_html=True)
-    
-    # Input area with better styling
-user_input = st.text_area(
+    # Input area
+    user_input = st.text_area(
         "🎯 Enter your business command:",
         value=st.session_state.get("demo_input", ""),
         placeholder="Ex: List all clients with balance over 5000",
         height=100,
-        help="Click a chip above or type your own command"
+        help="Click a command above or type your own"
     )
     
-    # Execute button with better styling
-    col1, col2 = st.columns([2, 1])
-with col1:
+    # Execute button
+    col1, col2 = st.columns([3, 1])
+    with col1:
         if st.button("🚀 Execute Command", type="primary", use_container_width=True):
             if user_input.strip():
                 with st.spinner("🤖 Processing your command..."):
@@ -250,47 +166,46 @@ with col1:
                         # Create nice response display
                         st.markdown("### 📊 Command Result")
                         
-                        with st.container():
-                            st.success("✅ Command executed successfully!")
-                            
-                            # Try to parse JSON response
-                            try:
-                                if isinstance(response, str):
-                                    response_data = json.loads(response)
-                                else:
-                                    response_data = response
-                                    
-                                # Display structured response
-                                if isinstance(response_data, dict):
-                                    if "tool_name" in response_data:
-                                        st.info(f"🔧 **Tool Used:** {response_data['tool_name']}")
-                                    if "parameters" in response_data:
-                                        with st.expander("🔍 View Parameters", expanded=True):
-                                            st.json(response_data["parameters"])
-                                else:
-                                    st.code(response, language="json")
-                                    
-                            except:
-                                # Fallback for non-JSON responses
-                                st.code(response, language="text")
+                        st.success("✅ Command executed successfully!")
+                        
+                        # Try to parse JSON response
+                        try:
+                            if isinstance(response, str):
+                                response_data = json.loads(response)
+                            else:
+                                response_data = response
                                 
+                            # Display structured response
+                            if isinstance(response_data, dict):
+                                if "tool_name" in response_data:
+                                    st.info(f"🔧 **Tool Used:** {response_data['tool_name']}")
+                                if "parameters" in response_data:
+                                    with st.expander("🔍 View Parameters", expanded=True):
+                                        st.json(response_data["parameters"])
+    else:
+                                st.code(response, language="json")
+                                
+                        except:
+                            # Fallback for non-JSON responses
+                            st.code(response, language="text")
+                            
                     except Exception as e:
                         st.error(f"❌ Error: {e}")
                 
                 # Clear the demo input
                 if "demo_input" in st.session_state:
                     del st.session_state["demo_input"]
-        st.rerun()
-
+                    st.rerun()
+    
     with col2:
         if st.button("🗑️ Clear", use_container_width=True):
             if "demo_input" in st.session_state:
                 del st.session_state["demo_input"]
-    st.rerun()
+            st.rerun()
 
 else:
     st.warning("⚠️ Agent Core not available in Streamlit Cloud mode")
-    st.info("💡 For full agent functionality, run locally with: `streamlit run app.py`")
+    st.info("💡 For full agent functionality, run locally")
 
 # --- Business Data Overview ---
 st.markdown("---")
