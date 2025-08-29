@@ -1,6 +1,6 @@
 """
 AgentMCP - AI Business Copilot
-Clean and functional main application
+Clean and functional main application with modern chip design
 """
 
 import json
@@ -17,16 +17,122 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Clean Theme ---
+# --- Modern Theme with Beautiful Chips ---
 st.markdown("""
-<style>
+    <style>
     .main-header {
         text-align: center;
         padding: 2rem;
-        background: linear-gradient(90deg, #1f77b4, #ff7f0e);
-        border-radius: 10px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
         color: white;
         margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    
+    /* Modern Command Chips */
+    .command-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 20px 0;
+        justify-content: center;
+    }
+    
+    .command-chip {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        text-align: center;
+        min-width: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .command-chip:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .command-chip:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    }
+    
+    .command-chip:hover:before {
+        left: 100%;
+    }
+    
+    .command-chip:active {
+        transform: translateY(0px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    /* Categories for different types */
+    .crm-chip {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    }
+    
+    .crm-chip:hover {
+        background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+    }
+    
+    .erp-chip {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
+    }
+    
+    .erp-chip:hover {
+        background: linear-gradient(135deg, #ec4899 0%, #fbbf24 100%);
+        box-shadow: 0 8px 25px rgba(250, 112, 154, 0.4);
+    }
+    
+    .hr-chip {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: #374151;
+        box-shadow: 0 4px 15px rgba(168, 237, 234, 0.3);
+    }
+    
+    .hr-chip:hover {
+        background: linear-gradient(135deg, #67e8f9 0%, #fce7f3 100%);
+        box-shadow: 0 8px 25px rgba(168, 237, 234, 0.4);
+    }
+    
+    /* Chip container */
+    .chips-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #e2e8f0;
+    }
+    
+    /* Enhanced buttons */
+    .stButton > button {
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -74,68 +180,113 @@ except:
 if AGENT_AVAILABLE:
     st.success("✅ Agent Core Available - Demo Mode Active")
     
-    # Example commands
-    st.subheader("💡 Try These Business Commands:")
-    examples = [
-        "List all clients with balance over 5000",
-        "Create a new client named Alice Johnson with email alice@techcorp.com",
-        "Show all orders with status shipped",
-        "Find employees in Engineering department"
+    # Modern Command Chips
+    st.markdown("""
+    <div class="chips-container">
+        <h4 style="margin-bottom: 15px; color: #374151;">💡 Try These Business Commands:</h4>
+        <div class="command-chips">
+    """, unsafe_allow_html=True)
+    
+    # CRM Commands
+    crm_commands = [
+        "📋 List all clients with balance over 5000",
+        "➕ Create a new client named Alice Johnson"
     ]
     
-    # Create buttons for examples
-    cols = st.columns(2)
-    for i, example in enumerate(examples):
-        with cols[i % 2]:
-            if st.button(example, key=f"ex_{i}"):
-                st.session_state["demo_input"] = example
+    # ERP Commands  
+    erp_commands = [
+        "📦 Show all orders with status shipped",
+        "🔄 Update order status to delivered"
+    ]
     
-    # Input area
-    user_input = st.text_area(
+    # HR Commands
+    hr_commands = [
+        "👥 Find employees in Engineering department",
+        "💼 List all managers and their teams"
+    ]
+    
+    # Create interactive chips with JavaScript
+    all_commands = [
+        ("📋 List all clients with balance over 5000", "crm-chip"),
+        ("➕ Create client Alice Johnson (alice@techcorp.com)", "crm-chip"),
+        ("📦 Show all orders with status shipped", "erp-chip"),
+        ("🔄 Update order ORD-001 to delivered", "erp-chip"),
+        ("👥 Find employees in Engineering department", "hr-chip"),
+        ("💼 List all managers and their teams", "hr-chip")
+    ]
+    
+    # Create chips with click functionality
+    for i, (command, chip_class) in enumerate(all_commands):
+        st.markdown(f"""
+        <div class="command-chip {chip_class}" onclick="
+            document.querySelector('textarea[aria-label=\"🎯 Enter your business command:\"]').value = '{command.replace('📋 ', '').replace('➕ ', '').replace('📦 ', '').replace('🔄 ', '').replace('👥 ', '').replace('💼 ', '')}';
+            document.querySelector('textarea[aria-label=\"🎯 Enter your business command:\"]').dispatchEvent(new Event('input', {{ bubbles: true }}));
+        ">
+            {command}
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("</div></div>", unsafe_allow_html=True)
+    
+    # Input area with better styling
+user_input = st.text_area(
         "🎯 Enter your business command:",
         value=st.session_state.get("demo_input", ""),
         placeholder="Ex: List all clients with balance over 5000",
-        height=100
+        height=100,
+        help="Click a chip above or type your own command"
     )
     
-    if st.button("🚀 Execute Command", type="primary"):
-        if user_input.strip():
-            with st.spinner("Processing..."):
-                try:
-                    # Use simulated response for demo
-                    response = _simulate_llm_response(user_input)
-                    
-                    st.success("✅ Command processed successfully!")
-                    st.markdown("**Agent Response:**")
-                    
-                    # Try to parse JSON response
+    # Execute button with better styling
+    col1, col2 = st.columns([2, 1])
+with col1:
+        if st.button("🚀 Execute Command", type="primary", use_container_width=True):
+            if user_input.strip():
+                with st.spinner("🤖 Processing your command..."):
                     try:
-                        if isinstance(response, str):
-                            response_data = json.loads(response)
-                        else:
-                            response_data = response
-                            
-                        # Display structured response
-                        if isinstance(response_data, dict):
-                            if "tool_name" in response_data:
-                                st.info(f"🔧 Tool: {response_data['tool_name']}")
-                            if "parameters" in response_data:
-                                st.markdown("**Parameters:**")
-                                st.json(response_data["parameters"])
-                        else:
-                            st.markdown(f"```\n{response}\n```")
-                            
-                    except:
-                        # Fallback for non-JSON responses
-                        st.markdown(f"```\n{response}\n```")
+                        # Use simulated response for demo
+                        response = _simulate_llm_response(user_input)
                         
-                except Exception as e:
-                    st.error(f"Error: {e}")
-            
-            # Clear the demo input
+                        # Create nice response display
+                        st.markdown("### 📊 Command Result")
+                        
+                        with st.container():
+                            st.success("✅ Command executed successfully!")
+                            
+                            # Try to parse JSON response
+                            try:
+                                if isinstance(response, str):
+                                    response_data = json.loads(response)
+                                else:
+                                    response_data = response
+                                    
+                                # Display structured response
+                                if isinstance(response_data, dict):
+                                    if "tool_name" in response_data:
+                                        st.info(f"🔧 **Tool Used:** {response_data['tool_name']}")
+                                    if "parameters" in response_data:
+                                        with st.expander("🔍 View Parameters", expanded=True):
+                                            st.json(response_data["parameters"])
+                                else:
+                                    st.code(response, language="json")
+                                    
+                            except:
+                                # Fallback for non-JSON responses
+                                st.code(response, language="text")
+                                
+                    except Exception as e:
+                        st.error(f"❌ Error: {e}")
+                
+                # Clear the demo input
+                if "demo_input" in st.session_state:
+                    del st.session_state["demo_input"]
+        st.rerun()
+
+    with col2:
+        if st.button("🗑️ Clear", use_container_width=True):
             if "demo_input" in st.session_state:
                 del st.session_state["demo_input"]
-                st.rerun()
+    st.rerun()
 
 else:
     st.warning("⚠️ Agent Core not available in Streamlit Cloud mode")
@@ -167,7 +318,7 @@ with col2:
                 orders_data = json.load(f)
             order_count = len(orders_data.get("orders", []))
             st.metric("📦 ERP Orders", order_count, "Total orders")
-        else:
+    else:
             st.metric("📦 ERP Orders", "N/A", "No data file")
     except:
         st.metric("📦 ERP Orders", "Error", "Cannot load")
