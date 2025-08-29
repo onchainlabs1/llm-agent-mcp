@@ -5,6 +5,7 @@ Clean and functional main application
 
 import json
 import os
+import sys
 import streamlit as st
 from datetime import datetime
 
@@ -16,9 +17,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Clean Dark Theme ---
+# --- Clean Theme ---
 st.markdown("""
-    <style>
+<style>
     .main-header {
         text-align: center;
         padding: 2rem;
@@ -27,20 +28,7 @@ st.markdown("""
         color: white;
         margin-bottom: 2rem;
     }
-    .feature-card {
-        background: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-    }
-    .metric-card {
-        background: #e3f2fd;
-        border-left: 4px solid #2196f3;
-        padding: 1rem;
-        margin: 0.5rem 0;
-    }
-    </style>
+</style>
 """, unsafe_allow_html=True)
 
 # --- Header ---
@@ -77,7 +65,6 @@ st.header("🚀 AI Agent Demo")
 
 # Check if we can load agent
 try:
-    # Try to import agent components
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     from agent.agent_core import _simulate_llm_response
     AGENT_AVAILABLE = True
@@ -149,7 +136,8 @@ if AGENT_AVAILABLE:
             if "demo_input" in st.session_state:
                 del st.session_state["demo_input"]
                 st.rerun()
-    else:
+
+else:
     st.warning("⚠️ Agent Core not available in Streamlit Cloud mode")
     st.info("💡 For full agent functionality, run locally with: `streamlit run app.py`")
 
@@ -179,7 +167,7 @@ with col2:
                 orders_data = json.load(f)
             order_count = len(orders_data.get("orders", []))
             st.metric("📦 ERP Orders", order_count, "Total orders")
-    else:
+        else:
             st.metric("📦 ERP Orders", "N/A", "No data file")
     except:
         st.metric("📦 ERP Orders", "Error", "Cannot load")
