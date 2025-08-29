@@ -10,10 +10,3 @@ gatherUsageStats = false
 backgroundColor = "#0e1117"
 secondaryBackgroundColor = "#1a1f2b"
 textColor = "#ffffff"
-
-[global]
-developmentMode = false
-showErrorDetails = false
-
-[deployment]
-requirementsFile = "requirements-streamlit.txt"
