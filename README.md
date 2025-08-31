@@ -93,7 +93,7 @@ cd llm-agent-mcp
 pip install -e .
 
 # Launch the application
-streamlit run frontend/app.py
+streamlit run app.py
 ```
 
 **🎯 Try these natural language commands:**
@@ -144,7 +144,7 @@ streamlit run iso_docs.py
 **Professional dashboard for external auditors and project reviewers**
 
 ```bash
-streamlit run iso_dashboard.py
+streamlit run app.py
 ```
 
 **Features:**
@@ -404,7 +404,7 @@ pip install -r requirements-dev.txt
    
    ```bash
    # Option 1: Main Streamlit Interface (Primary)
-   streamlit run frontend/app.py
+   streamlit run app.py
    # Access: http://localhost:8501
    
    # Option 2: FastAPI REST API (Enterprise)
@@ -412,20 +412,20 @@ pip install -r requirements-dev.txt
    # Access: http://localhost:8000/docs
    
    # Option 3: Landing Page (Presentation)
-   streamlit run frontend/landing.py --server.port 8502
+   streamlit run landing.py --server.port 8502
    # Access: http://localhost:8502
    ```
    
    **Or run all simultaneously:**
    ```bash
    # Terminal 1: Main application
-   streamlit run frontend/app.py
+   streamlit run app.py
    
    # Terminal 2: REST API
    python run_api.py
    
    # Terminal 3: Landing page
-   streamlit run frontend/landing.py --server.port 8502
+   streamlit run landing.py --server.port 8502
    ```
 
 6. **Access the interfaces**

@@ -14,7 +14,7 @@ llm-agent-mcp/
 ├── requirements.txt          # Dependências Python
 ├── .streamlit/              # Configuração Streamlit
 │   └── config.toml
-├── iso_dashboard.py         # Dashboard principal
+├── app.py                   # Interface principal
 ├── data/                    # Dados estáticos
 └── README.md               # Documentação
 ```
@@ -64,7 +64,7 @@ textColor = "#0f172a"
 - Clique em "New app"
 - Selecione seu repositório: `onchainlabs1/llm-agent-mcp`
 - Branch: `main`
-- Main file path: `iso_dashboard.py`
+- Main file path: `app.py`
 
 ### 3. Configurar Variáveis de Ambiente
 ```bash

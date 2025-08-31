@@ -1,13 +1,13 @@
 # 🤖 Agent Mode - Streamlit Cloud
 
-Este documento descreve como usar o modo agente no ambiente Streamlit Cloud.
+This document describes how to use agent mode in the Streamlit Cloud environment.
 
-## ✅ **Funcionalidades Disponíveis**
+## ✅ **Available Features**
 
 ### **1. Core Agent**
-- **LLM Integration**: Suporte para Groq, OpenAI e Anthropic
-- **Fallback Mode**: Modo simulado quando APIs não estão disponíveis
-- **ISO Controls**: Implementação completa dos controles ISO 42001:2023
+- **LLM Integration**: Support for Groq, OpenAI and Anthropic
+- **Fallback Mode**: Simulated mode when APIs are not available
+- **ISO Controls**: Complete implementation of ISO 42001:2023 controls
 
 ### **2. ISO 42001 Controls**
 - **R001**: Bias Detection and Mitigation
@@ -16,42 +16,42 @@ Este documento descreve como usar o modo agente no ambiente Streamlit Cloud.
 - **R008**: Data Encryption and Integrity
 
 ### **3. MCP Tools**
-- **Tool Registry**: Sistema de registro de ferramentas
-- **Schema Validation**: Validação de esquemas MCP
-- **Tool Execution**: Execução segura de ferramentas
+- **Tool Registry**: Tool registration system
+- **Schema Validation**: MCP schema validation
+- **Tool Execution**: Secure tool execution
 
-## 🚀 **Como Usar**
+## 🚀 **How to Use**
 
-### **1. Acesso ao Modo Agente**
-- Navegue para a página "🤖 Agent Mode Test"
-- Execute os testes para verificar a funcionalidade
-- Use as funcionalidades do agente conforme necessário
+### **1. Access Agent Mode**
+- Navigate to the "🤖 Agent Mode Test" page
+- Run tests to verify functionality
+- Use agent features as needed
 
-### **2. Configuração**
-- O agente funciona em modo simulado por padrão
-- Para usar APIs reais, configure as variáveis de ambiente
-- Veja `env_example.txt` para exemplos de configuração
+### **2. Configuration**
+- Agent works in simulated mode by default
+- To use real APIs, configure environment variables
+- See `env_example.txt` for configuration examples
 
-### **3. Funcionalidades Principais**
+### **3. Main Features**
 ```python
-# Exemplo de uso do agente
+# Example agent usage
 from agent.agent_core import call_llm
 
-# Chamada simples
-response = call_llm("Olá, como posso ajudar?")
+# Simple call
+response = call_llm("Hello, how can I help?")
 
-# Resposta inclui metadados ISO
+# Response includes ISO metadata
 print(f"Response: {response['response']}")
 print(f"Confidence: {response['confidence_score']}")
 print(f"Bias Score: {response['bias_score']}")
 ```
 
-## 🔧 **Configuração Avançada**
+## 🔧 **Advanced Configuration**
 
-### **Variáveis de Ambiente**
+### **Environment Variables**
 ```bash
 # LLM Configuration
-LLM_PROVIDER=groq  # ou openai, anthropic, simulated
+LLM_PROVIDER=groq  # or openai, anthropic, simulated
 LLM_MODEL=llama3-70b-8192
 
 # API Keys
@@ -64,26 +64,26 @@ MCP_SERVER_URL=http://localhost:8000
 MCP_SCHEMAS_PATH=mcp_server/
 ```
 
-### **Modo Simulado**
-- Funciona sem chaves de API
-- Respostas simuladas para desenvolvimento
-- Controles ISO ainda ativos
-- Ideal para testes e demonstrações
+### **Simulated Mode**
+- Works without API keys
+- Simulated responses for development
+- ISO controls still active
+- Ideal for testing and demonstrations
 
-## 📊 **Monitoramento e Logs**
+## 📊 **Monitoring and Logs**
 
-### **Logs de Auditoria**
-- Todas as ações são registradas
-- Controles ISO aplicados e documentados
-- Rastreabilidade completa para auditorias
+### **Audit Logs**
+- All actions are logged
+- ISO controls applied and documented
+- Complete traceability for audits
 
-### **Métricas de Qualidade**
-- Bias scores para cada interação
-- Confidence scores para respostas
+### **Quality Metrics**
+- Bias scores for each interaction
+- Confidence scores for responses
 - Fact-checking results
 - Operational control status
 
-## 🛡️ **Segurança e Compliance**
+## 🛡️ **Security and Compliance**
 
 ### **ISO 42001:2023**
 - ✅ Prompt sanitization
@@ -92,39 +92,39 @@ MCP_SCHEMAS_PATH=mcp_server/
 - ✅ Data encryption
 - ✅ Audit logging
 
-### **Controles Operacionais**
+### **Operational Controls**
 - Rate limiting
 - Session management
 - Input validation
 - Output sanitization
 
-## 🚨 **Solução de Problemas**
+## 🚨 **Troubleshooting**
 
-### **Erros Comuns**
-1. **Import Errors**: Verifique se todas as dependências estão instaladas
-2. **Config Errors**: Use o modo simulado se as APIs não estiverem configuradas
-3. **Permission Errors**: Verifique o acesso aos diretórios de dados
+### **Common Errors**
+1. **Import Errors**: Check if all dependencies are installed
+2. **Config Errors**: Use simulated mode if APIs are not configured
+3. **Permission Errors**: Check access to data directories
 
-### **Testes de Diagnóstico**
-- Execute `test_agent_mode.py` para verificar a funcionalidade
-- Verifique os logs para identificar problemas
-- Use o modo simulado para isolamento de problemas
+### **Diagnostic Tests**
+- Run `test_agent_mode.py` to verify functionality
+- Check logs to identify issues
+- Use simulated mode for problem isolation
 
-## 📚 **Recursos Adicionais**
+## 📚 **Additional Resources**
 
-- **Documentação ISO**: Veja `docs/` para detalhes completos
-- **Exemplos de Uso**: Verifique os testes para padrões de uso
-- **Configuração**: Use `agent_config.py` para personalizações
+- **ISO Documentation**: See `docs/` for complete details
+- **Usage Examples**: Check tests for usage patterns
+- **Configuration**: Use `agent_config.py` for customizations
 
-## 🎯 **Próximos Passos**
+## 🎯 **Next Steps**
 
-1. **Teste o Modo Agente**: Execute `test_agent_mode.py`
-2. **Configure APIs**: Adicione suas chaves de API se necessário
-3. **Personalize**: Ajuste a configuração conforme suas necessidades
-4. **Monitore**: Use os logs para acompanhar o uso e qualidade
+1. **Test Agent Mode**: Run `test_agent_mode.py`
+2. **Configure APIs**: Add your API keys if needed
+3. **Customize**: Adjust configuration as needed
+4. **Monitor**: Use logs to track usage and quality
 
 ---
 
-**Status**: ✅ Pronto para uso em Streamlit Cloud
-**Versão**: 1.0.0
-**Última Atualização**: Dezembro 2024
+**Status**: ✅ Ready for use in Streamlit Cloud
+**Version**: 1.0.0
+**Last Update**: December 2024
